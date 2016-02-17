@@ -3,25 +3,23 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package control;
+package main;
 
+import control.DroneControl;
+import de.yadrone.base.ARDrone;
 import de.yadrone.base.IARDrone;
 
 /**
  *
  * @author Mikkel
  */
-public class DroneControl {
+public class Main {
 
-    IARDrone drone;
+    static public void main(String[] args) {
+        IARDrone drone = new ARDrone();
+        DroneControl control = new DroneControl(drone);
+        control.run();
 
-    public DroneControl(IARDrone drone) {
-        this.drone = drone;
     }
 
-    public void run(){
-        
-    }
 }
-
-
