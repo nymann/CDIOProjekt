@@ -9,7 +9,6 @@ import control.DroneControl;
 import de.yadrone.base.ARDrone;
 import de.yadrone.base.IARDrone;
 import de.yadrone.base.configuration.ConfigurationManager;
-import de.yadrone.base.exception.IExceptionListener;
 
 /**
  *
