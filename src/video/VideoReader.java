@@ -18,8 +18,8 @@ import main.Main;
  */
 public class VideoReader implements ImageListener {
 	private VideoManager vm;
-	private boolean hasNewImage;
-	private BufferedImage newImage, currentImage;
+	private long lastUpdate;
+	private BufferedImage image;
 	
 	public VideoReader(VideoManager vm){
 		this.vm = vm;
@@ -28,30 +28,21 @@ public class VideoReader implements ImageListener {
 	
 	public void run(){
 		System.out.println("video.VideoReader.run()");
-		MainWindow window = new MainWindow();
-		window.setVisible(true);
-		Graphics graphics = window.getGraphics();
 		vm.addImageListener(this);
-		while(!Main.done){
-			if(!this.hasNewImage){
-				System.out.println("No image ready");
-				continue;
-			}
-			hasNewImage = false;
-			currentImage = newImage;
-			System.out.println("new image ready");
-			graphics.drawImage(newImage, 0, 0, window);
-		}
 	}
 
 	@Override
 	public void imageUpdated(BufferedImage bi) {
-		this.newImage = bi;
-		this.hasNewImage = true;
-//S		System.out.println("video.VideoReader.imageUpdated()");
+		this.image = bi;
+		this.lastUpdate = System.currentTimeMillis();
 	}
 	
-	private void processImage(){
-		//currentImage.
+	public BufferedImage getImage(){
+		return this.image;
 	}
+	
+	public long getImageTime(){
+		return this.lastUpdate;
+	}
+	
 }
