@@ -14,6 +14,9 @@ import de.yadrone.base.exception.IExceptionListener;
 import de.yadrone.base.navdata.BatteryListener;
 import de.yadrone.base.navdata.NavDataManager;
 import de.yadrone.base.video.VideoManager;
+import gui.MainWindow;
+import java.awt.Graphics;
+import java.awt.image.BufferedImage;
 import listeners.Battery;
 import video.VideoReader;
 
@@ -70,8 +73,24 @@ public class Main {
 		VideoReader vr = new VideoReader(vm);
 		vr.run();
 		
-		// wait until we stop the program from somewhere else
-		while(!Main.done);
+		// Opening main window
+		MainWindow window = new MainWindow();
+		window.setVisible(true);
+		Graphics graphics = window.getGraphics();
+
+		long lastShown = System.currentTimeMillis();
+		// draw window until we stop the program
+		while(!Main.done){
+			if(vr.getImageTime() <= lastShown){
+				System.out.println("No image ready");
+				try { Thread.sleep(16);} catch (Exception e) {}
+				continue;
+			}
+			lastShown = System.currentTimeMillis();
+			BufferedImage image = vr.getImage();
+			//System.out.println("new image ready");
+			graphics.drawImage(image, 0, 0, window);
+		}
 
 		// shut down
 		System.out.println("Shutting down");
