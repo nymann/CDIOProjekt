@@ -34,12 +34,12 @@ public class VideoReader implements ImageListener {
 		vm.addImageListener(this);
 		while(!Main.done){
 			if(!this.hasNewImage){
-				System.out.println("No image ready");
+				//System.out.println("No image ready");
 				continue;
 			}
 			hasNewImage = false;
 			currentImage = newImage;
-			System.out.println("new image ready");
+			//System.out.println("new image ready");
 			graphics.drawImage(newImage, 0, 0, window);
 			//window.getContentPane().
 		}

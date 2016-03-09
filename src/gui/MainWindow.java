@@ -5,6 +5,10 @@
  */
 package gui;
 
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import main.Main;
+
 /**
  *
  * @author Mikkel
@@ -16,6 +20,11 @@ public class MainWindow extends javax.swing.JFrame {
 	 */
 	public MainWindow() {
 		initComponents();
+		this.addWindowListener( new WindowAdapter() {
+			public void windowClosed(WindowEvent e){
+				Main.done = true;
+			}}
+		);
 	}
 
 	/**
@@ -76,6 +85,7 @@ public class MainWindow extends javax.swing.JFrame {
 				new MainWindow().setVisible(true);
 			}
 		});
+		
 	}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
