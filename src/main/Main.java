@@ -17,6 +17,8 @@ import de.yadrone.base.video.VideoManager;
 import gui.MainWindow;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
+
+import listeners.Accelerometer;
 import listeners.Battery;
 import video.VideoReader;
 
@@ -51,6 +53,10 @@ public class Main {
 		// get battery level
 		Battery battery = new Battery();
 		nm.addBatteryListener(battery);
+		
+		// get accelerometer
+		Accelerometer accelerometer = new Accelerometer();
+		nm.addAcceleroListener(accelerometer);
 		
 		// stop program if we get an exception
 		drone.addExceptionListener(new IExceptionListener() {
