@@ -116,7 +116,9 @@ public class Main {
 			BufferedImage image = vr.getImage();
 			//System.out.println("new image ready");
 			graphics.drawImage(image, 0, 0, window);
-			System.out.println("Battery: " + battery.level + ". Velocity, X: " +
+			System.out.println("-----------------------");
+			System.out.println("Battery: " + battery.level + "%.\nVelocity, " +
+					"X: " +
 					"" + velocity.vx + ", Y: " + velocity.vy + ", Z: " +
 					velocity.vz + ".");
 		}
