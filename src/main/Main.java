@@ -67,9 +67,11 @@ public class Main {
 		
 		// get ultrasound listener
 		UltraSound ultrasound = new UltraSound();
+		nm.addUltrasoundListener(ultrasound);
 		
 		// get velocity listener
 		Velocity velocity = new Velocity();
+		nm.addVelocityListener(velocity);
 		
 
 		// stop program if we get an exception
