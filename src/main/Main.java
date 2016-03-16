@@ -71,11 +71,6 @@ public class Main {
 		// get velocity listener
 		Velocity velocity = new Velocity();
 		
-		// hej2
-
-		// get current acceleration
-		Accelerometer accelerometer = new Accelerometer();
-		nm.addAcceleroListener(accelerometer);
 
 		// stop program if we get an exception
 		drone.addExceptionListener(new IExceptionListener() {
