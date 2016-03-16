@@ -120,7 +120,7 @@ public class Main {
 			System.out.println("Battery: " + battery.level + "%.\nVelocity, " +
 					"X: " +
 					"" + velocity.vx + ", Y: " + velocity.vy + ", Z: " +
-					velocity.vz + ".");
+					velocity.vz + ".\n");
 		}
 
 		// shut down
