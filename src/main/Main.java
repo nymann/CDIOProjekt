@@ -20,6 +20,7 @@ import java.awt.image.BufferedImage;
 
 import listeners.Accelerometer;
 import listeners.Battery;
+import listeners.Velocity;
 import video.VideoReader;
 
 
@@ -57,6 +58,10 @@ public class Main {
 		// get accelerometer
 		Accelerometer accelerometer = new Accelerometer();
 		nm.addAcceleroListener(accelerometer);
+		
+		// get velocity
+		Velocity velocity = new Velocity();
+		nm.addVelocityListener(velocity);
 		
 		// stop program if we get an exception
 		drone.addExceptionListener(new IExceptionListener() {
