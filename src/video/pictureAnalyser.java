@@ -33,6 +33,8 @@ import org.opencv.videoio.VideoCapture;
  */
 public class pictureAnalyser {
     
+	// Test1
+	
     public pictureAnalyser(){
    System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
         	// get the jpeg image from the internal resource folder
