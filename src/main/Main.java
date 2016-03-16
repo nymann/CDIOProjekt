@@ -18,6 +18,7 @@ import gui.MainWindow;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
+import listeners.Accelerometer;
 import listeners.Altitude;
 import listeners.Battery;
 import video.VideoReader;
@@ -54,9 +55,13 @@ public class Main {
 		Battery battery = new Battery();
 		nm.addBatteryListener(battery);
 
-		// get altitude listener
+		// get altitude height
 		Altitude altitude = new Altitude();
 		nm.addAltitudeListener(altitude);
+
+		// get current acceleration
+		Accelerometer accelerometer = new Accelerometer();
+		nm.addAcceleroListener(accelerometer);
 
 		// stop program if we get an exception
 		drone.addExceptionListener(new IExceptionListener() {
