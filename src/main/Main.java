@@ -18,6 +18,7 @@ import gui.MainWindow;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import listeners.Battery;
+import video.PictureAnalyser;
 import video.VideoReader;
 
 
@@ -77,12 +78,13 @@ public class Main {
 		MainWindow window = new MainWindow();
 		window.setVisible(true);
 		Graphics graphics = window.getGraphics();
+		PictureAnalyser.init();
 
 		long lastShown = System.currentTimeMillis();
 		// draw window until we stop the program
 		while(!Main.done){
 			if(vr.getImageTime() <= lastShown){
-				System.out.println("No image ready");
+				//System.out.println("No image ready");
 				try { Thread.sleep(16);} catch (Exception e) {}
 				continue;
 			}
@@ -90,6 +92,9 @@ public class Main {
 			BufferedImage image = vr.getImage();
 			//System.out.println("new image ready");
 			graphics.drawImage(image, 0, 0, window);
+			BufferedImage analysedImage = PictureAnalyser.getAnalyse(image);
+			graphics.drawImage(analysedImage, 0, image.getHeight(), window);
+			window.setSize(image.getWidth(), image.getHeight()*2);
 		}
 
 		// shut down
