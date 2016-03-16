@@ -18,8 +18,11 @@ import gui.MainWindow;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
+import listeners.Accelerometer;
 import listeners.Altitude;
 import listeners.Battery;
+import listeners.UltraSound;
+import listeners.Velocity;
 import video.VideoReader;
 
 
@@ -57,6 +60,16 @@ public class Main {
 		// get altitude listener
 		Altitude altitude = new Altitude();
 		nm.addAltitudeListener(altitude);
+		
+		// get accelerometer listener
+		Accelerometer accelerometer = new Accelerometer();
+		nm.addAcceleroListener(accelerometer);
+		
+		// get ultrasound listener
+		UltraSound ultrasound = new UltraSound();
+		
+		// get velocity listener
+		Velocity velocity = new Velocity();
 
 		// stop program if we get an exception
 		drone.addExceptionListener(new IExceptionListener() {
