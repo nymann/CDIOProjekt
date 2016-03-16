@@ -6,6 +6,7 @@
 package listeners;
 
 import de.yadrone.base.navdata.BatteryListener;
+import gui.ListenerValuePanel;
 
 /**
  *

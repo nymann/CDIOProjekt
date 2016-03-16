@@ -16,6 +16,7 @@ import de.yadrone.base.exception.ARDroneException;
 import de.yadrone.base.exception.IExceptionListener;
 import de.yadrone.base.navdata.NavDataManager;
 import de.yadrone.base.video.VideoManager;
+import gui.ListenerValuePanel;
 import gui.MainWindow;
 import listeners.Accelerometer;
 import listeners.Altitude;
@@ -54,17 +55,13 @@ public class Main {
 		NavDataManager nm = drone.getNavDataManager();
 		VideoManager vm = drone.getVideoManager();
 		
-		// get battery level
+		/*// get battery level
 		Battery battery = new Battery();
 		nm.addBatteryListener(battery);
 
 		// get altitude height
 		Altitude altitude = new Altitude();
 		nm.addAltitudeListener(altitude);
-		
-		// add attitude listener.
-		Attitude attitude = new Attitude();
-		nm.addAttitudeListener(attitude);
 		
 		// get accelerometer listener
 		Accelerometer accelerometer = new Accelerometer();
@@ -76,7 +73,7 @@ public class Main {
 		
 		// get velocity listener
 		Velocity velocity = new Velocity();
-		nm.addVelocityListener(velocity);
+		nm.addVelocityListener(velocity);*/
 		
 
 		// stop program if we get an exception
@@ -106,12 +103,16 @@ public class Main {
 		Graphics graphics = window.getGraphics();
 		PictureAnalyser.init();
 
+		// Opening listener value panel
+		//TODO(Mikkel kig her)
+		//ListenerValuePanel panel = new ListenerValuePanel(nm);
+		//panel.ListenerValueGUI(200, 200);
 
 		long lastShown = System.currentTimeMillis();
 		// draw window until we stop the program
 		while(!Main.done){
 			if(vr.getImageTime() <= lastShown){
-				System.out.println("No image ready");
+//				System.out.println("No image ready");
 				try { Thread.sleep(16);} catch (Exception e) {}
 				continue;
 			}
@@ -123,11 +124,6 @@ public class Main {
 			graphics.drawImage(analysedImage, 0, image.getHeight(), window);
 			window.setSize(image.getWidth(), image.getHeight()*2);
 
-			System.out.println("-----------------------");
-			System.out.println("Battery: " + battery.level + "%.\nVelocity, " +
-					"X: " +
-					"" + velocity.vx + ", Y: " + velocity.vy + ", Z: " +
-					velocity.vz + ".\n");
 		}
 
 		// shut down
