@@ -71,7 +71,7 @@ public class Main {
 		// get velocity listener
 		Velocity velocity = new Velocity();
 		
-		// hej
+		// hej2
 
 		// stop program if we get an exception
 		drone.addExceptionListener(new IExceptionListener() {
