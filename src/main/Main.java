@@ -6,19 +6,21 @@
 package main;
 
 //import control.DroneControl;
+
 import de.yadrone.base.ARDrone;
 import de.yadrone.base.IARDrone;
 import de.yadrone.base.configuration.ConfigurationManager;
 import de.yadrone.base.exception.ARDroneException;
 import de.yadrone.base.exception.IExceptionListener;
-import de.yadrone.base.navdata.BatteryListener;
 import de.yadrone.base.navdata.NavDataManager;
 import de.yadrone.base.video.VideoManager;
 import gui.MainWindow;
-import java.awt.Graphics;
-import java.awt.image.BufferedImage;
+import listeners.Altitude;
 import listeners.Battery;
 import video.VideoReader;
+
+import java.awt.*;
+import java.awt.image.BufferedImage;
 
 
 /**
@@ -51,6 +53,10 @@ public class Main {
 		// get battery level
 		Battery battery = new Battery();
 		nm.addBatteryListener(battery);
+
+		// get altitude level
+		Altitude altitude = new Altitude();
+		nm.addAltitudeListener(altitude);
 		
 		// stop program if we get an exception
 		drone.addExceptionListener(new IExceptionListener() {
