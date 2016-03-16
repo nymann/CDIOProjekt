@@ -17,8 +17,12 @@ import de.yadrone.base.exception.IExceptionListener;
 import de.yadrone.base.navdata.NavDataManager;
 import de.yadrone.base.video.VideoManager;
 import gui.MainWindow;
-import listeners.*;
-import video.PictureAnalyser;
+import listeners.Accelerometer;
+import listeners.Altitude;
+import listeners.Attitude;
+import listeners.Battery;
+import listeners.UltraSound;
+import listeners.Velocity;
 import video.VideoReader;
 
 
@@ -99,7 +103,6 @@ public class Main {
 		MainWindow window = new MainWindow();
 		window.setVisible(true);
 		Graphics graphics = window.getGraphics();
-		PictureAnalyser.init();
 
 		long lastShown = System.currentTimeMillis();
 		// draw window until we stop the program
@@ -113,12 +116,11 @@ public class Main {
 			BufferedImage image = vr.getImage();
 			//System.out.println("new image ready");
 			graphics.drawImage(image, 0, 0, window);
-			System.out.println("Battery: " + battery.level + ". Velocity, X: " +
+			System.out.println("-----------------------");
+			System.out.println("Battery: " + battery.level + "%.\nVelocity, " +
+					"X: " +
 					"" + velocity.vx + ", Y: " + velocity.vy + ", Z: " +
-					velocity.vz + ".");
-			BufferedImage analysedImage = PictureAnalyser.getAnalyse(image);
-			graphics.drawImage(analysedImage, 0, image.getHeight(), window);
-			window.setSize(image.getWidth(), image.getHeight()*2);
+					velocity.vz + ".\n");
 		}
 
 		// shut down
