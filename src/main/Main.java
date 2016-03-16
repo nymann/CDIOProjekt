@@ -17,6 +17,9 @@ import de.yadrone.base.exception.IExceptionListener;
 import de.yadrone.base.navdata.NavDataManager;
 import de.yadrone.base.video.VideoManager;
 import gui.MainWindow;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import javax.swing.JPanel;
 import listeners.Accelerometer;
 import listeners.Altitude;
 import listeners.Attitude;
@@ -101,7 +104,9 @@ public class Main {
 		vr.run();
 		
 		// Opening main window
-		MainWindow window = new MainWindow();
+		MainWindow window = new MainWindow(drone);
+		window.run();
+		window.init();
 		window.setVisible(true);
 		Graphics graphics = window.getGraphics();
 		PictureAnalyser.init();
