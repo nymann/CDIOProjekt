@@ -23,6 +23,7 @@ import listeners.Attitude;
 import listeners.Battery;
 import listeners.UltraSound;
 import listeners.Velocity;
+import video.PictureAnalyser;
 import video.VideoReader;
 
 
@@ -103,6 +104,8 @@ public class Main {
 		MainWindow window = new MainWindow();
 		window.setVisible(true);
 		Graphics graphics = window.getGraphics();
+		PictureAnalyser.init();
+
 
 		long lastShown = System.currentTimeMillis();
 		// draw window until we stop the program
@@ -116,6 +119,10 @@ public class Main {
 			BufferedImage image = vr.getImage();
 			//System.out.println("new image ready");
 			graphics.drawImage(image, 0, 0, window);
+			BufferedImage analysedImage = PictureAnalyser.getAnalyse(image);
+			graphics.drawImage(analysedImage, 0, image.getHeight(), window);
+			window.setSize(image.getWidth(), image.getHeight()*2);
+
 			System.out.println("-----------------------");
 			System.out.println("Battery: " + battery.level + "%.\nVelocity, " +
 					"X: " +

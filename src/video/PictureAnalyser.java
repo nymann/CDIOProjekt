@@ -45,7 +45,7 @@ public class PictureAnalyser {
 		frameBlur = blur(frameMat, 5);
 		Mat imgHSV = new Mat();
 		Mat imgThresholded = new Mat();
-		Imgproc.cvtColor(frameBlur, imgHSV, Imgproc.COLOR_RGB2HSV);
+		Imgproc.cvtColor(frameBlur, imgHSV, Imgproc.COLOR_BGR2HSV);
 		Scalar high = new Scalar(125, 255, 255);
 		Scalar low = new Scalar(100, 40, 40);
 		Core.inRange(imgHSV, low, high, imgThresholded);
