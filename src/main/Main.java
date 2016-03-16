@@ -5,21 +5,21 @@
  */
 package main;
 
+import java.awt.Graphics;
+import java.awt.image.BufferedImage;
+
 //import control.DroneControl;
 import de.yadrone.base.ARDrone;
 import de.yadrone.base.IARDrone;
 import de.yadrone.base.configuration.ConfigurationManager;
 import de.yadrone.base.exception.ARDroneException;
 import de.yadrone.base.exception.IExceptionListener;
-import de.yadrone.base.navdata.BatteryListener;
 import de.yadrone.base.navdata.NavDataManager;
 import de.yadrone.base.video.VideoManager;
 import gui.MainWindow;
-import java.awt.Graphics;
-import java.awt.image.BufferedImage;
-
 import listeners.Accelerometer;
 import listeners.Altitude;
+import listeners.Attitude;
 import listeners.Battery;
 import listeners.UltraSound;
 import listeners.Velocity;
@@ -60,6 +60,10 @@ public class Main {
 		// get altitude height
 		Altitude altitude = new Altitude();
 		nm.addAltitudeListener(altitude);
+		
+		// add attitude listener.
+		Attitude attitude = new Attitude();
+		nm.addAttitudeListener(attitude);
 		
 		// get accelerometer listener
 		Accelerometer accelerometer = new Accelerometer();
