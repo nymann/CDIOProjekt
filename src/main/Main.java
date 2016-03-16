@@ -57,7 +57,7 @@ public class Main {
 		Battery battery = new Battery();
 		nm.addBatteryListener(battery);
 
-		// get altitude listener
+		// get altitude height
 		Altitude altitude = new Altitude();
 		nm.addAltitudeListener(altitude);
 		
@@ -72,6 +72,10 @@ public class Main {
 		Velocity velocity = new Velocity();
 		
 		// hej2
+
+		// get current acceleration
+		Accelerometer accelerometer = new Accelerometer();
+		nm.addAcceleroListener(accelerometer);
 
 		// stop program if we get an exception
 		drone.addExceptionListener(new IExceptionListener() {
