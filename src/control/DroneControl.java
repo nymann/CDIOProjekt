@@ -68,8 +68,7 @@ public class DroneControl {
         } 
         
         System.out.println("Stoping control");
-		Main.done = true;
- 
+		Main.shutDown();
     }
 }
 

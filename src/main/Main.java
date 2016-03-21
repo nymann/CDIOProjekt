@@ -37,12 +37,15 @@ import video.VideoReader;
  */
 public class Main {
 
-	static public boolean done = false;
+	static private IARDrone drone = null;
 
 	static public void main(String[] args) {
+		
+
+		// Initialising OpenCV
+		PictureAnalyser.init();
 
 		// connecting to drone
-		IARDrone drone = null;
 		try {
 			drone = new ARDrone();
 			System.out.println("Starting Drone");
@@ -50,13 +53,11 @@ public class Main {
 		} catch (Exception exc) {
 			System.err.println(exc.getMessage());
 			exc.printStackTrace();
-			Main.done = true;
 		}
 
 		// getting managers
 		ConfigurationManager cm = drone.getConfigurationManager();
 		NavDataManager nm = drone.getNavDataManager();
-		VideoManager vm = drone.getVideoManager();
 		
 		/*// get battery level
 		Battery battery = new Battery();
@@ -84,7 +85,7 @@ public class Main {
 			@Override
 			public void exeptionOccurred(ARDroneException arde) {
 				System.out.println(arde.getMessage());
-				Main.done = true;
+//				Main.shutDown();
 			}
 		});
 
@@ -95,45 +96,22 @@ public class Main {
 		DroneControl control = new DroneControl(drone);
 		control.run();*/
 		
-		//connecting video
-		System.out.println("Conneting video manager");
-		VideoReader vr = new VideoReader(vm);
-		vr.run();
 		
+		// Opening listener value panel
+		//TODO(Mikkel kig her)
+		ListenerValuePanel panel = new ListenerValuePanel();
+//		panel.ListenerValueGUI(200, 200);
+
 		// Opening main window
 		MainWindow window = new MainWindow(drone);
 		window.run();
-		window.init();
-		window.setVisible(true);
-		Graphics graphics = window.getGraphics();
-		PictureAnalyser.init();
 
-		// Opening listener value panel
-		//TODO(Mikkel kig her)
-		//ListenerValuePanel panel = new ListenerValuePanel(nm);
-		//panel.ListenerValueGUI(200, 200);
-
-		long lastShown = System.currentTimeMillis();
-		// draw window until we stop the program
-		while(!Main.done){
-			if(vr.getImageTime() <= lastShown){
-//				System.out.println("No image ready");
-				try { Thread.sleep(16);} catch (Exception e) {}
-				continue;
-			}
-			lastShown = System.currentTimeMillis();
-			BufferedImage image = vr.getImage();
-			//System.out.println("new image ready");
-			graphics.drawImage(image, 0, 0, window);
-			BufferedImage analysedImage = PictureAnalyser.getAnalyse(image);
-			graphics.drawImage(analysedImage, 0, image.getHeight(), window);
-			window.setSize(image.getWidth(), image.getHeight()*2);
-
-		}
+	}
+	
+	public static void shutDown(){
 
 		// shut down
 		System.out.println("Shutting down");
-		cm.close();
 		drone.stop();
 		System.exit(0);
 	}

@@ -26,11 +26,6 @@ public class VideoReader implements ImageListener {
 		vm.addImageListener(this);
 	}
 	
-	public void run(){
-		System.out.println("video.VideoReader.run()");
-		vm.addImageListener(this);
-	}
-
 	@Override
 	public void imageUpdated(BufferedImage bi) {
 		this.image = bi;
