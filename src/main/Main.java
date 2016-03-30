@@ -16,7 +16,11 @@ import de.yadrone.base.exception.ARDroneException;
 import de.yadrone.base.exception.IExceptionListener;
 import de.yadrone.base.navdata.NavDataManager;
 import de.yadrone.base.video.VideoManager;
+import gui.ListenerValuePanel;
 import gui.MainWindow;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import javax.swing.JPanel;
 import listeners.Accelerometer;
 import listeners.Altitude;
 import listeners.Attitude;
@@ -33,12 +37,15 @@ import video.VideoReader;
  */
 public class Main {
 
-	static public boolean done = false;
+	static private IARDrone drone = null;
 
 	static public void main(String[] args) {
+		
+
+		// Initialising OpenCV
+		PictureAnalyser.init();
 
 		// connecting to drone
-		IARDrone drone = null;
 		try {
 			drone = new ARDrone();
 			System.out.println("Starting Drone");
@@ -46,25 +53,19 @@ public class Main {
 		} catch (Exception exc) {
 			System.err.println(exc.getMessage());
 			exc.printStackTrace();
-			Main.done = true;
 		}
 
 		// getting managers
 		ConfigurationManager cm = drone.getConfigurationManager();
 		NavDataManager nm = drone.getNavDataManager();
-		VideoManager vm = drone.getVideoManager();
 		
-		// get battery level
+		/*// get battery level
 		Battery battery = new Battery();
 		nm.addBatteryListener(battery);
 
 		// get altitude height
 		Altitude altitude = new Altitude();
 		nm.addAltitudeListener(altitude);
-		
-		// add attitude listener.
-		Attitude attitude = new Attitude();
-		nm.addAttitudeListener(attitude);
 		
 		// get accelerometer listener
 		Accelerometer accelerometer = new Accelerometer();
@@ -76,7 +77,7 @@ public class Main {
 		
 		// get velocity listener
 		Velocity velocity = new Velocity();
-		nm.addVelocityListener(velocity);
+		nm.addVelocityListener(velocity);*/
 		
 
 		// stop program if we get an exception
@@ -84,7 +85,7 @@ public class Main {
 			@Override
 			public void exeptionOccurred(ARDroneException arde) {
 				System.out.println(arde.getMessage());
-				Main.done = true;
+//				Main.shutDown();
 			}
 		});
 
@@ -95,44 +96,22 @@ public class Main {
 		DroneControl control = new DroneControl(drone);
 		control.run();*/
 		
-		//connecting video
-		System.out.println("Conneting video manager");
-		VideoReader vr = new VideoReader(vm);
-		vr.run();
 		
+		// Opening listener value panel
+		//TODO(Mikkel kig her)
+		ListenerValuePanel panel = new ListenerValuePanel();
+//		panel.ListenerValueGUI(200, 200);
+
 		// Opening main window
-		MainWindow window = new MainWindow();
-		window.setVisible(true);
-		Graphics graphics = window.getGraphics();
-		PictureAnalyser.init();
+		MainWindow window = new MainWindow(drone);
+		window.run();
 
-
-		long lastShown = System.currentTimeMillis();
-		// draw window until we stop the program
-		while(!Main.done){
-			if(vr.getImageTime() <= lastShown){
-				System.out.println("No image ready");
-				try { Thread.sleep(16);} catch (Exception e) {}
-				continue;
-			}
-			lastShown = System.currentTimeMillis();
-			BufferedImage image = vr.getImage();
-			//System.out.println("new image ready");
-			graphics.drawImage(image, 0, 0, window);
-			BufferedImage analysedImage = PictureAnalyser.getAnalyse(image);
-			graphics.drawImage(analysedImage, 0, image.getHeight(), window);
-			window.setSize(image.getWidth(), image.getHeight()*2);
-
-			System.out.println("-----------------------");
-			System.out.println("Battery: " + battery.level + "%.\nVelocity, " +
-					"X: " +
-					"" + velocity.vx + ", Y: " + velocity.vy + ", Z: " +
-					velocity.vz + ".\n");
-		}
+	}
+	
+	public static void shutDown(){
 
 		// shut down
 		System.out.println("Shutting down");
-		cm.close();
 		drone.stop();
 		System.exit(0);
 	}
