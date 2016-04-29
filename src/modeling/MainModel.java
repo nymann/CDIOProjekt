@@ -37,7 +37,7 @@ public class MainModel {
 	public boolean compareCube(Cube newCube, double tolerance){
 		for (Cube currentCube: cubes){
 			if (newCube.getColor().equals(currentCube.getColor())){
-				if (newCube.getPosition().subtract(currentCube.getPosition()).distance(Point3D.ZERO) < tolerance){
+				if (newCube.getPosition().subtract(currentCube.getPosition()).distance(CustomPoint3D.ZERO) < tolerance){
 					return true;
 				}
 			}
