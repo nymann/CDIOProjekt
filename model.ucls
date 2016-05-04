@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<class-diagram version="1.1.9" icons="true" always-add-relationships="false" generalizations="true" realizations="true" 
-  associations="true" dependencies="true" nesting-relationships="true" router="FAN">  
+<class-diagram version="1.1.9" icons="true" automaticImage="PNG" always-add-relationships="false" generalizations="true" 
+  realizations="true" associations="true" dependencies="true" nesting-relationships="true" router="FAN">  
   <class id="1" language="java" name="modeling.Angle3D" project="CDIO-Projekt" 
     file="/CDIO-Projekt/src/modeling/Angle3D.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="73" y="21"/>    
+    <position height="-1" width="-1" x="103" y="220"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -12,7 +12,7 @@
   </class>  
   <class id="2" language="java" name="modeling.Cube" project="CDIO-Projekt" file="/CDIO-Projekt/src/modeling/Cube.java" 
     binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="387" y="259"/>    
+    <position height="-1" width="-1" x="470" y="498"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -21,7 +21,7 @@
   </class>  
   <class id="3" language="java" name="modeling.CustomPoint3D" project="CDIO-Projekt" 
     file="/CDIO-Projekt/src/modeling/CustomPoint3D.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="690" y="57"/>    
+    <position height="-1" width="-1" x="160" y="504"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -30,7 +30,7 @@
   </class>  
   <class id="4" language="java" name="modeling.MainModel" project="CDIO-Projekt" 
     file="/CDIO-Projekt/src/modeling/MainModel.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="394" y="20"/>    
+    <position height="-1" width="-1" x="422" y="236"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -39,7 +39,7 @@
   </class>  
   <class id="5" language="java" name="control.DroneControl" project="CDIO-Projekt" 
     file="/CDIO-Projekt/src/control/DroneControl.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="114" width="162" x="1305" y="167"/>    
+    <position height="-1" width="-1" x="707" y="117"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -48,7 +48,7 @@
   </class>  
   <class id="6" language="java" name="gui.VideoPanel" project="CDIO-Projekt" 
     file="/CDIO-Projekt/src/gui/VideoPanel.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1161" y="395"/>    
+    <position height="-1" width="-1" x="1072" y="579"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -57,7 +57,7 @@
   </class>  
   <class id="7" language="java" name="gui.ListenerValuePanel" project="CDIO-Projekt" 
     file="/CDIO-Projekt/src/gui/ListenerValuePanel.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1759" y="380"/>    
+    <position height="-1" width="-1" x="1397" y="379"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -66,7 +66,7 @@
   </class>  
   <class id="8" language="java" name="gui.MainWindow" project="CDIO-Projekt" 
     file="/CDIO-Projekt/src/gui/MainWindow.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="843" y="371"/>    
+    <position height="-1" width="-1" x="1064" y="388"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -75,7 +75,7 @@
   </class>  
   <class id="9" language="java" name="gui.AnalysedVideoPanel" project="CDIO-Projekt" 
     file="/CDIO-Projekt/src/gui/AnalysedVideoPanel.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="991" y="180"/>    
+    <position height="-1" width="-1" x="727" y="584"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -84,7 +84,7 @@
   </class>  
   <class id="10" language="java" name="listeners.Altitude" project="CDIO-Projekt" 
     file="/CDIO-Projekt/src/listeners/Altitude.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="150" width="250" x="407" y="483"/>    
+    <position height="-1" width="-1" x="148" y="763"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -93,7 +93,7 @@
   </class>  
   <class id="11" language="java" name="listeners.Velocity" project="CDIO-Projekt" 
     file="/CDIO-Projekt/src/listeners/Velocity.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="150" width="239" x="697" y="483"/>    
+    <position height="-1" width="-1" x="402" y="763"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -102,7 +102,7 @@
   </class>  
   <class id="12" language="java" name="listeners.UltraSound" project="CDIO-Projekt" 
     file="/CDIO-Projekt/src/listeners/UltraSound.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="132" width="248" x="976" y="483"/>    
+    <position height="-1" width="-1" x="655" y="754"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -111,7 +111,7 @@
   </class>  
   <class id="13" language="java" name="listeners.Accelerometer" project="CDIO-Projekt" 
     file="/CDIO-Projekt/src/listeners/Accelerometer.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="150" width="266" x="1264" y="483"/>    
+    <position height="-1" width="-1" x="926" y="763"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -120,7 +120,7 @@
   </class>  
   <class id="14" language="java" name="listeners.Attitude" project="CDIO-Projekt" 
     file="/CDIO-Projekt/src/listeners/Attitude.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="186" width="235" x="1570" y="483"/>    
+    <position height="-1" width="-1" x="1494" y="697"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -129,7 +129,7 @@
   </class>  
   <class id="15" language="java" name="listeners.Battery" project="CDIO-Projekt" 
     file="/CDIO-Projekt/src/listeners/Battery.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="150" width="197" x="1845" y="483"/>    
+    <position height="-1" width="-1" x="949" y="940"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -138,7 +138,7 @@
   </class>  
   <class id="16" language="java" name="main.ExceptionListener" project="CDIO-Projekt" 
     file="/CDIO-Projekt/src/main/ExceptionListener.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1182" y="-17"/>    
+    <position height="-1" width="-1" x="699" y="912"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -147,7 +147,7 @@
   </class>  
   <class id="17" language="java" name="main.Main" project="CDIO-Projekt" file="/CDIO-Projekt/src/main/Main.java" 
     binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1478" y="2"/>    
+    <position height="-1" width="-1" x="1064" y="186"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -156,7 +156,7 @@
   </class>  
   <class id="18" language="java" name="modeling.QRPoint" project="CDIO-Projekt" 
     file="/CDIO-Projekt/src/modeling/QRPoint.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="107" y="265"/>    
+    <position height="-1" width="-1" x="337" y="22"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -165,7 +165,7 @@
   </class>  
   <class id="19" language="java" name="modeling.TranslatePoint" project="CDIO-Projekt" 
     file="/CDIO-Projekt/src/modeling/TranslatePoint.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="235" y="417"/>    
+    <position height="-1" width="-1" x="775" y="1019"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -174,7 +174,7 @@
   </class>  
   <class id="20" language="java" name="video.CameraUtil" project="CDIO-Projekt" 
     file="/CDIO-Projekt/src/video/CameraUtil.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="2059" y="201"/>    
+    <position height="-1" width="-1" x="407" y="923"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -183,7 +183,7 @@
   </class>  
   <class id="21" language="java" name="video.PictureAnalyser" project="CDIO-Projekt" 
     file="/CDIO-Projekt/src/video/PictureAnalyser.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1903" y="30"/>    
+    <position height="-1" width="-1" x="721" y="348"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -192,118 +192,169 @@
   </class>  
   <class id="22" language="java" name="video.VideoReader" project="CDIO-Projekt" 
     file="/CDIO-Projekt/src/video/VideoReader.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="2188" y="15"/>    
+    <position height="-1" width="-1" x="140" y="951"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <association id="23">    
+  <class id="23" language="java" name="dronePossition.PointNavigation" project="CDIO-Projekt" 
+    file="/CDIO-Projekt/src/dronePossition/PointNavigation.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="1278" y="831"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <generalization id="24">    
+    <end type="SOURCE" refId="9"/>    
+    <end type="TARGET" refId="6"/>  
+  </generalization>  
+  <dependency id="25">    
+    <end type="SOURCE" refId="17"/>    
+    <end type="TARGET" refId="7"/>  
+  </dependency>  
+  <association id="26">    
+    <end type="SOURCE" refId="3" navigable="false">      
+      <attribute id="27" name="ZERO">        
+        <position height="0" width="0" x="-530" y="447"/>      
+      </attribute>      
+      <multiplicity id="28" minimum="0" maximum="1">        
+        <position height="0" width="0" x="-530" y="447"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="3" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <dependency id="29">    
+    <end type="SOURCE" refId="9"/>    
+    <end type="TARGET" refId="21"/>  
+  </dependency>  
+  <dependency id="30">    
+    <end type="SOURCE" refId="4"/>    
+    <end type="TARGET" refId="3"/>  
+  </dependency>  
+  <association id="31">    
+    <bendpoint x="1514" y="560"/>    
+    <end type="SOURCE" refId="14" navigable="false">      
+      <attribute id="32" name="listenerValuePanel">        
+        <position height="0" width="0" x="-362" y="-1"/>      
+      </attribute>      
+      <multiplicity id="33" minimum="0" maximum="1">        
+        <position height="0" width="0" x="-362" y="-1"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="7" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="34">    
     <end type="SOURCE" refId="4" navigable="false">      
-      <attribute id="24" name="droneOrientation"/>      
-      <multiplicity id="25" minimum="0" maximum="1"/>    
+      <attribute id="35" name="droneOrientation">        
+        <position height="0" width="0" x="30" y="199"/>      
+      </attribute>      
+      <multiplicity id="36" minimum="0" maximum="1">        
+        <position height="0" width="0" x="30" y="199"/>      
+      </multiplicity>    
     </end>    
     <end type="TARGET" refId="1" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="26">    
-    <end type="SOURCE" refId="4" navigable="false">      
-      <attribute id="27" name="QRPoints"/>      
-      <multiplicity id="28" minimum="0" maximum="2147483647"/>    
-    </end>    
-    <end type="TARGET" refId="18" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="29">    
-    <end type="SOURCE" refId="2" navigable="false">      
-      <attribute id="30" name="position"/>      
-      <multiplicity id="31" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="3" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <dependency id="32">    
-    <end type="SOURCE" refId="5"/>    
-    <end type="TARGET" refId="17"/>  
-  </dependency>  
-  <dependency id="33">    
-    <end type="SOURCE" refId="17"/>    
-    <end type="TARGET" refId="21"/>  
-  </dependency>  
-  <dependency id="34">    
-    <end type="SOURCE" refId="17"/>    
-    <end type="TARGET" refId="7"/>  
-  </dependency>  
-  <dependency id="35">    
-    <end type="SOURCE" refId="4"/>    
-    <end type="TARGET" refId="3"/>  
-  </dependency>  
-  <generalization id="36">    
-    <end type="SOURCE" refId="9"/>    
-    <end type="TARGET" refId="6"/>  
-  </generalization>  
-  <dependency id="37">    
-    <end type="SOURCE" refId="9"/>    
-    <end type="TARGET" refId="21"/>  
-  </dependency>  
-  <association id="38">    
-    <bendpoint x="1580" y="357"/>    
+  <association id="37">    
+    <bendpoint x="1014" y="482"/>    
     <end type="SOURCE" refId="8" navigable="false">      
-      <attribute id="39" name="analysed"/>      
-      <multiplicity id="40" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="9" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="41">    
-    <end type="SOURCE" refId="8" navigable="false">      
-      <attribute id="42" name="values"/>      
-      <multiplicity id="43" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="7" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <dependency id="44">    
-    <end type="SOURCE" refId="17"/>    
-    <end type="TARGET" refId="8"/>  
-  </dependency>  
-  <association id="45">    
-    <end type="SOURCE" refId="3" navigable="false">      
-      <attribute id="46" name="ZERO"/>      
-      <multiplicity id="47" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="3" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="48">    
-    <end type="SOURCE" refId="14" navigable="false">      
-      <attribute id="49" name="listenerValuePanel"/>      
-      <multiplicity id="50" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="7" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="51">    
-    <end type="SOURCE" refId="8" navigable="false">      
-      <attribute id="52" name="frontCam"/>      
-      <multiplicity id="53" minimum="0" maximum="1"/>    
+      <attribute id="38" name="downCam">        
+        <position height="0" width="0" x="-89" y="184"/>      
+      </attribute>      
+      <multiplicity id="39" minimum="0" maximum="1">        
+        <position height="0" width="0" x="-89" y="184"/>      
+      </multiplicity>    
     </end>    
     <end type="TARGET" refId="6" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="54">    
+  <association id="40">    
+    <end type="SOURCE" refId="8" navigable="false">      
+      <attribute id="41" name="analysed">        
+        <position height="0" width="0" x="-264" y="404"/>      
+      </attribute>      
+      <multiplicity id="42" minimum="0" maximum="1">        
+        <position height="0" width="0" x="-264" y="404"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="9" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="43">    
+    <end type="SOURCE" refId="8" navigable="false">      
+      <attribute id="44" name="values">        
+        <position height="0" width="0" x="-362" y="-1"/>      
+      </attribute>      
+      <multiplicity id="45" minimum="0" maximum="1">        
+        <position height="0" width="0" x="-362" y="-1"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="7" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="46">    
+    <end type="SOURCE" refId="2" navigable="false">      
+      <attribute id="47" name="position">        
+        <position height="0" width="0" x="-530" y="447"/>      
+      </attribute>      
+      <multiplicity id="48" minimum="0" maximum="1">        
+        <position height="0" width="0" x="-530" y="447"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="3" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <dependency id="49">    
+    <end type="SOURCE" refId="17"/>    
+    <end type="TARGET" refId="21"/>  
+  </dependency>  
+  <association id="50">    
     <end type="SOURCE" refId="4" navigable="false">      
-      <attribute id="55" name="cubes"/>      
-      <multiplicity id="56" minimum="0" maximum="2147483647"/>    
+      <attribute id="51" name="QRPoints">        
+        <position height="0" width="0" x="230" y="-243"/>      
+      </attribute>      
+      <multiplicity id="52" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="230" y="-243"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="18" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <dependency id="53">    
+    <end type="SOURCE" refId="5"/>    
+    <end type="TARGET" refId="17"/>  
+  </dependency>  
+  <dependency id="54">    
+    <end type="SOURCE" refId="17"/>    
+    <end type="TARGET" refId="8"/>  
+  </dependency>  
+  <association id="55">    
+    <end type="SOURCE" refId="4" navigable="false">      
+      <attribute id="56" name="cubes">        
+        <position height="0" width="0" x="83" y="239"/>      
+      </attribute>      
+      <multiplicity id="57" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="83" y="239"/>      
+      </multiplicity>    
     </end>    
     <end type="TARGET" refId="2" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="57">    
+  <association id="58">    
+    <bendpoint x="1133" y="485"/>    
     <end type="SOURCE" refId="8" navigable="false">      
-      <attribute id="58" name="downCam"/>      
-      <multiplicity id="59" minimum="0" maximum="1"/>    
+      <attribute id="59" name="frontCam">        
+        <position height="0" width="0" x="-89" y="184"/>      
+      </attribute>      
+      <multiplicity id="60" minimum="0" maximum="1">        
+        <position height="0" width="0" x="-89" y="184"/>      
+      </multiplicity>    
     </end>    
     <end type="TARGET" refId="6" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
