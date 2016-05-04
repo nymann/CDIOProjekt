@@ -13,6 +13,7 @@ import de.yadrone.base.exception.IExceptionListener;
 import de.yadrone.base.navdata.NavDataManager;
 import gui.ListenerValuePanel;
 import gui.MainWindow;
+import test.DownCamTest;
 import video.PictureAnalyser;
 
 //import control.DroneControl;
@@ -24,6 +25,9 @@ import video.PictureAnalyser;
  */
 public class Main {
 
+
+	public static Boolean downCamActive = false;
+
 	static private IARDrone drone = null;
 
 	static public void main(String[] args) {
@@ -31,6 +35,7 @@ public class Main {
 
 		// Initialising OpenCV
 		PictureAnalyser.init();
+
 
 		// connecting to drone
 		try {
@@ -93,6 +98,8 @@ public class Main {
 		MainWindow window = new MainWindow(drone);
 		window.run();
 
+		test.DownCamTest downCamTest = new DownCamTest(drone);
+		downCamTest.run();
 	}
 	
 	public static void shutDown(){

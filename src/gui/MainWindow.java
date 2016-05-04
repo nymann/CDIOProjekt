@@ -21,9 +21,8 @@ public class MainWindow extends javax.swing.JFrame {
 
 	private IARDrone drone;
 	
-	private VideoPanel frontCam;
+	private VideoPanel cam;
 	private AnalysedVideoPanel analysed;
-	private VideoPanel downCam;
 	private ListenerValuePanel values;
 
 	/**
@@ -31,17 +30,15 @@ public class MainWindow extends javax.swing.JFrame {
 	 */
 	public MainWindow(IARDrone drone) {
 		this.drone = drone;
-		this.frontCam = new VideoPanel();
-		this.downCam = new VideoPanel();
-		//this.analysed = new AnalysedVideoPanel();
+		this.cam = new VideoPanel();
+		this.analysed = new AnalysedVideoPanel();
 		this.values = new ListenerValuePanel();
 	}
 	
 	private void init() {
 		this.getContentPane().setLayout(new FlowLayout());
-		this.getContentPane().add(frontCam);
-		//this.getContentPane().add(downCam);
-		//this.getContentPane().add(analysed);
+		this.getContentPane().add(cam);
+		this.getContentPane().add(analysed);
 		this.getContentPane().add(values);
 		
 /*		this.addWindowListener(new WindowAdapter() {
@@ -62,12 +59,12 @@ public class MainWindow extends javax.swing.JFrame {
 	public void run() {
 		this.init();
 		Dimension videoSize = new Dimension(640, 400);
-		frontCam.setBackground(Color.BLACK);
-		frontCam.setPreferredSize(videoSize);
-		frontCam.setSize(videoSize);
-		//analysed.setBackground(Color.BLACK);
-		//analysed.setPreferredSize(videoSize);
-		//analysed.setSize(videoSize);
+		cam.setBackground(Color.BLACK);
+		cam.setPreferredSize(videoSize);
+		cam.setSize(videoSize);
+		analysed.setBackground(Color.BLACK);
+		analysed.setPreferredSize(videoSize);
+		analysed.setSize(videoSize);
 		values.setPreferredSize(new Dimension(100,10));
 		this.pack();
 		this.setVisible(true);
@@ -76,7 +73,7 @@ public class MainWindow extends javax.swing.JFrame {
 		//connecting video
 		System.out.println("Connecting video manager");
 		VideoManager vm = drone.getVideoManager();
-		vm.addImageListener(frontCam);
+		vm.addImageListener(cam);
 		vm.addImageListener(analysed);
 		
 		values.setListeners(drone.getNavDataManager());
