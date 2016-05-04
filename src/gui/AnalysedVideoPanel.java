@@ -5,8 +5,10 @@
  */
 package gui;
 
-import java.awt.image.BufferedImage;
+import org.opencv.video.Video;
 import video.PictureAnalyser;
+
+import java.awt.image.BufferedImage;
 
 /**
  *
