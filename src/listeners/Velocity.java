@@ -13,5 +13,4 @@ public class Velocity implements VelocityListener {
 		this.vz = vz;
 		
 	}
-
 }

@@ -3,7 +3,6 @@ package gui;
 import de.yadrone.base.navdata.*;
 
 import javax.swing.*;
-import java.awt.*;
 
 /**
  * Created by Nymann on 16-03-2016.

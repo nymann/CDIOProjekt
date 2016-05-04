@@ -6,19 +6,12 @@
 package gui;
 
 import de.yadrone.base.IARDrone;
-import de.yadrone.base.command.VideoChannel;
 import de.yadrone.base.video.VideoManager;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.Graphics;
+import main.Main;
+
+import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
-import java.awt.image.BufferedImage;
-import main.Main;
-import video.PictureAnalyser;
-import video.VideoReader;
 
 /**
  *
@@ -40,7 +33,7 @@ public class MainWindow extends javax.swing.JFrame {
 		this.drone = drone;
 		this.frontCam = new VideoPanel();
 		this.downCam = new VideoPanel();
-		this.analysed = new AnalysedVideoPanel();
+		//this.analysed = new AnalysedVideoPanel();
 		this.values = new ListenerValuePanel();
 	}
 	
@@ -48,7 +41,7 @@ public class MainWindow extends javax.swing.JFrame {
 		this.getContentPane().setLayout(new FlowLayout());
 		this.getContentPane().add(frontCam);
 		//this.getContentPane().add(downCam);
-		this.getContentPane().add(analysed);
+		//this.getContentPane().add(analysed);
 		this.getContentPane().add(values);
 		
 /*		this.addWindowListener(new WindowAdapter() {
@@ -72,16 +65,16 @@ public class MainWindow extends javax.swing.JFrame {
 		frontCam.setBackground(Color.BLACK);
 		frontCam.setPreferredSize(videoSize);
 		frontCam.setSize(videoSize);
-		analysed.setBackground(Color.BLACK);
-		analysed.setPreferredSize(videoSize);
-		analysed.setSize(videoSize);
+		//analysed.setBackground(Color.BLACK);
+		//analysed.setPreferredSize(videoSize);
+		//analysed.setSize(videoSize);
 		values.setPreferredSize(new Dimension(100,10));
 		this.pack();
 		this.setVisible(true);
 		this.repaint();
 
 		//connecting video
-		System.out.println("Conneting video manager");
+		System.out.println("Connecting video manager");
 		VideoManager vm = drone.getVideoManager();
 		vm.addImageListener(frontCam);
 		vm.addImageListener(analysed);
