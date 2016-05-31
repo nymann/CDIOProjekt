@@ -32,6 +32,8 @@ public class MainModel {
 	/**
 	 * test whether the model contains a cube similar to the one tested
 	 * eg. same color and similar position
+	 * @param newCube
+	 * @param tolerance
 	 * @return ture if the model contains a similar cube
 	 */
 	public boolean compareCube(Cube newCube, double tolerance){
