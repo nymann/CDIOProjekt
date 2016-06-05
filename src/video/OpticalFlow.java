@@ -33,6 +33,8 @@ public class OpticalFlow {
 	public OpticalFlow() {
 		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
 		centerPoint = new Point(500, 500);
+		flows = new ArrayList<FlowVector>();
+		avgVector = new AverageFlowVector();
 	}
 	
 	public void findFlows(Mat prev, Mat next) {
@@ -62,7 +64,7 @@ public class OpticalFlow {
 		Imgproc.arrowedLine(next, centerPoint, new Point(centerPoint.x + avgVector.x, centerPoint.y + avgVector.y), new Scalar(0, 255, 255));
 		Imgcodecs.imwrite(filename, next);
 		System.out.println("Image saved");
-		determineMovement(flows);
+		determineMovement();
 	}
 	
 	// Computes the average vector length
@@ -112,8 +114,28 @@ public class OpticalFlow {
 		}
 	}
 	
-	private void determineMovement(ArrayList<FlowVector> flows) {
-		
+	private void determineMovement() {
+		if (Math.abs(avgVector.getLength() - avgLength) <= avgLength * 0.1) {
+			System.out.println("Movement detected!");
+			if (isForwardMovement()) {
+				
+			} else if (isBackwardMovement()) {
+				
+			} else if (avgVector.x <= avgVector.y) {
+				if (avgVector.y > 0) System.out.println("Moved right");
+				else System.out.println("Moved left");
+			}
+		}
+	}
+	
+	private boolean isForwardMovement() {
+		// TODO: Check for forward movement
+		return false;
+	}
+	
+	private boolean isBackwardMovement() {
+		// TODO: Check for backward movement
+		return false;
 	}
 
 }
