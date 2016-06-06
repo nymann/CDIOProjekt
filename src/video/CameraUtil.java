@@ -13,26 +13,38 @@ import javafx.geometry.Point3D;
  */
 public class CameraUtil {
 	
+	final static double frontCamAngle = 93;
+	final static int frontHeight = 720;
+	final static int frontWidth = 1280;
+	final static double frontDepth = Math.sqrt(frontWidth*frontWidth + frontHeight*frontHeight) / Math.tan(Math.toRadians(frontCamAngle/2));
+	
+	final static float downCamAngle = 64;
+	final static int downHeight = 0;
+	final static int downWidth = 0;
+	final static double downDepth = Math.sqrt(downWidth*downWidth + downHeight*downHeight) / Math.tan(Math.toRadians(downCamAngle/2));
+	
 	/**
 	 *
 	 * @param x
 	 * @param y
-	 * @return
+	 * @return a normalized vector of the direction relative to the camera
 	 */
 	public static Point3D pictureCoordToVectorFront(int x, int y){
-		//TODO calculate vector
-		return new Point3D(0, 0, 0);
+		Point3D point = new Point3D(x, y, frontDepth);
+		point.normalize();
+		return point;
 	} 
 
 	/**
 	 *
 	 * @param x
 	 * @param y
-	 * @return
+	 * @return a normalized vector of the direction relative to the camera
 	 */
 	public static Point3D pictureCoordToVectorDown(int x, int y){
-		//TODO calculate vector
-		return new Point3D(0, 0, 0);
+		Point3D point = new Point3D(x, y, downDepth);
+		point.normalize();
+		return point;
 	} 
 	
 }
