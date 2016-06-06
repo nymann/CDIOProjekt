@@ -12,22 +12,6 @@ public class QRCodeCoordinates
     public float Y1;
     public float Y2;
 
-    public float getX1() {
-        return X1;
-    }
-
-    public float getX2() {
-        return X2;
-    }
-
-    public float getY1() {
-        return Y1;
-    }
-
-    public float getY2() {
-        return Y2;
-    }
-
     public QRCodeCoordinates(ResultPoint[] resultPoints)
     {
         this.X1 = resultPoints[0].getX(); // index 0: bottom left

@@ -17,7 +17,6 @@ import java.util.Hashtable;
 public class GetQRCode extends JPanel implements ImageListener {
     BufferedImage image;
 
-
     public GetQRCode(BufferedImage img) {
         image = img;
     }
@@ -58,7 +57,8 @@ public class GetQRCode extends JPanel implements ImageListener {
         frame0.setVisible(true);
     }
 
-    public static String[] readQRCode(BufferedImage qrcodeImage) {
+    public static QRInfo readQRCode(BufferedImage qrcodeImage) {
+        QRInfo qrInfo = new QRInfo();
         Hashtable<DecodeHintType, Object> hintMap = new Hashtable<>();
         hintMap.put(DecodeHintType.TRY_HARDER, Boolean.TRUE);
 
@@ -67,28 +67,25 @@ public class GetQRCode extends JPanel implements ImageListener {
 
         QRCodeReader reader = new QRCodeReader();
         Result result = null;
-        String returnVal0 = "";
         try {
             result = reader.decode(bitmap, hintMap);
         } catch (NotFoundException e) {
-            return new String[] {"QR not found. Might have been partially " +
-                    "detected but " +
-                    "could not be confirmed.", "Error"};
+            qrInfo.error = "QR not found. Might have been partially " +
+                    "detected but could not be confirmed.";
         } catch (ChecksumException e) {
-            return new String[] {"Successfully detected and decoded, but was not returned " +
-                    "because its checksum feature failed.", "Error"};
+            qrInfo.error = "Successfully detected and decoded, but was not " +
+                    "returned because its checksum feature failed.";
         } catch (FormatException e) {
-            return new String[] {"Detected, but some aspect did not conform " +
-                    "to the format " +
-                    "rules.", "Error"};
+            qrInfo.error = "Detected, but some aspect did not conform " +
+                    "to the format rules.";
         }
+        assert result != null;
+        qrInfo.name = result.getText();
         QRCodeCoordinates qrCodeCoordinates = new QRCodeCoordinates(result
                 .getResultPoints());
-        float xCenter = qrCodeCoordinates.getXCenter();
-        float yCenter = qrCodeCoordinates.getYCenter();
-        System.out.println("Middle of " + result.getText() + " at: " + xCenter + ", " +
-                yCenter);
-        return new String[] {result.getText(), xCenter + ", " + yCenter};
+        qrInfo.x = (int)qrCodeCoordinates.getXCenter();
+        qrInfo.y = (int)qrCodeCoordinates.getYCenter();
+        return qrInfo;
     }
 
     @Override
