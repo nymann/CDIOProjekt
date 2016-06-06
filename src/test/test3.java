@@ -2,11 +2,14 @@ package test;
 
 import de.yadrone.base.ARDrone;
 import de.yadrone.base.IARDrone;
+import de.yadrone.base.command.CommandManager;
 import de.yadrone.base.command.LEDAnimation;
+import de.yadrone.base.configuration.ConfigurationManager;
 import de.yadrone.base.exception.ARDroneException;
 import de.yadrone.base.exception.IExceptionListener;
 import de.yadrone.base.navdata.AttitudeListener;
 import de.yadrone.base.navdata.BatteryListener;
+import de.yadrone.base.navdata.NavDataManager;
 
 public class test3 
 {
@@ -39,20 +42,42 @@ public class test3
 					exc.printStackTrace();
 				}
 			});
-
-			//Dontrolling the drone
-
-			drone.getCommandManager().setLedsAnimation(LEDAnimation.BLINK_ORANGE, 3, 10);
 			
+			//Dontrolling the drone
+			drone.getCommandManager().setLedsAnimation(LEDAnimation.BLINK_ORANGE, 3, 10);
 			drone.setSpeed(15);
 			
-			drone.getCommandManager().takeOff();
-			drone.getCommandManager().hover().doFor(10000);
+			//drone.getCommandManager().takeOff();
+			//drone.getCommandManager().hover().doFor(10000);
 			//drone.getCommandManager().forward(15).waitFor(2000);
 			//drone.getCommandManager().backward(15).waitFor(2000);
 			//drone.getCommandManager().waitFor(5000);
-			drone.getCommandManager().landing();
+			//drone.getCommandManager().landing();
 			//drone.stop();
+			//System.exit(0);
+			
+			final CommandManager cmd = new CommandManager(null, null);
+			final int speed = 15;
+			//final NavDataManager ndm = new NavDataManager(null, cmd, null);
+			//final ConfigurationManager conM = new ConfigurationManager(null, cmd, null);
+			
+			cmd.takeOff();
+			cmd.schedule(8000, new Runnable() {
+			    public void run()
+			    {
+			        cmd.forward(speed).waitFor(2000);
+			        cmd.hover().waitFor(5000);
+			        cmd.backward(speed).waitFor(2000);
+					cmd.hover().waitFor(3000);
+			    }
+			});
+			cmd.schedule(10000, new Runnable() {
+				public void run() {
+					cmd.setLedsAnimation(LEDAnimation.BLINK_ORANGE, 5, 10000);
+				}
+			});
+			cmd.landing();
+			//cmd.stop();
 			//System.exit(0);
 
 			/**
@@ -88,8 +113,6 @@ public class test3
 				drone.stop();
 			System.exit(0);
 
-		}	
-
-
+		}
 	}
 }
