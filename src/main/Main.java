@@ -98,8 +98,8 @@ public class Main {
 		MainWindow window = new MainWindow(drone);
 		window.run();
 
-		test.DownCamTest downCamTest = new DownCamTest(drone);
-		downCamTest.run();
+		//test.DownCamTest downCamTest = new DownCamTest(drone);
+		//downCamTest.run();
 	}
 	
 	public static void shutDown(){

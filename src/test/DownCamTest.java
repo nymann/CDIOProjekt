@@ -1,6 +1,7 @@
 package test;
 
 import de.yadrone.base.IARDrone;
+import static main.Main.*;
 
 /**
  * Created by Nymann on 04-05-2016.
@@ -13,12 +14,36 @@ public class DownCamTest {
     }
 
     public void run() {
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        downCamActive = false;
         drone.setMaxAltitude(2000);
         drone.setSpeed(15);
-        System.out.println("OYOYxDXD");
         drone.getCommandManager().takeOff();
-        drone.getCommandManager().hover().doFor(20000);
-        //drone.getCommandManager().waitFor(2000);
+
+        drone.getCommandManager().hover().doFor(5000);
+
+        drone.setVerticalCamera();
+        //downCamActive = true;
+
+        drone.getCommandManager().hover().doFor(10000);
+
+        drone.setHorizontalCamera();
+        //downCamActive = false;
+
+        drone.getCommandManager().spinLeft(15).doFor(5000);
+
+        drone.setVerticalCamera();
+        //downCamActive = true;
+
+        drone.getCommandManager().spinLeft(15).doFor(5000);
+
+        drone.setHorizontalCamera();
+        //downCamActive = false;
+
         drone.getCommandManager().landing();
     }
 }
