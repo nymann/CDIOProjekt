@@ -17,6 +17,44 @@ public class PointNavigation {
 	int xfindfinal = (int) xfind;
 	int yfindfinal = (int) yfind;
 	
+	double a1 = (int) a;
+	double b1 = (int) b;
+	
+	public void setCoordinats(int x1, int y1, int x2, int y2) {
+		this.x1 = x1;
+		this.x2 = x2;
+		this.y1 = y1;
+		this.y2 = y2;
+	}
+	public Point getCoordinat1() {
+		Point coordinat1 = new Point(x1, y1);
+		return coordinat1;
+	}
+	public Point getCoordinat2() {
+		Point coordinat2 = new Point(x2, y2);
+		return coordinat2;
+	}
+	public void setAngelA(double alpha) {
+		this.alpha = alpha;
+	}
+	public double getAngelA() {
+		return alpha;
+	}
+	public void setAngelB(double beta) {
+		this.beta = beta;
+	}
+	public double getAngelB() {
+		return beta;
+	}
+	
+	public void findAandBLength() {
+		
+		// Finder længden mellem det første og andet punkt.
+		// Og mellem det andet punkt og tredje punkt.
+		a1 = Math.sqrt(Math.pow((x2-x1),2)+ Math.pow((y2-y1), 2));
+		b1 = Math.sqrt(Math.pow((x3-x2),2)+ Math.pow((y3-y2), 2));
+	}
+	
 	public void findCenter() {
 		
 		//Centrum for alpha-circle.
@@ -39,7 +77,7 @@ public class PointNavigation {
 		r2 = (1/2)*b/Math.sin(beta);
 	}
 	
-	public Point findXogY() {
+	public Point findXandY() {
 		
 		//1. Step - Isoler for y.
 		yfind = Math.sqrt(Math.pow(r1, 2)-Math.pow(x-centerx1,2))+centery1;
