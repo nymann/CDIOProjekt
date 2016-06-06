@@ -1,7 +1,6 @@
 package dronePossition;
 
 import java.math.*;
-
 import javafx.geometry.Point2D;
 
 public class PointNavigation {
@@ -56,8 +55,8 @@ public class PointNavigation {
 		//Centrum for alpha-circle.
 		
 		double t1, t2;
-		t1 = Math.sqrt(((Math.abs(-y2+y1))^2+(Math.abs(-x2+x1))^2));
-		t2 = Math.sqrt((Math.pow(a,2)/Math.pow(Math.sin(alpha), 2)-Math.pow(a,2)));
+		t1 = Math.sqrt(Math.pow(Math.abs(-y2+y1),2)+Math.pow(Math.abs(-x2+x1),2));
+		t2 = Math.sqrt(Math.pow(a,2)/Math.pow(Math.sin(alpha), 2)-Math.pow(a,2));
 		
 		System.out.println("T1: " + t1);
 		System.out.println("T2: " + t2);
@@ -68,7 +67,7 @@ public class PointNavigation {
 		// Centrum for beta-circle.
 		
 		double t3, t4;
-		t3 = Math.sqrt(((Math.abs(-y2+y3))^2+(Math.abs(-x2+x3))^2));
+		t3 = Math.sqrt(Math.pow(Math.abs(-y2+y3),2)+Math.pow(Math.abs(-x2+x3),2));
 		t4 = Math.sqrt((Math.pow(b,2)/Math.pow(Math.sin(beta), 2)-Math.pow(b,2)));
 		
 		cx2 = (0.5)*((double)(y2-y3)/t3)*t4+(0.5)*x3+(0.5)*x2;
@@ -89,19 +88,22 @@ public class PointNavigation {
 		
 		
 		double k1, k2, f1, f2, yres1, yres2, xres1, xres2, dist1, dist2;
-		k1 = -cy2/(cx1-cx2);
-		k2 = -0.5*(Math.pow(r1, 2)-Math.pow(r2, 2)-Math.pow(cx1, 2)+Math.pow(cx2, 2) - Math.pow(cy1, 2)+Math.pow(cy2, 2));
+		k1 = -0.5*(-2*cy1+2*cy2)/(cx1-cx2);
+		k2 = -0.5*(r1*r1-r2*r2-cx1*cx1+cx2*cx2-cy1*cy1+cy2*cy2)/(cx1-cx2);
 		
 		f1 = Math.sqrt(k1*k1*r1*r1-k1*k1*cy1*cy1-2*k1*k2*cy1+2*k1*cx1*cy1-k2*k2+2*k2*cx1+r1*r1-cx1*cx1);
 		f2 = k1*k1+1;
-		yres1 = ((k1*k2+k1*cx1+f1)+cy1)/f2;
-		yres2 = ((k1*k2-k1*cx1+f1)-cy1)/f2;
+		yres1 = ((-k1*k2+k1*cx1+f1)+cy1)/f2;
+		yres2 = -((k1*k2-k1*cx1+f1)-cy1)/f2;
 		
 		xres1 = yres1*k1+k2;
 		xres2 = yres2*k1+k2;
 		
 		dist1 = Math.sqrt(Math.pow(x2-xres1, 2)+Math.pow(y2-yres1, 2));
 		dist2 = Math.sqrt(Math.pow(x2-xres2, 2)+Math.pow(y2-yres2, 2));
+		
+		System.out.println("res1: " + xres1 + "," + yres1);
+		System.out.println("res2: " + xres2 + "," + yres2);
 		
 		Point2D dronePositioning;
 		if(dist1 > dist2) {
