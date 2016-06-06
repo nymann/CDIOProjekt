@@ -5,30 +5,18 @@
  */
 package main;
 
-import java.awt.Graphics;
-import java.awt.image.BufferedImage;
-
-//import control.DroneControl;
 import de.yadrone.base.ARDrone;
 import de.yadrone.base.IARDrone;
 import de.yadrone.base.configuration.ConfigurationManager;
 import de.yadrone.base.exception.ARDroneException;
 import de.yadrone.base.exception.IExceptionListener;
 import de.yadrone.base.navdata.NavDataManager;
-import de.yadrone.base.video.VideoManager;
 import gui.ListenerValuePanel;
 import gui.MainWindow;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import javax.swing.JPanel;
-import listeners.Accelerometer;
-import listeners.Altitude;
-import listeners.Attitude;
-import listeners.Battery;
-import listeners.UltraSound;
-import listeners.Velocity;
+import test.DownCamTest;
 import video.PictureAnalyser;
-import video.VideoReader;
+
+//import control.DroneControl;
 
 
 /**
@@ -37,6 +25,9 @@ import video.VideoReader;
  */
 public class Main {
 
+
+	public static Boolean downCamActive = false;
+
 	static private IARDrone drone = null;
 
 	static public void main(String[] args) {
@@ -44,6 +35,7 @@ public class Main {
 
 		// Initialising OpenCV
 		PictureAnalyser.init();
+
 
 		// connecting to drone
 		try {
@@ -106,6 +98,8 @@ public class Main {
 		MainWindow window = new MainWindow(drone);
 		window.run();
 
+		//test.DownCamTest downCamTest = new DownCamTest(drone);
+		//downCamTest.run();
 	}
 	
 	public static void shutDown(){

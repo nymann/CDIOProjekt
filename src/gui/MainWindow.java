@@ -6,19 +6,12 @@
 package gui;
 
 import de.yadrone.base.IARDrone;
-import de.yadrone.base.command.VideoChannel;
 import de.yadrone.base.video.VideoManager;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.Graphics;
+import main.Main;
+
+import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
-import java.awt.image.BufferedImage;
-import main.Main;
-import video.PictureAnalyser;
-import video.VideoReader;
 
 /**
  *
@@ -28,9 +21,8 @@ public class MainWindow extends javax.swing.JFrame {
 
 	private IARDrone drone;
 	
-	private VideoPanel frontCam;
+	private VideoPanel cam;
 	private AnalysedVideoPanel analysed;
-	private VideoPanel downCam;
 	private ListenerValuePanel values;
 
 	/**
@@ -38,16 +30,14 @@ public class MainWindow extends javax.swing.JFrame {
 	 */
 	public MainWindow(IARDrone drone) {
 		this.drone = drone;
-		this.frontCam = new VideoPanel();
-		this.downCam = new VideoPanel();
+		this.cam = new VideoPanel();
 		this.analysed = new AnalysedVideoPanel();
 		this.values = new ListenerValuePanel();
 	}
 	
 	private void init() {
 		this.getContentPane().setLayout(new FlowLayout());
-		this.getContentPane().add(frontCam);
-		//this.getContentPane().add(downCam);
+		this.getContentPane().add(cam);
 		this.getContentPane().add(analysed);
 		this.getContentPane().add(values);
 		
@@ -69,9 +59,9 @@ public class MainWindow extends javax.swing.JFrame {
 	public void run() {
 		this.init();
 		Dimension videoSize = new Dimension(640, 400);
-		frontCam.setBackground(Color.BLACK);
-		frontCam.setPreferredSize(videoSize);
-		frontCam.setSize(videoSize);
+		cam.setBackground(Color.BLACK);
+		cam.setPreferredSize(videoSize);
+		cam.setSize(videoSize);
 		analysed.setBackground(Color.BLACK);
 		analysed.setPreferredSize(videoSize);
 		analysed.setSize(videoSize);
@@ -81,9 +71,9 @@ public class MainWindow extends javax.swing.JFrame {
 		this.repaint();
 
 		//connecting video
-		System.out.println("Conneting video manager");
+		System.out.println("Connecting video manager");
 		VideoManager vm = drone.getVideoManager();
-		vm.addImageListener(frontCam);
+		vm.addImageListener(cam);
 		vm.addImageListener(analysed);
 		
 		values.setListeners(drone.getNavDataManager());
