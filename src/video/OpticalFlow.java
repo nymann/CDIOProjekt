@@ -38,6 +38,13 @@ public class OpticalFlow {
 		avgVector = new AverageFlowVector();
 	}
 	
+	public static void main(String[] args) {
+		ImageCapture ic = new ImageCapture();
+		OpticalFlow of = new OpticalFlow();
+		Mat[] img = ic.run();
+		of.findFlows(img[0], img[1]);
+	}
+	
 	public void findFlows(Mat prev, Mat next) {
 		Mat grayImagePrev = new Mat();
 		Mat grayImageNext = new Mat();
