@@ -26,14 +26,14 @@ public class OpticalFlow {
 	
 	Point centerPoint;
 	final double NOISE_FACTOR_X = 0.5;
-	final double NOISE_FACTOR_Y = 1.1;
+	final double NOISE_FACTOR_Y = 1.5;
 	private double avgLength;
 	private AverageFlowVector avgVector;
 	private ArrayList<FlowVector> flows;
 	
 	public OpticalFlow() {
 		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
-		centerPoint = new Point(500, 500);
+		centerPoint = new Point(640, 360);
 		flows = new ArrayList<FlowVector>();
 		avgVector = new AverageFlowVector();
 	}
@@ -45,7 +45,7 @@ public class OpticalFlow {
 		MatOfFloat err = new MatOfFloat();
 		MatOfPoint pointsPrev = new MatOfPoint();
 		Imgproc.cvtColor(prev, grayImagePrev, Imgproc.COLOR_BGR2GRAY);
-		Imgproc.goodFeaturesToTrack(grayImagePrev, pointsPrev, 600, 0.01, 1);
+		Imgproc.goodFeaturesToTrack(grayImagePrev, pointsPrev, 1000, 0.01, 1);
 		Imgproc.cvtColor(next, grayImageNext, Imgproc.COLOR_BGR2GRAY);
 		MatOfPoint2f pointsPrev2f = new MatOfPoint2f(pointsPrev.toArray());
 		MatOfPoint2f pointsNext2f = new MatOfPoint2f();
@@ -55,8 +55,8 @@ public class OpticalFlow {
 		calcAverageVectorLength();
 		System.out.println("Average length = "+avgLength);
 		System.out.println("Antal vektorer = "+flows.size());
-		printVectors();
 		removeNoise();
+		printVectors();
 		calcAverageVectorLength();
 		computeAverageVector();
 		System.out.println("Average length = "+avgLength);
@@ -111,10 +111,13 @@ public class OpticalFlow {
 	}
 	
 	private void removeNoise() {
+		ArrayList<FlowVector> newFlows = new ArrayList<FlowVector>();
 		for (int i = 0; i < flows.size(); i++) {
-			if (flows.get(i).getLength() < avgLength*NOISE_FACTOR_X || flows.get(i).getLength() > avgLength*NOISE_FACTOR_Y)
-				flows.remove(i);
+			if (flows.get(i).getLength() >= avgLength*NOISE_FACTOR_X && flows.get(i).getLength() <= avgLength*NOISE_FACTOR_Y)
+//				flows.remove(i);
+				newFlows.add(flows.get(i));
 		}
+		flows = newFlows;
 	}
 	
 	private void printVectors() {
@@ -127,7 +130,7 @@ public class OpticalFlow {
 		if (Math.abs(avgVector.getLength() - avgLength) <= avgLength * 0.2) {
 			System.out.println("Movement detected!");
 			if (isForwardMovement()) {
-				
+				System.out.println("Moved forward");
 			} else if (isBackwardMovement()) {
 				
 			} else if (avgVector.x <= avgVector.y) {
@@ -138,8 +141,11 @@ public class OpticalFlow {
 	}
 	
 	private boolean isForwardMovement() {
-		// TODO: Check for forward movement
-		return false;
+		int orientation = 0;
+		for (FlowVector v : flows) {
+			orientation += v.getOrientation(centerPoint);
+		}
+		return orientation < 0;
 	}
 	
 	private boolean isBackwardMovement() {
