@@ -10,9 +10,9 @@ public class TestCoordinatForDrone {
 		
 		PointNavigation pn = new PointNavigation();
 		
-		pn.setCoordinats(2, 0, 0, 0, 0, 4);
-		pn.setAngelA(Math.PI*0.25);
-		pn.setAngelB(Math.PI*0.5);
+		pn.setCoordinats(0, 0, 1, 2, 0, 4);
+		pn.setAngelA(0.18);
+		pn.setAngelB(0.2);
 		
 		pn.findAandBLength();
 		pn.findCenter();
