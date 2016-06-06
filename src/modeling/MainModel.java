@@ -47,31 +47,31 @@ public class MainModel {
 	
 	public void FillQRPoints(){
 		//WPoint: X-koordinat, y-koordinat, z-koordinat, QR-ID
-		
+		int z = 180;
 		//Wall 0
-		QRPoints.add(new QRPoint(188, 1055, 180, 0000));
-		QRPoints.add(new QRPoint(0, 0, 180, 0001));
-		QRPoints.add(new QRPoint(515, 1055, 180, 0002));
-		QRPoints.add(new QRPoint(0, 0, 180, 0003));
-		QRPoints.add(new QRPoint(840, 1055, 180, 0004));
+		QRPoints.add(new QRPoint(188, 1055, z, 0000));
+		QRPoints.add(new QRPoint(338, 1060, z, 0001));
+		QRPoints.add(new QRPoint(515, 1055, z, 0002));
+		QRPoints.add(new QRPoint(694, 1060, z, 0003));
+		QRPoints.add(new QRPoint(840, 1055, z, 0004));
 		//Wall 1
-		QRPoints.add(new QRPoint(926, 903, 180, 0100));
-		QRPoints.add(new QRPoint(926, 721, 180, 0101));
-		QRPoints.add(new QRPoint(926, 546, 180, 0102));
-		QRPoints.add(new QRPoint(926, 324, 180, 0103));
-		QRPoints.add(new QRPoint(926, 115, 180, 0104));
+		QRPoints.add(new QRPoint(926, 904, z, 0100));
+		QRPoints.add(new QRPoint(926, 721, z, 0101));
+		QRPoints.add(new QRPoint(926, 566, z, 0102));
+		QRPoints.add(new QRPoint(926, 324, z, 0103));
+		QRPoints.add(new QRPoint(926, 115, z, 0104));
 		//Wall 2
-		QRPoints.add(new QRPoint(150, 0, 180, 0200));
-		QRPoints.add(new QRPoint(350, 0, 180, 0201));
-		QRPoints.add(new QRPoint(0, 0, 180, 0202));
-		QRPoints.add(new QRPoint(0, 0, 180, 0203));
-		QRPoints.add(new QRPoint(0, 0, 180, 0204));
+		QRPoints.add(new QRPoint(847, -10, z, 0200));
+		QRPoints.add(new QRPoint(656, -77, z, 0201));
+		QRPoints.add(new QRPoint(420,   0, z, 0202));
+		QRPoints.add(new QRPoint(350,   0, z, 0203));
+		QRPoints.add(new QRPoint(150,   0, z, 0204));
 		//Wall 3
-		QRPoints.add(new QRPoint(0, 108, 180, 0300));
-		QRPoints.add(new QRPoint(0, 357, 180, 0301));
-		QRPoints.add(new QRPoint(0, 561, 180, 0302));
-		QRPoints.add(new QRPoint(0, 740, 180, 0303));
-		QRPoints.add(new QRPoint(0, 997, 180, 0304));
+		QRPoints.add(new QRPoint(0, 108, z, 0300));
+		QRPoints.add(new QRPoint(0, 357, z, 0301));
+		QRPoints.add(new QRPoint(0, 561, z, 0302));
+		QRPoints.add(new QRPoint(0, 740, z, 0303));
+		QRPoints.add(new QRPoint(0, 997, z, 0304));
 
 	}
 }
