@@ -5,6 +5,7 @@
  */
 package gui;
 
+import QRWallMarks.QRInfo;
 import de.yadrone.base.video.ImageListener;
 import java.awt.Color;
 import java.awt.Graphics;
@@ -43,8 +44,9 @@ public class VideoPanel extends JPanel implements ImageListener{
 	private void qrCodeResult() {
 		// qrResult[0] is the decoded QR code, or an error message
 		// qrResult[1] is the pixel coordinate of the QR code center as a
-		// string "300.00, 150.00".
-		String[] qrResult;
+		// string "300.00, 150.00" or "ERROR" if one of the Decoded Qr messages
+		// is one of the three error messages..
+		/*String[] qrResult;
 		qrResult = QRWallMarks.GetQRCode.readQRCode(this.image);
 		float xMiddleCoordinate = Float.valueOf(qrResult[1].substring(0,
 				qrResult[1].indexOf(",")));
@@ -53,9 +55,9 @@ public class VideoPanel extends JPanel implements ImageListener{
 		String qrDecodeMessage = qrResult[0];
 
 		System.out.println("Decodemessage: " + qrDecodeMessage + ". " +
-				xMiddleCoordinate + ", " +
-				"" +
-				yMiddleCoordinate +
-				".");
+				xMiddleCoordinate + ", " + yMiddleCoordinate + ".");*/
+		QRInfo qrInfo = QRWallMarks.GetQRCode.readQRCode(this.image);
+		System.out.println("Decodemessage: " + qrInfo.name + ". At: " +
+				qrInfo.x + ", " + qrInfo.y);
 	}
 }
