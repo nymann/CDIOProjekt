@@ -84,8 +84,6 @@ public class GetQRCode extends JPanel implements ImageListener {
                 .getResultPoints());
         float xCenter = qrCodeCoordinates.getXCenter();
         float yCenter = qrCodeCoordinates.getYCenter();
-        System.out.println("Middle of " + result.getText() + " at: " + xCenter + ", " +
-                yCenter);
         return new String[] {result.getText(), xCenter + ", " + yCenter};
     }
 
