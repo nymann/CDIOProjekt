@@ -17,7 +17,6 @@ import java.util.Hashtable;
 public class GetQRCode extends JPanel implements ImageListener {
     BufferedImage image;
 
-
     public GetQRCode(BufferedImage img) {
         image = img;
     }
@@ -67,7 +66,6 @@ public class GetQRCode extends JPanel implements ImageListener {
 
         QRCodeReader reader = new QRCodeReader();
         Result result = null;
-        String returnVal0 = "";
         try {
             result = reader.decode(bitmap, hintMap);
         } catch (NotFoundException e) {

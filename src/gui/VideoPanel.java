@@ -29,14 +29,11 @@ public class VideoPanel extends JPanel implements ImageListener{
 		this.image = bi;
 		this.setSize(bi.getWidth(), bi.getHeight());
 
-		// Not a beautiful solution.
+		// qrResult[0] is the decoded QR code, or an error message.
+		// qrResult[1] is the pixel coordinate of the QR code center as a
+		// string "300.00, 150.00".
 		String[] qrResult;
 		qrResult = QRWallMarks.GetQRCode.readQRCode(bi);
-		/*if (qrResult[0].charAt(0) == 'W' && !qrResult[0].equals
-				(prevQrResult[0])) {
-			System.out.println(qrResult[0] + ". Prev: " + prevQrResult[0]);
-			prevQrResult = qrResult;
-		}*/
 	}
 	
 	@Override
