@@ -7,7 +7,7 @@ package navigation;
 
 public class NavigationControl {
 	/*
-	 * NavFindPosition
+	 * NavFindPosition 
 	 * NavFlyingDrone(currentPos, startSpot1)
 	 * NavFlyPattern(1)
 	 * NavFindPosition
