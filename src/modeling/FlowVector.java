@@ -22,8 +22,8 @@ public class FlowVector {
 
 	public int getOrientation(Point centerpoint) {
 		int orientation = 0;
-		if (Math.abs(this.p2.x - 500) < Math.abs(this.p1.x - 500)
-				&& Math.abs(this.p2.y - 500) < Math.abs(this.p1.y - 500))
+		if (Math.abs(this.p2.x - centerpoint.x) < Math.abs(this.p1.x - centerpoint.x)
+				&& Math.abs(this.p2.y - centerpoint.y) < Math.abs(this.p1.y - centerpoint.y))
 			orientation += 1;
 		else
 			orientation -= 1;
