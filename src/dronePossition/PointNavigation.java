@@ -68,11 +68,11 @@ public class PointNavigation {
 		// Centrum for beta-circle.
 		
 		double t3, t4;
-		t3 = Math.sqrt(((Math.abs(-y3+y2))^2+(Math.abs(-x3+x2))^2));
+		t3 = Math.sqrt(((Math.abs(-y2+y3))^2+(Math.abs(-x2+x3))^2));
 		t4 = Math.sqrt((Math.pow(b,2)/Math.pow(Math.sin(beta), 2)-Math.pow(b,2)));
 		
-		cx2 = (0.5)*((double)(y3-y2)/t3)*t4+(0.5)*x3+(0.5)*x2;
-		cy2 = (0.5)*((double)(-x3+x2)/t3)*t4+(0.5)*y3+(0.5)*y2;
+		cx2 = (0.5)*((double)(y2-y3)/t3)*t4+(0.5)*x3+(0.5)*x2;
+		cy2 = (0.5)*((double)(-x2+x3)/t3)*t4+(0.5)*y3+(0.5)*y2;
 		
 	}
 	
