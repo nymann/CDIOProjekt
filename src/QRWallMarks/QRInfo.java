@@ -4,7 +4,14 @@ package QRWallMarks;
  * Created by Nymann on 06-06-2016.
  */
 public class QRInfo {
-    public static String name;
+    public String name;
     public String error;
     public int x,y;
+
+    public QRInfo() {
+        this.name = "";
+        this.error = "";
+        this.x = 0;
+        this.y = 0;
+    }
 }
