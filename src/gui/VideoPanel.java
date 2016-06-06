@@ -18,10 +18,8 @@ import javax.swing.JPanel;
 public class VideoPanel extends JPanel implements ImageListener{
 
 	BufferedImage image = null;
-	//String[] prevQrResult = {"", ""};
 	
 	public VideoPanel() {
-		//System.out.println(QRWallMarks.GetQRCode.readQRCode(this.image));
 	}
 
 	@Override
