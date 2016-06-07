@@ -33,7 +33,12 @@ public class QRPossitioning implements ImageListener, AttitudeListener {
 			qrListe.add(qri);
 			
 			if(qrListe.size() == 3) {
-				
+				// Skal beregne alle vinklerne imellem QR-koderne.
+				// Så, mellem 1-2, 2-3 og 1-3.
+				// Finder de mindste vinkler.
+				// Finder den QR-koder der bliver delt imellem de to vinkler.
+				// Finder de to andre.
+				// Herved finder man alpha og beta vinkelerne.
 			}
 		}			
 	}
