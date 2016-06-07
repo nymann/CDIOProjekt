@@ -39,5 +39,13 @@ public class VideoReader implements ImageListener {
 	public long getImageTime(){
 		return this.lastUpdate;
 	}
-	
+
+	public Boolean isDownCamActive() {
+		System.out.println("Width: " + this.image.getWidth() + " px.");
+		System.out.println("Height: " + this.image.getHeight() + " px.");
+
+        // is
+        return this.image.getWidth() < 363;
+
+    }
 }

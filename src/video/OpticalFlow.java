@@ -52,7 +52,7 @@ public class OpticalFlow {
 		MatOfFloat err = new MatOfFloat();
 		MatOfPoint pointsPrev = new MatOfPoint();
 		Imgproc.cvtColor(prev, grayImagePrev, Imgproc.COLOR_BGR2GRAY);
-		Imgproc.goodFeaturesToTrack(grayImagePrev, pointsPrev, 1000, 0.01, 1);
+		Imgproc.goodFeaturesToTrack(grayImagePrev, pointsPrev, 500, 0.01, 1);
 		Imgproc.cvtColor(next, grayImageNext, Imgproc.COLOR_BGR2GRAY);
 		MatOfPoint2f pointsPrev2f = new MatOfPoint2f(pointsPrev.toArray());
 		MatOfPoint2f pointsNext2f = new MatOfPoint2f();
@@ -60,10 +60,7 @@ public class OpticalFlow {
 		Video.calcOpticalFlowPyrLK(grayImagePrev, grayImageNext, pointsPrev2f, pointsNext2f, status, err);
 		generateFlows(pointsPrev2f, pointsNext2f, status);
 		calcAverageVectorLength();
-		System.out.println("Average length = "+avgLength);
-		System.out.println("Antal vektorer = "+flows.size());
 		removeNoise();
-		printVectors();
 		calcAverageVectorLength();
 		computeAverageVector();
 		System.out.println("Average length = "+avgLength);
@@ -71,11 +68,9 @@ public class OpticalFlow {
 		System.out.println("Average x = "+avgVector.x+", y = "+avgVector.y);
 		System.out.println("Antal vektorer = "+flows.size());
 		String filename = "/Users/Simon/Pictures/opticalFlows.png";
-		System.out.println("Done. Writing " + filename);
 		drawFlowLines(next);
 		Imgproc.arrowedLine(next, centerPoint, new Point(centerPoint.x + avgVector.x, centerPoint.y + avgVector.y), new Scalar(0, 255, 255));
 		Imgcodecs.imwrite(filename, next);
-		System.out.println("Image saved");
 		determineMovement();
 	}
 	
@@ -121,28 +116,20 @@ public class OpticalFlow {
 		ArrayList<FlowVector> newFlows = new ArrayList<FlowVector>();
 		for (int i = 0; i < flows.size(); i++) {
 			if (flows.get(i).getLength() >= avgLength*NOISE_FACTOR_X && flows.get(i).getLength() <= avgLength*NOISE_FACTOR_Y)
-//				flows.remove(i);
 				newFlows.add(flows.get(i));
 		}
 		flows = newFlows;
 	}
 	
-	private void printVectors() {
-		for (FlowVector v : flows) {
-			System.out.println(v.getLength());
-		}
-	}
-	
 	private void determineMovement() {
 		if (Math.abs(avgVector.getLength() - avgLength) <= avgLength * 0.2) {
 			System.out.println("Movement detected!");
-			if (isForwardMovement()) {
-				System.out.println("Moved forward");
-			} else if (isBackwardMovement()) {
-				
-			} else if (avgVector.x <= avgVector.y) {
-				if (avgVector.y > 0) System.out.println("Moved left");
-				else System.out.println("Moved right");
+			if (Math.abs(avgVector.x) > Math.abs(avgVector.y)) {
+				if (avgVector.x > 0) System.out.println("Moved right");
+				else System.out.println("Moved left");
+			} else if (Math.abs(avgVector.x) <= Math.abs(avgVector.y)) {
+				if (avgVector.y > 0) System.out.println("Moved forward");
+				else System.out.println("Moved backward");
 			}
 		}
 	}

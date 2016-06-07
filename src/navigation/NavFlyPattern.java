@@ -3,50 +3,72 @@ package navigation;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.yadrone.base.IARDrone;
+import modeling.MainModel;
+import modeling.NavSpot;
 import modeling.QRPoint;
 
 /**
-*
-* @author Kim
-*/
+ *
+ * @author Kim
+ */
 
 public class NavFlyPattern {
-	
 	/*
-	 * assume at startspot
+	drone.up();
+	drone.down();
+	drone.forward();
+	drone.backward();
+	drone.goLeft();
+	drone.goRight();
+	drone.landing();
+	drone.takeOff();
+	drone.hover();
+	drone.reset();
+	 */
+	/*
+	 * check at startspot
 	 * fly lane
 	 * reach endspot
+	 * 
 	 */
 
 	NavigationControl nc = new NavigationControl();
+	NavFindPosition fp = new NavFindPosition();
 	List<NavSpot> spots = new ArrayList<>();
-	
-	private void startSpot(){
+	modeling.MainModel mm = new MainModel();
+	IARDrone drone;
+
+	public void flyLane(){
 		/*
-		 * make sure currentposition matches startSpot
+		 * using OF, fly between one start and end
+		 * once every 1 meter or something take picture, get this analyzed for cubes
+		 * needs plan for flying around/over boxes
 		 */
 
 	}
 
-	private void endSpot(){
+	public void startSpot(int id){
+		/*
+		 * make sure currentposition matches startSpot
+		 */
+		fp.getPositionX();
+		fp.getPositionY();
+		mm.f
+		
+	}
+
+	public void endSpot(){
 		/*
 		 * make sure currentposition matches endSpot
 		 * if not, calculate if within acceptable
 		 */
 
 	}
-
-	private void lane(){
-		/*
-		 * using OF, fly between one start and end
-		 * once every 1 meter or something take picture, get this analyzed for cubes
-		 * needs plan for flying around/over boxes
-		 */
- 
-	}
 	
-	public void fillStartEndSpots(){
-		//x,y,type; 1=startSpot | 2=endSpot
-		spots.add(new NavSpot(11, 22, 1));
+	public void flyToStartSpot1(){
+		
+		
 	}
+
 }

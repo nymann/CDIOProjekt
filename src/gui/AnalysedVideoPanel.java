@@ -5,22 +5,22 @@
  */
 package gui;
 
-import org.opencv.video.Video;
 import video.PictureAnalyser;
-import static main.Main.*;
 
 import java.awt.image.BufferedImage;
 
+import static main.Main.downCamActive;
+
 /**
- *
  * @author Mikkel
  */
+
 public class AnalysedVideoPanel extends VideoPanel {
-	@Override
-	public void imageUpdated(BufferedImage bi) {
-		if (downCamActive) {
-			this.image = PictureAnalyser.getAnalyse(bi);
-			this.setSize(image.getWidth(), image.getHeight());
-		}
-	}
+    @Override
+    public void imageUpdated(BufferedImage bi) {
+        if (downCamActive) {
+            this.image = PictureAnalyser.getAnalyse(bi);
+            this.setSize(image.getWidth(), image.getHeight());
+        }
+    }
 }
