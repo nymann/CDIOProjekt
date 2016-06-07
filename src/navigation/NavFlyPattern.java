@@ -54,7 +54,7 @@ public class NavFlyPattern {
 		 */
 		fp.getPositionX();
 		fp.getPositionY();
-		mm.f
+
 		
 	}
 
