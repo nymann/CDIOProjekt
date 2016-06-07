@@ -7,6 +7,7 @@ import java.awt.image.BufferedImage;
 /**
  * Created by Nymann on 07-06-2016.
  */
+
 public class HowToGetTheNewestPictureFromTheDrone {
     private BufferedImage imageFromDrone;
     private VideoReader vr;
