@@ -10,7 +10,7 @@ import org.opencv.core.MatOfPoint;
 import org.opencv.core.MatOfPoint2f;
 import org.opencv.core.Point;
 import org.opencv.core.Scalar;
-//import org.opencv.imgcodecs.Imgcodecs;
+import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 import org.opencv.video.Video;
 
@@ -38,12 +38,12 @@ public class OpticalFlow {
 		avgVector = new AverageFlowVector();
 	}
 	
-//	public static void main(String[] args) {
-//		ImageCapture ic = new ImageCapture();
-//		OpticalFlow of = new OpticalFlow();
-//		Mat[] img = ic.run();
-//		of.findFlows(img[0], img[1]);
-//	}
+	public static void main(String[] args) {
+		ImageCapture ic = new ImageCapture();
+		OpticalFlow of = new OpticalFlow();
+		Mat[] img = ic.run();
+		of.findFlows(img[0], img[1]);
+	}
 	
 	public void findFlows(Mat prev, Mat next) {
 		Mat grayImagePrev = new Mat();
@@ -63,14 +63,14 @@ public class OpticalFlow {
 		removeNoise();
 		calcAverageVectorLength();
 		computeAverageVector();
-//		System.out.println("Average length = "+avgLength);
-//		System.out.println("Average vector length = "+avgVector.getLength());
-//		System.out.println("Average x = "+avgVector.x+", y = "+avgVector.y);
-//		System.out.println("Antal vektorer = "+flows.size());
-//		String filename = "/Users/Simon/Pictures/opticalFlows.png";
-//		drawFlowLines(next);
-//		Imgproc.arrowedLine(next, centerPoint, new Point(centerPoint.x + avgVector.x, centerPoint.y + avgVector.y), new Scalar(0, 255, 255));
-//		Imgcodecs.imwrite(filename, next);
+		System.out.println("Average length = "+avgLength);
+		System.out.println("Average vector length = "+avgVector.getLength());
+		System.out.println("Average x = "+avgVector.x+", y = "+avgVector.y);
+		System.out.println("Antal vektorer = "+flows.size());
+		String filename = "/Users/Simon/Pictures/opticalFlows.png";
+		drawFlowLines(next);
+		Imgproc.arrowedLine(next, centerPoint, new Point(centerPoint.x + avgVector.x, centerPoint.y + avgVector.y), new Scalar(0, 255, 255));
+		Imgcodecs.imwrite(filename, next);
 		determineMovement();
 	}
 	
@@ -106,11 +106,11 @@ public class OpticalFlow {
 		avgVector.computeAverageVector(flows.size());
 	}
 	
-//	private void drawFlowLines(Mat next) {
-//		for (FlowVector v : flows) {
-//			Imgproc.arrowedLine(next, v.p1, v.p2, new Scalar(255, 100, 0));
-//		}
-//	}
+	private void drawFlowLines(Mat next) {
+		for (FlowVector v : flows) {
+			Imgproc.arrowedLine(next, v.p1, v.p2, new Scalar(255, 100, 0));
+		}
+	}
 	
 	private void removeNoise() {
 		ArrayList<FlowVector> newFlows = new ArrayList<FlowVector>();
@@ -125,11 +125,11 @@ public class OpticalFlow {
 		if (Math.abs(avgVector.getLength() - avgLength) <= avgLength * 0.2) {
 			System.out.println("Movement detected!");
 			if (Math.abs(avgVector.x) > Math.abs(avgVector.y)) {
-				if (avgVector.x > 0) System.out.println("Moved backward");
-				else System.out.println("Moved forward");
-			} else if (Math.abs(avgVector.x) <= Math.abs(avgVector.y)) {
-				if (avgVector.y > 0) System.out.println("Moved right");
+				if (avgVector.x > 0) System.out.println("Moved right");
 				else System.out.println("Moved left");
+			} else if (Math.abs(avgVector.x) <= Math.abs(avgVector.y)) {
+				if (avgVector.y > 0) System.out.println("Moved forward");
+				else System.out.println("Moved backward");
 			}
 		}
 	}
