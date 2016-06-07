@@ -52,7 +52,7 @@ public class OpticalFlow {
 		MatOfFloat err = new MatOfFloat();
 		MatOfPoint pointsPrev = new MatOfPoint();
 		Imgproc.cvtColor(prev, grayImagePrev, Imgproc.COLOR_BGR2GRAY);
-		Imgproc.goodFeaturesToTrack(grayImagePrev, pointsPrev, 1000, 0.01, 1);
+		Imgproc.goodFeaturesToTrack(grayImagePrev, pointsPrev, 500, 0.01, 1);
 		Imgproc.cvtColor(next, grayImageNext, Imgproc.COLOR_BGR2GRAY);
 		MatOfPoint2f pointsPrev2f = new MatOfPoint2f(pointsPrev.toArray());
 		MatOfPoint2f pointsNext2f = new MatOfPoint2f();
