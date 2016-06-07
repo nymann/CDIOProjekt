@@ -60,10 +60,7 @@ public class OpticalFlow {
 		Video.calcOpticalFlowPyrLK(grayImagePrev, grayImageNext, pointsPrev2f, pointsNext2f, status, err);
 		generateFlows(pointsPrev2f, pointsNext2f, status);
 		calcAverageVectorLength();
-		System.out.println("Average length = "+avgLength);
-		System.out.println("Antal vektorer = "+flows.size());
 		removeNoise();
-		printVectors();
 		calcAverageVectorLength();
 		computeAverageVector();
 		System.out.println("Average length = "+avgLength);
@@ -71,11 +68,9 @@ public class OpticalFlow {
 		System.out.println("Average x = "+avgVector.x+", y = "+avgVector.y);
 		System.out.println("Antal vektorer = "+flows.size());
 		String filename = "/Users/Simon/Pictures/opticalFlows.png";
-		System.out.println("Done. Writing " + filename);
 		drawFlowLines(next);
 		Imgproc.arrowedLine(next, centerPoint, new Point(centerPoint.x + avgVector.x, centerPoint.y + avgVector.y), new Scalar(0, 255, 255));
 		Imgcodecs.imwrite(filename, next);
-		System.out.println("Image saved");
 		determineMovement();
 	}
 	
@@ -121,28 +116,20 @@ public class OpticalFlow {
 		ArrayList<FlowVector> newFlows = new ArrayList<FlowVector>();
 		for (int i = 0; i < flows.size(); i++) {
 			if (flows.get(i).getLength() >= avgLength*NOISE_FACTOR_X && flows.get(i).getLength() <= avgLength*NOISE_FACTOR_Y)
-//				flows.remove(i);
 				newFlows.add(flows.get(i));
 		}
 		flows = newFlows;
 	}
 	
-	private void printVectors() {
-		for (FlowVector v : flows) {
-			System.out.println(v.getLength());
-		}
-	}
-	
 	private void determineMovement() {
 		if (Math.abs(avgVector.getLength() - avgLength) <= avgLength * 0.2) {
 			System.out.println("Movement detected!");
-			if (isForwardMovement()) {
-				System.out.println("Moved forward");
-			} else if (isBackwardMovement()) {
-				
+			if (avgVector.x > avgVector.y) {
+				if (avgVector.x > 0) System.out.println("Moved backward");
+				else System.out.println("Moved forward");
 			} else if (avgVector.x <= avgVector.y) {
-				if (avgVector.y > 0) System.out.println("Moved left");
-				else System.out.println("Moved right");
+				if (avgVector.y > 0) System.out.println("Moved right");
+				else System.out.println("Moved left");
 			}
 		}
 	}
