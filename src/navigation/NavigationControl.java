@@ -1,5 +1,7 @@
 package navigation;
 
+import de.yadrone.base.IARDrone;
+
 /**
  *
  * @author Kim
@@ -8,7 +10,7 @@ package navigation;
 public class NavigationControl {
 	/*
 	 * NavFindPosition 
-	 * NavFlyingDrone(currentPos, startSpot1)
+	 * NavFlyPattern from currentPos -> startSpot1
 	 * NavFlyPattern(1)
 	 * NavFindPosition
 	 * NavFlyPattern(2)
@@ -19,10 +21,12 @@ public class NavigationControl {
 
 	NavFindPosition findPos = new NavFindPosition();
 	NavFlyPattern flyPat = new NavFlyPattern();
-	NavFlyingDrone flyingDrone = new NavFlyingDrone();
+	IARDrone drone;
 	
 	private void runNav (){
-		
+		//findPos;
+		flyPat.flyToStartSpot1();
+		flyPat.startSpot(1);
 		
 	}
 	

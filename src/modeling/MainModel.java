@@ -15,15 +15,14 @@ import javafx.geometry.Point3D;
  */
 public class MainModel {
 	
-	List<QRPoint> QRPoints = new ArrayList<>();
+	private List<QRPoint> QRPoints = new ArrayList<>();
+	private List<NavSpot> navSpots = new ArrayList<>();
+	private List<Cube> cubes = new ArrayList<>();
 	
 	private Point3D dronePosition;
 	private Angle3D droneOrientation;
 	private Point3D droneDirection;
 	private Point3D roomSize;
-	
-	
-	private List<Cube> cubes = new ArrayList<>();
 	
 	public void addCube(Cube newCube){
 		cubes.add(newCube);
@@ -47,7 +46,7 @@ public class MainModel {
 		return false;
 	}
 	
-	public void FillQRPoints(){
+	private void FillQRPoints(){
 		//WPoint: X-koordinat, y-koordinat, z-koordinat, QR-ID
 		int z = 180;
 		//Wall 0
@@ -74,6 +73,47 @@ public class MainModel {
 		QRPoints.add(new QRPoint(0, 561, z, 0302));
 		QRPoints.add(new QRPoint(0, 740, z, 0303));
 		QRPoints.add(new QRPoint(0, 997, z, 0304));
-
+	}
+	
+	private void FillNavSpots(){
+		//spot: X-koordinat, y-koordinat, z-koordinat, spot-ID: lige->endSpots, ulige->startSpots
+		int z = 0;
+		int x = 75;
+		//StartSpots
+		navSpots.add(new NavSpot(x,  76, z,  1));
+		navSpots.add(new NavSpot(x, 228, z,  3));
+		navSpots.add(new NavSpot(x, 380, z,  5));
+		navSpots.add(new NavSpot(x, 532, z,  7));
+		navSpots.add(new NavSpot(x, 684, z,  9));
+		navSpots.add(new NavSpot(x, 836, z, 11));
+		navSpots.add(new NavSpot(x, 988, z, 13));
+		//endSpots
+		x = 851;
+		navSpots.add(new NavSpot(x,  76, z,  2));
+		navSpots.add(new NavSpot(x, 228, z,  4));
+		navSpots.add(new NavSpot(x, 380, z,  6));
+		navSpots.add(new NavSpot(x, 532, z,  8));
+		navSpots.add(new NavSpot(x, 684, z, 10));
+		navSpots.add(new NavSpot(x, 836, z, 12));
+		navSpots.add(new NavSpot(x, 988, z, 14));
+		
+	}	
+	
+	public NavSpot getNavSpot(int id){
+		NavSpot spot = navSpots.get(id);
+		return spot;
+	}
+	
+	public ArrayList<QRPoint> getListQRPoints(){
+		List<QRPoint> QRls = new ArrayList<>(QRPoints);
+		return (ArrayList<QRPoint>) QRls;
 	}
 }
+
+
+
+
+
+
+
+
