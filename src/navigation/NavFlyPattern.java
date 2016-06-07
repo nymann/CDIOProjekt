@@ -13,13 +13,23 @@ import modeling.QRPoint;
 public class NavFlyPattern {
 	
 	/*
-	 * assume at startspot
+	 * check at startspot
 	 * fly lane
 	 * reach endspot
+	 * 
 	 */
 
 	NavigationControl nc = new NavigationControl();
 	List<NavSpot> spots = new ArrayList<>();
+	
+	private void lane(){
+		/*
+		 * using OF, fly between one start and end
+		 * once every 1 meter or something take picture, get this analyzed for cubes
+		 * needs plan for flying around/over boxes
+		 */
+ 
+	}
 	
 	private void startSpot(){
 		/*
@@ -34,15 +44,6 @@ public class NavFlyPattern {
 		 * if not, calculate if within acceptable
 		 */
 
-	}
-
-	private void lane(){
-		/*
-		 * using OF, fly between one start and end
-		 * once every 1 meter or something take picture, get this analyzed for cubes
-		 * needs plan for flying around/over boxes
-		 */
- 
 	}
 	
 	public void fillStartEndSpots(){
