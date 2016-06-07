@@ -7,6 +7,7 @@ public class QRInfo {
     public String name;
     public String error;
     public int x,y;
+    public double angle;
 
     public QRInfo() {
         this.name = "";

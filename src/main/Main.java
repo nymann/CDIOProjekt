@@ -11,10 +11,11 @@ import de.yadrone.base.configuration.ConfigurationManager;
 import de.yadrone.base.exception.ARDroneException;
 import de.yadrone.base.exception.IExceptionListener;
 import de.yadrone.base.navdata.NavDataManager;
+import de.yadrone.base.video.VideoManager;
 import gui.ListenerValuePanel;
 import gui.MainWindow;
-import test.DownCamTest;
 import video.PictureAnalyser;
+import video.VideoReader;
 
 //import control.DroneControl;
 
@@ -50,7 +51,11 @@ public class Main {
 		// getting managers
 		ConfigurationManager cm = drone.getConfigurationManager();
 		NavDataManager nm = drone.getNavDataManager();
-		
+
+		VideoManager vm = drone.getVideoManager();
+		video.VideoReader videoReader = new VideoReader(vm);
+
+
 		/*// get battery level
 		Battery battery = new Battery();
 		nm.addBatteryListener(battery);
@@ -98,7 +103,7 @@ public class Main {
 		MainWindow window = new MainWindow(drone);
 		window.run();
 
-		/*test.DownCamTest downCamTest = new DownCamTest(drone);
+		/*demo.DownCamTest downCamTest = new DownCamTest(drone);
 		downCamTest.run();*/
 	}
 	

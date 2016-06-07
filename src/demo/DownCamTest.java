@@ -1,6 +1,8 @@
-package test;
+package demo;
 
 import de.yadrone.base.IARDrone;
+import video.VideoReader;
+
 import static main.Main.*;
 
 /**
@@ -14,6 +16,8 @@ public class DownCamTest {
     }
 
     public void run() {
+        //video.VideoReader videoReader = new VideoReader(main.Main.A);
+
         try {
             Thread.sleep(5000);
         } catch (InterruptedException e) {
@@ -28,6 +32,7 @@ public class DownCamTest {
 
         drone.setVerticalCamera();
         //downCamActive = true;
+
 
         drone.getCommandManager().hover().doFor(10000);
 
