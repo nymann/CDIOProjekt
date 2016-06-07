@@ -19,8 +19,8 @@ public class CameraUtil {
 	final static double frontDepth = Math.sqrt(frontWidth*frontWidth + frontHeight*frontHeight) / Math.tan(Math.toRadians(frontCamAngle/2));
 	
 	final static float downCamAngle = 64;
-	final static int downHeight = 0;
-	final static int downWidth = 0;
+	final static int downHeight = 240;
+	final static int downWidth = 320;
 	final static double downDepth = Math.sqrt(downWidth*downWidth + downHeight*downHeight) / Math.tan(Math.toRadians(downCamAngle/2));
 	
 	/**
@@ -30,6 +30,8 @@ public class CameraUtil {
 	 * @return a normalized vector of the direction relative to the camera
 	 */
 	public static Point3D pictureCoordToVectorFront(int x, int y){
+		x = convertX(x, frontWidth);
+		y = convertY(y, frontHeight);
 		Point3D point = new Point3D(x, y, frontDepth);
 		point.normalize();
 		return point;
@@ -42,9 +44,19 @@ public class CameraUtil {
 	 * @return a normalized vector of the direction relative to the camera
 	 */
 	public static Point3D pictureCoordToVectorDown(int x, int y){
+		x = convertX(x, downWidth);
+		y = convertY(y, downHeight);
 		Point3D point = new Point3D(x, y, downDepth);
 		point.normalize();
 		return point;
-	} 
+	}
+	
+	private static int convertX(int x, int width){
+		return x - width/2;
+	}
+	
+	private static int convertY(int y, int height){
+		return height/2 -y;
+	}
 	
 }
