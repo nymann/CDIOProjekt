@@ -5,8 +5,10 @@
  */
 package modeling;
 
+import QRWallMarks.QRInfo;
 import java.util.ArrayList;
 import java.util.List;
+import javafx.geometry.Point2D;
 import javafx.geometry.Point3D;
 
 /**
@@ -15,7 +17,7 @@ import javafx.geometry.Point3D;
  */
 public class MainModel {
 	
-	private List<QRPoint> QRPoints = new ArrayList<>();
+	private List<List<QRPoint>> QRPoints = new ArrayList<>();
 	private List<NavSpot> navSpots = new ArrayList<>();
 	private List<Cube> cubes = new ArrayList<>();
 	
@@ -23,6 +25,13 @@ public class MainModel {
 	private Angle3D droneOrientation;
 	private Point3D droneDirection;
 	private Point3D roomSize;
+
+	public MainModel() {
+		FillQRPoints();
+		FillNavSpots();
+	}
+	
+	
 	
 	public void addCube(Cube newCube){
 		cubes.add(newCube);
@@ -46,33 +55,48 @@ public class MainModel {
 		return false;
 	}
 	
+	public QRPoint getQRPoint(QRInfo info){
+		String[] id = info.name.substring(1).split("\\.");
+		int wall = Integer.parseInt(id[0]);
+		int kode = Integer.parseInt(id[1]);
+		return QRPoints.get(wall).get(kode);
+	}
+	
 	private void FillQRPoints(){
 		//WPoint: X-koordinat, y-koordinat, z-koordinat, QR-ID
 		int z = 180;
 		//Wall 0
-		QRPoints.add(new QRPoint(188, 1055, z, 0000));
-		QRPoints.add(new QRPoint(338, 1060, z, 0001));
-		QRPoints.add(new QRPoint(515, 1055, z, 0002));
-		QRPoints.add(new QRPoint(694, 1060, z, 0003));
-		QRPoints.add(new QRPoint(840, 1055, z, 0004));
+		ArrayList<QRPoint> wall = new ArrayList<>();
+		wall.add(new QRPoint(188, 1055, z, 0000));
+		wall.add(new QRPoint(338, 1060, z, 0001));
+		wall.add(new QRPoint(515, 1055, z, 0002));
+		wall.add(new QRPoint(694, 1060, z, 0003));
+		wall.add(new QRPoint(840, 1055, z, 0004));
+		QRPoints.add(wall);
 		//Wall 1
-		QRPoints.add(new QRPoint(926, 904, z, 0100));
-		QRPoints.add(new QRPoint(926, 721, z, 0101));
-		QRPoints.add(new QRPoint(926, 566, z, 0102));
-		QRPoints.add(new QRPoint(926, 324, z, 0103));
-		QRPoints.add(new QRPoint(926, 115, z, 0104));
+		wall = new ArrayList<>();
+		wall.add(new QRPoint(926, 904, z, 0100));
+		wall.add(new QRPoint(926, 721, z, 0101));
+		wall.add(new QRPoint(926, 566, z, 0102));
+		wall.add(new QRPoint(926, 324, z, 0103));
+		wall.add(new QRPoint(926, 115, z, 0104));
+		QRPoints.add(wall);
 		//Wall 2
-		QRPoints.add(new QRPoint(847, -10, z, 0200));
-		QRPoints.add(new QRPoint(656, -77, z, 0201));
-		QRPoints.add(new QRPoint(420,   0, z, 0202));
-		QRPoints.add(new QRPoint(350,   0, z, 0203));
-		QRPoints.add(new QRPoint(150,   0, z, 0204));
+		wall = new ArrayList<>();
+		wall.add(new QRPoint(847, -10, z, 0200));
+		wall.add(new QRPoint(656, -77, z, 0201));
+		wall.add(new QRPoint(420,   0, z, 0202));
+		wall.add(new QRPoint(350,   0, z, 0203));
+		wall.add(new QRPoint(150,   0, z, 0204));
+		QRPoints.add(wall);
 		//Wall 3
-		QRPoints.add(new QRPoint(0, 108, z, 0300));
-		QRPoints.add(new QRPoint(0, 357, z, 0301));
-		QRPoints.add(new QRPoint(0, 561, z, 0302));
-		QRPoints.add(new QRPoint(0, 740, z, 0303));
-		QRPoints.add(new QRPoint(0, 997, z, 0304));
+		wall = new ArrayList<>();
+		wall.add(new QRPoint(0, 108, z, 0300));
+		wall.add(new QRPoint(0, 357, z, 0301));
+		wall.add(new QRPoint(0, 561, z, 0302));
+		wall.add(new QRPoint(0, 740, z, 0303));
+		wall.add(new QRPoint(0, 997, z, 0304));
+		QRPoints.add(wall);
 	}
 	
 	private void FillNavSpots(){
@@ -103,11 +127,20 @@ public class MainModel {
 		NavSpot spot = navSpots.get(id);
 		return spot;
 	}
-	
-	public ArrayList<QRPoint> getListQRPoints(){
-		List<QRPoint> QRls = new ArrayList<>(QRPoints);
-		return (ArrayList<QRPoint>) QRls;
+
+	public Point3D getDronePosition() {
+		return dronePosition;
 	}
+
+	public void setDronePosition(Point3D dronePosition) {
+		this.dronePosition = dronePosition;
+	}
+	
+	public void setDronePosition(Point2D p) {
+		this.dronePosition = new Point3D(p.getX(), p.getY(), this.dronePosition.getZ());
+	}
+	
+	
 }
 
 

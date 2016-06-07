@@ -115,6 +115,13 @@ public class PointNavigation {
 		// Sætter koordinaterne for dronen.
 		return dronePositioning;	 
 	}
+	
+	public Point2D findPosition() {
+		findAandBLength();
+		findCenter();
+		findRadius();
+		return findXandY();
+	}	
 }
 
 
