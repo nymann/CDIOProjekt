@@ -11,7 +11,6 @@ public class ListenerValuePanel extends JPanel implements AttitudeListener,
 		AcceleroListener {
 
 	JTextArea jTextArea;
-	JWindow jWindow = new JWindow();
 	JLayeredPane jLayeredPane = new JLayeredPane();
 
 	public ListenerValuePanel() {
