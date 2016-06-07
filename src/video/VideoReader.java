@@ -44,8 +44,6 @@ public class VideoReader implements ImageListener {
 		System.out.println("Width: " + this.image.getWidth() + " px.");
 		System.out.println("Height: " + this.image.getHeight() + " px.");
 
-        // is
         return this.image.getWidth() < 363;
-
     }
 }
