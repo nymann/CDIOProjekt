@@ -13,6 +13,10 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+* @author sAkkermans
+*/
+
 public class QRPossitioning implements ImageListener, AttitudeListener {
 		
 	float yaw;

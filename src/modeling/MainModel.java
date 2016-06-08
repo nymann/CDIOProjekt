@@ -100,10 +100,19 @@ public class MainModel {
 	}
 	
 	private void FillNavSpots(){
-		//spot: X-koordinat, y-koordinat, z-koordinat, spot-ID: lige->endSpots, ulige->startSpots
+		//spot: X-koordinat, y-koordinat, z-koordinat, spot-ID: lige->startSpots, ulige->endSpots
 		int z = 0;
 		int x = 75;
 		//StartSpots
+		navSpots.add(new NavSpot(x,  76, z,  0));
+		navSpots.add(new NavSpot(x, 228, z,  2));
+		navSpots.add(new NavSpot(x, 380, z,  4));
+		navSpots.add(new NavSpot(x, 532, z,  6));
+		navSpots.add(new NavSpot(x, 684, z,  8));
+		navSpots.add(new NavSpot(x, 836, z, 10));
+		navSpots.add(new NavSpot(x, 988, z, 12));
+		//endSpots
+		x = 851;
 		navSpots.add(new NavSpot(x,  76, z,  1));
 		navSpots.add(new NavSpot(x, 228, z,  3));
 		navSpots.add(new NavSpot(x, 380, z,  5));
@@ -111,15 +120,6 @@ public class MainModel {
 		navSpots.add(new NavSpot(x, 684, z,  9));
 		navSpots.add(new NavSpot(x, 836, z, 11));
 		navSpots.add(new NavSpot(x, 988, z, 13));
-		//endSpots
-		x = 851;
-		navSpots.add(new NavSpot(x,  76, z,  2));
-		navSpots.add(new NavSpot(x, 228, z,  4));
-		navSpots.add(new NavSpot(x, 380, z,  6));
-		navSpots.add(new NavSpot(x, 532, z,  8));
-		navSpots.add(new NavSpot(x, 684, z, 10));
-		navSpots.add(new NavSpot(x, 836, z, 12));
-		navSpots.add(new NavSpot(x, 988, z, 14));
 		
 	}	
 	

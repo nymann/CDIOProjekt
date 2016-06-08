@@ -29,7 +29,7 @@ public class Main {
 
 	static public void main(String[] args) {
 		// Initialising OpenCV
-		PictureAnalyser.init();
+		//PictureAnalyser.init();
 
 		// connecting to drone
 		try {
