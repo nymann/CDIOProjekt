@@ -52,7 +52,6 @@ public class PointNavigation {
 	public void findCenter() {
 		
 		//Centrum for alpha-circle.
-		
 		double t1, t2;
 		t1 = Math.sqrt(Math.pow(Math.abs(-y2+y1),2)+Math.pow(Math.abs(-x2+x1),2));
 		t2 = Math.sqrt(Math.pow(a,2)/Math.pow(Math.sin(alpha), 2)-Math.pow(a,2));
