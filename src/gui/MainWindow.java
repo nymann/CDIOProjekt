@@ -66,6 +66,7 @@ public class MainWindow extends javax.swing.JFrame {
 		analysed.setPreferredSize(videoSize);
 		analysed.setSize(videoSize);
 		values.setPreferredSize(new Dimension(150,150));
+		
 		this.pack();
 		this.setVisible(true);
 		this.repaint();

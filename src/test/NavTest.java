@@ -42,8 +42,8 @@ public class NavTest {
 		panel.setPreferredSize(new Dimension(100,10));
 		JFrame mainWindow = new JFrame();
 		mainWindow.add(panel);
-		mainWindow.pack();
 		mainWindow.setVisible(true);
+		mainWindow.pack();
 
 	}
 

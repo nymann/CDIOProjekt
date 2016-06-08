@@ -1,6 +1,7 @@
 package gui;
 
 import de.yadrone.base.navdata.*;
+import dronePossition.QRPossitioning;
 
 import javax.swing.*;
 
@@ -17,6 +18,8 @@ public class ListenerValuePanel extends JPanel implements AttitudeListener,
 		jTextArea = new JTextArea();
 		this.add(jTextArea);
 	}
+	
+
 
 	public void setListeners(NavDataManager nm) {
 		nm.addAttitudeListener(this);

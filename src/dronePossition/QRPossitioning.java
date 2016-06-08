@@ -4,6 +4,7 @@ import QRWallMarks.GetQRCode;
 import QRWallMarks.QRInfo;
 import de.yadrone.base.navdata.AttitudeListener;
 import de.yadrone.base.video.ImageListener;
+import gui.TextPanel;
 import javafx.geometry.Point3D;
 import modeling.MainModel;
 import modeling.QRPoint;
@@ -12,6 +13,7 @@ import video.CameraUtil;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
+import javafx.geometry.Point2D;
 
 /**
 * @author sAkkermans
@@ -22,19 +24,34 @@ public class QRPossitioning implements ImageListener, AttitudeListener {
 	float yaw;
 	ArrayList<QRInfo> qrListe;
 	MainModel model;
+	TextPanel output;
 	
 	public QRPossitioning(MainModel model) {
 		this.qrListe = new ArrayList<>();
 		this.model = model;
 	}
+	
+	public void setOutput(TextPanel panel){
+		this.output = panel;
+	}
 
 	@Override
 	public void imageUpdated(BufferedImage qrcodeImage) {
 		
+//		System.out.println("dronePossition.QRPossitioning.imageUpdated()");
 		float currentYaw = this.yaw;		
 		QRInfo qri = GetQRCode.readQRCode(qrcodeImage);
 		
 		if(qri.error.equals("")) {
+			// Check if it's the same as one of the codes we've already seen
+			for(QRInfo info: qrListe){
+				if (info.name.equals(qri.name)){
+					//System.out.println("Found same " + qri.name +" code again");
+					return;
+				}
+			}
+			
+			output("Found "+ qri.name + " as code #" + qrListe.size());
 			Point3D point3d = CameraUtil.pictureCoordToVectorFront(qri.x, qri.y);
 			//TODO vi skal tage højde for at dronen måske ikke ligger vandret
 			double angle = Math.atan(point3d.getX()/point3d.getZ()); 
@@ -127,7 +144,9 @@ public class QRPossitioning implements ImageListener, AttitudeListener {
 						points.get(2).getY()
 				);
 
-				model.setDronePosition(nav.findPosition());
+				Point2D position = nav.findPosition();
+				output("Found position at " + position);
+				model.setDronePosition(position);
 			} 
 		}			
 	}
@@ -143,6 +162,17 @@ public class QRPossitioning implements ImageListener, AttitudeListener {
 	@Override
 	public void windCompensation(float pitch, float roll) {}
 	
+	// midelertidig metode til debugging
+	public void setYaw(float yaw){
+		this.yaw = yaw;
+	}
 	
+	private void output(String text){
+		if (output != null){
+			output.addTextLine(text);
+		} else {
+			System.out.println(text);
+		}
+	}
 	
 }

@@ -28,8 +28,6 @@ public class VideoPanel extends JPanel implements ImageListener{
 		this.image = bi;
 		//this.setSize(bi.getWidth(), bi.getHeight());
 		repaint();
-
-		qrCodeResult();
 	}
 	
 	@Override
@@ -39,17 +37,6 @@ public class VideoPanel extends JPanel implements ImageListener{
 		} else {
 			g.setColor(Color.BLACK);
 			g.fillRect(0, 0, this.getWidth(), this.getHeight());
-		}
-	}
-
-	private void qrCodeResult() {
-		QRInfo qrInfo = QRWallMarks.GetQRCode.readQRCode(this.image);
-		if(qrInfo.error.equals("")) {
-			// no errors!
-			System.out.println("Decodemessage: " + qrInfo.name + ". At: " +
-					qrInfo.x + ", " + qrInfo.y);
-		} else {
-			System.out.println(qrInfo.error);
 		}
 	}
 }
