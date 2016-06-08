@@ -1,11 +1,11 @@
 package navigation;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import de.yadrone.base.IARDrone;
 import modeling.MainModel;
 import modeling.NavSpot;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  *
@@ -44,16 +44,26 @@ public class NavFlyPattern {
 		 * once every 1 meter or something take picture, get this analyzed for cubes
 		 * needs plan for flying around/over boxes
 		 */
-
+		
+		//Find cubes:
+		//ska have nuværende droneposition og attitude
+		//DronePos burde kunne regnes ud fra OF
+		//gir billed til picanalyze, får en liste med klodskoordinater på billedet
+		//resultat af analyze og attitude ska sendes til anden klasse som gemmer dem i modellen
+		
+		
 	}
 
 	public void startSpot(int id){
 		/*
 		 * make sure currentposition matches startSpot
 		 */
-		fp.getPositionX();
-		fp.getPositionY();
-
+		double posX;
+		double posY;
+		
+		posX = fp.getPositionX();
+		posY = fp.getPositionY();
+		mm.getNavSpot(id);
 		
 	}
 
