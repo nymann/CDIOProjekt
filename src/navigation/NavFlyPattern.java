@@ -54,30 +54,44 @@ public class NavFlyPattern {
 		
 	}
 
-	public void startSpot(int id){
+	public boolean atSpot(int spotID){
 		/*
-		 * make sure currentposition matches startSpot
+		 * makes sure dronePosition is within acceptable range of spotIDs location
 		 */
-		double posX;
-		double posY;
+		boolean bool = false;
 		
-		posX = fp.getPositionX();
-		posY = fp.getPositionY();
-		mm.getNavSpot(id);
+		double dronePosX = fp.getPositionX();
+		double dronePosY = fp.getPositionY();
 		
-	}
-
-	public void endSpot(){
-		/*
-		 * make sure currentposition matches endSpot
-		 * if not, calculate if within acceptable
-		 */
-
+		NavSpot spot = mm.getNavSpot(spotID);
+		int xSpot = spot.getX();
+		int ySpot = spot.getY();
+		
+		int range = 12;
+		int xRangeMax = (int) dronePosX+range;
+		int xRangeMin = (int) dronePosX-range;
+		int yRangeMax = (int) dronePosX+range;
+		int yRangeMin = (int) dronePosX-range;
+		
+		if ((xRangeMin<=xSpot&&xSpot<=xRangeMax) && (yRangeMin<=ySpot&&ySpot<=yRangeMax)) bool=true;
+	
+		return bool;
 	}
 	
-	public void flyToStartSpot1(){
+	public void flyToStartSpot0(){
 		
 		
 	}
+	
 
 }
+
+
+
+
+
+
+
+
+
+

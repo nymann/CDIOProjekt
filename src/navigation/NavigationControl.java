@@ -19,14 +19,14 @@ public class NavigationControl {
 	 * PresentResults()
 	 */
 
-	NavFindPosition findPos = new NavFindPosition();
+	//NavFindPosition findPos = new NavFindPosition();
 	NavFlyPattern flyPat = new NavFlyPattern();
 	IARDrone drone;
 	
 	private void runNav (){
 		//findPos;
-		flyPat.flyToStartSpot1();
-		flyPat.startSpot(1);
+		flyPat.flyToStartSpot0();
+		flyPat.atSpot(1);
 		
 	}
 	
