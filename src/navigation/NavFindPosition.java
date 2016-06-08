@@ -1,10 +1,9 @@
 package navigation;
 
-import java.awt.image.BufferedImage;
-import java.lang.reflect.Array;
-
 import QRWallMarks.QRInfo;
 import de.yadrone.base.IARDrone;
+
+import java.awt.image.BufferedImage;
 
 /**
 *

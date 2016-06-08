@@ -7,10 +7,7 @@ package video;
 
 import de.yadrone.base.video.ImageListener;
 import de.yadrone.base.video.VideoManager;
-import gui.MainWindow;
-import java.awt.Graphics;
 import java.awt.image.BufferedImage;
-import main.Main;
 
 /**
  *

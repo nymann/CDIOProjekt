@@ -5,8 +5,6 @@
  */
 package modeling;
 
-import javafx.geometry.Point3D;
-
 /**
  *
  * @author Mikkel

@@ -1,12 +1,11 @@
 package navigation;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import de.yadrone.base.IARDrone;
 import modeling.MainModel;
 import modeling.NavSpot;
-import modeling.QRPoint;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *

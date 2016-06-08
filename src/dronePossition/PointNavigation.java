@@ -1,6 +1,5 @@
 package dronePossition;
 
-import java.math.*;
 import javafx.geometry.Point2D;
 
 public class PointNavigation {

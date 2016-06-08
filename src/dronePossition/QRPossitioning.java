@@ -1,18 +1,17 @@
 package dronePossition;
 
-import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-
 import QRWallMarks.GetQRCode;
 import QRWallMarks.QRInfo;
 import de.yadrone.base.navdata.AttitudeListener;
 import de.yadrone.base.video.ImageListener;
-import java.util.List;
-import javafx.geometry.Point2D;
 import javafx.geometry.Point3D;
 import modeling.MainModel;
 import modeling.QRPoint;
 import video.CameraUtil;
+
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.List;
 
 public class QRPossitioning implements ImageListener, AttitudeListener {
 		

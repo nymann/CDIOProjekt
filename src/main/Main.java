@@ -8,11 +8,8 @@ package main;
 import de.yadrone.base.ARDrone;
 import de.yadrone.base.IARDrone;
 import de.yadrone.base.configuration.ConfigurationManager;
-import de.yadrone.base.exception.ARDroneException;
-import de.yadrone.base.exception.IExceptionListener;
 import de.yadrone.base.navdata.NavDataManager;
 import de.yadrone.base.video.VideoManager;
-import gui.ListenerValuePanel;
 import gui.MainWindow;
 import video.PictureAnalyser;
 import video.VideoReader;
@@ -26,17 +23,13 @@ import video.VideoReader;
  */
 public class Main {
 
-
 	public static Boolean downCamActive = false;
 
 	static private IARDrone drone = null;
 
 	static public void main(String[] args) {
-		
-
 		// Initialising OpenCV
 		PictureAnalyser.init();
-
 
 		// connecting to drone
 		try {
@@ -78,13 +71,10 @@ public class Main {
 		
 
 		// stop program if we get an exception
-		drone.addExceptionListener(new IExceptionListener() {
-			@Override
-			public void exeptionOccurred(ARDroneException arde) {
-				System.out.println(arde.getMessage());
-//				Main.shutDown();
-			}
-		});
+		drone.addExceptionListener(arde -> {
+            System.out.println(arde.getMessage());
+				//Main.shutDown();
+        });
 
 		System.out.println("Drone connected: " + cm.isConnected());
 
@@ -95,9 +85,7 @@ public class Main {
 		
 		
 		// Opening listener value panel
-		//TODO(Mikkel kig her)
-		ListenerValuePanel panel = new ListenerValuePanel();
-//		panel.ListenerValueGUI(200, 200);
+		//panel.ListenerValueGUI(200, 200);
 
 		// Opening main window
 		MainWindow window = new MainWindow(drone);
@@ -108,7 +96,6 @@ public class Main {
 	}
 	
 	public static void shutDown(){
-
 		// shut down
 		System.out.println("Shutting down");
 		drone.stop();

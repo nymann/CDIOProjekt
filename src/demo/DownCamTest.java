@@ -1,9 +1,8 @@
 package demo;
 
 import de.yadrone.base.IARDrone;
-import video.VideoReader;
 
-import static main.Main.*;
+import static main.Main.downCamActive;
 
 /**
  * Created by Nymann on 04-05-2016.
