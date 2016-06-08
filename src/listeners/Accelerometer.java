@@ -4,6 +4,10 @@ import de.yadrone.base.navdata.AcceleroListener;
 import de.yadrone.base.navdata.AcceleroPhysData;
 import de.yadrone.base.navdata.AcceleroRawData;
 
+/**
+* @author sAkkermans
+*/
+
 public class Accelerometer implements AcceleroListener {
 	
 	public AcceleroPhysData acchysd;

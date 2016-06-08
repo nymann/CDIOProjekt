@@ -3,6 +3,10 @@ package listeners;
 import de.yadrone.base.navdata.UltrasoundData;
 import de.yadrone.base.navdata.UltrasoundListener;
 
+/**
+* @author sAkkermans
+*/
+
 public class UltraSound implements UltrasoundListener{
 		public UltrasoundData arg0;
 	
