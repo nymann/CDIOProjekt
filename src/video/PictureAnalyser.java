@@ -21,20 +21,30 @@ import java.util.List;
  * @author JoachimØstergaard
  */
 public class PictureAnalyser {
-
-	public static void init() {
+	static int counterG = 0 ;
+	static int counterR = 0 ;
+	static Mat pic ;
+    static List<MatOfPoint> contoursGreen = new ArrayList<MatOfPoint>(); 
+    static List<MatOfPoint> contoursRed = new ArrayList<MatOfPoint>(); 
+    private List<Scalar> color;
+    
+	public void init() {
 		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
 	}
+	public void setColor(List<Point> coloranalyse) {
+		this.color.add(new Scalar(coloranalyse.get(0).x,coloranalyse.get(1).x,coloranalyse.get(2).x));
+		this.color.add(new Scalar(coloranalyse.get(0).y,coloranalyse.get(1).y,coloranalyse.get(2).y));
+	}
+	public List<Point> getAnalyse(BufferedImage img) {
 
-	public static BufferedImage getAnalyse(BufferedImage img) {
 		Mat frameMat = new Mat();
 		frameMat = bufferedImageToMat(img);
 		List<MatOfPoint> contours = new ArrayList<MatOfPoint>();
 		Mat frameBlur = new Mat();
-		frameBlur = blur(frameMat, 5);
+		pic = blur(frameMat, 5);
 		Mat imgHSV = new Mat();
 		Mat imgThresholded = new Mat();
-		Imgproc.cvtColor(frameBlur, imgHSV, Imgproc.COLOR_BGR2HSV);
+		Imgproc.cvtColor(pic, imgHSV, Imgproc.COLOR_BGR2HSV);
 		Scalar high = new Scalar(125, 255, 255);
 		Scalar low = new Scalar(100, 40, 40);
 		Core.inRange(imgHSV, low, high, imgThresholded);
@@ -56,11 +66,86 @@ public class PictureAnalyser {
 			// draw enclosing rectangle (all same color, but you could use variable i to make them unique)
 			Imgproc.rectangle(frameBlur, new Point(rect.x, rect.y), new Point(rect.x + rect.width, rect.y + rect.height), new Scalar(255, 0, 0, 255), 3);
 		}
+      /*  Scalar highG =new Scalar(68,255,150);
+        Scalar lowG =new Scalar(38,125,35);
+        
+        Scalar highR =new Scalar(20,255,150);
+        Scalar lowR =new Scalar(0,125,0);
+      
+      */
+		contoursRed = getConturs(color.get(0),color.get(1), imgHSV); 
+		return getblocks(contoursRed);
+    //  contoursGreen = getConturs(lowG, highG, imgHSV);  
 
-		img = mat2Img(frameBlur);
-
-		return img;
+	//	img = mat2Img(frameBlur);
+	//	System.out.println("count Green: "+ counterG+" count Red: " +counterR);
+	//	return img;
 	}
+	   public static List<Point> getblocks ( List<MatOfPoint> contours ){
+	        List<Moments> mu = new ArrayList<Moments>(contours.size());
+	       // List<Moments> muOld = new ArrayList<Moments>(contours.size());
+	        List<Point> cubepoint = new ArrayList<Point>();
+	        int counter = 0;
+	         for (int i = 0; i < contours.size(); i++) {
+	                    mu.add(i, Imgproc.moments(contours.get(i), false));  
+	                    Moments p = mu.get(i);
+	                    int x = (int) (p.get_m10() / p.get_m00()); 
+	                    int y = (int) (p.get_m01() / p.get_m00());
+	                  //              int xMid = pic.cols()/2;
+	                    //int yMid = pic.rows()/2;
+	             //System.out.println("x,y : "+(x-xMid)+" "+(y-yMid));
+	             cubepoint.add(new Point((x),(y)));
+	        
+	             Imgproc.circle(pic, new Point(x, y), 4, new Scalar(255,49,0,255));   
+	    }
+	    return cubepoint;
+	}
+	   public static List<MatOfPoint> getConturs ( Scalar low, Scalar high, Mat img  ){
+		     
+           
+	        Mat imgThresholded = new Mat();
+	       Core.inRange(img, low, high, imgThresholded);
+	       
+	       
+	       List<MatOfPoint> contours = new ArrayList<MatOfPoint>();
+	         int dilation_size = 3;
+	                   Mat element1 = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new  Size(2*dilation_size + 1, 2*dilation_size+1));
+	                  Imgproc.dilate(imgThresholded, imgThresholded, element1);
+	                Imgproc.findContours(imgThresholded,contours,new Mat(), Imgproc.RETR_LIST,Imgproc.CHAIN_APPROX_SIMPLE);
+	                 MatOfPoint2f         approxCurve = new MatOfPoint2f();
+	       
+	       
+	       for (int i=0; i<contours.size(); i++) {
+	                    
+	        //Convert contours(i) from MatOfPoint to MatOfPoint2f
+	        MatOfPoint2f contour2f = new MatOfPoint2f( contours.get(i).toArray() );
+	        //Processing on mMOP2f1 which is in type MatOfPoint2f
+	        
+	        double approxDistance = Imgproc.arcLength(contour2f, true)*0.02;
+	        Imgproc.approxPolyDP(contour2f, approxCurve, approxDistance, true);
+
+	        //Convert back to MatOfPoint
+	        MatOfPoint points = new MatOfPoint( approxCurve.toArray() );
+
+	        // Get bounding rect of contour
+	        Rect rect = Imgproc.boundingRect(points);
+	        int area = (rect.width)*(rect.height);
+	                    System.out.println("area = " + area);
+	        if(area >500){
+	         // draw enclosing rectangle (all same color, but you could use variable i to make them unique)
+	       Imgproc.rectangle(pic, new Point(rect.x,rect.y), new Point(rect.x+rect.width,rect.y+rect.height), new Scalar(255, 0, 0, 255), 3);
+	        
+	        }else{
+	            contours.remove(i);
+	            i--;
+	        }
+	         //Imgproc.drawContours( blurred, contours, i, color, 2, 8, hierarchy, 0, Point() );
+	                }
+	       
+	       
+	    return contours;
+	}
+	   
 
 	public static BufferedImage mat2Img(Mat in) {
 		BufferedImage out;
@@ -161,5 +246,12 @@ public class PictureAnalyser {
 
 		return true;
 	}
+	   double Distance_BtwnPoints(Point p, Point q)
+	   {
+	       double X_Diff = p.x - q.x;
+	       double Y_Diff = p.y - q.y;
+	       return Math.sqrt((X_Diff * X_Diff) + (Y_Diff * Y_Diff));
+	   }
 
 }
+
