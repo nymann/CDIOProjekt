@@ -19,7 +19,7 @@ public class AnalysedVideoPanel extends VideoPanel {
     @Override
     public void imageUpdated(BufferedImage bi) {
         if (downCamActive) {
-            this.image = PictureAnalyser.getAnalyse(bi);
+            //this.image = PictureAnalyser.getAnalyse(bi);
             this.setSize(image.getWidth(), image.getHeight());
         }
     }

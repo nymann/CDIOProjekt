@@ -58,14 +58,14 @@ public class MainWindow extends javax.swing.JFrame {
 	
 	public void run() {
 		this.init();
-		Dimension videoSize = new Dimension(640, 400);
+		Dimension videoSize = new Dimension(1280, 720);
 		cam.setBackground(Color.BLACK);
 		cam.setPreferredSize(videoSize);
 		cam.setSize(videoSize);
 		analysed.setBackground(Color.BLACK);
 		analysed.setPreferredSize(videoSize);
 		analysed.setSize(videoSize);
-		values.setPreferredSize(new Dimension(100,10));
+		values.setPreferredSize(new Dimension(150,150));
 		this.pack();
 		this.setVisible(true);
 		this.repaint();

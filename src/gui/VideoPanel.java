@@ -26,7 +26,8 @@ public class VideoPanel extends JPanel implements ImageListener{
 	@Override
 	public void imageUpdated(BufferedImage bi) {
 		this.image = bi;
-		this.setSize(bi.getWidth(), bi.getHeight());
+		//this.setSize(bi.getWidth(), bi.getHeight());
+		repaint();
 
 		qrCodeResult();
 	}
