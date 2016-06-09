@@ -32,8 +32,8 @@ public class NavFlyPattern {
 	 * 
 	 */
 
-	NavigationControl nc = new NavigationControl();
-	NavFindPosition fp = new NavFindPosition();
+//	NavigationControl nc = new NavigationControl();
+//	NavFindPosition fp = new NavFindPosition();
 	List<NavSpot> spots = new ArrayList<>();
 	modeling.MainModel mm = new MainModel();
 	IARDrone drone;
@@ -60,18 +60,23 @@ public class NavFlyPattern {
 		 */
 		boolean bool = false;
 		
-		double dronePosX = fp.getPositionX();
-		double dronePosY = fp.getPositionY();
+//		double dronePosX = fp.getPositionX();
+//		double dronePosY = fp.getPositionY();
+		
+		double dronePosX = 75;
+		double dronePosY = 76;
 		
 		NavSpot spot = mm.getNavSpot(spotID);
 		int xSpot = spot.getX();
 		int ySpot = spot.getY();
 		
+		System.out.println(xSpot + " " + ySpot );
+		
 		int range = 12;
 		int xRangeMax = (int) dronePosX+range;
 		int xRangeMin = (int) dronePosX-range;
-		int yRangeMax = (int) dronePosX+range;
-		int yRangeMin = (int) dronePosX-range;
+		int yRangeMax = (int) dronePosY+range;
+		int yRangeMin = (int) dronePosY-range;
 		
 		if ((xRangeMin<=xSpot&&xSpot<=xRangeMax) && (yRangeMin<=ySpot&&ySpot<=yRangeMax)) bool=true;
 	
