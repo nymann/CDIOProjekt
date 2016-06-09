@@ -6,6 +6,7 @@
 package video;
 
 import javafx.scene.image.Image;
+
 import org.opencv.core.*;
 import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
@@ -25,8 +26,6 @@ public class PictureAnalyser {
 	static int counterG = 0 ;
 	static int counterR = 0 ;
 	static Mat pic ;
-    static List<MatOfPoint> contoursGreen = new ArrayList<MatOfPoint>(); 
-    static List<MatOfPoint> contoursRed = new ArrayList<MatOfPoint>(); 
     private List<Scalar> color;
     
 	public void init() {
@@ -44,10 +43,11 @@ public class PictureAnalyser {
 		Mat frameBlur = new Mat();
 		pic = blur(frameMat, 5);
 		Mat imgHSV = new Mat();
-		Mat imgThresholded = new Mat();
 		Imgproc.cvtColor(pic, imgHSV, Imgproc.COLOR_BGR2HSV);
+		/*
 		Scalar high = new Scalar(125, 255, 255);
 		Scalar low = new Scalar(100, 40, 40);
+		
 		Core.inRange(imgHSV, low, high, imgThresholded);
 		int dilation_size = 2;
 		Mat element1 = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(2 * dilation_size + 1, 2 * dilation_size + 1));
@@ -67,15 +67,15 @@ public class PictureAnalyser {
 			// draw enclosing rectangle (all same color, but you could use variable i to make them unique)
 			Imgproc.rectangle(frameBlur, new Point(rect.x, rect.y), new Point(rect.x + rect.width, rect.y + rect.height), new Scalar(255, 0, 0, 255), 3);
 		}
-      /*  Scalar highG =new Scalar(68,255,150);
+        Scalar highG =new Scalar(68,255,150);
         Scalar lowG =new Scalar(38,125,35);
         
         Scalar highR =new Scalar(20,255,150);
         Scalar lowR =new Scalar(0,125,0);
       
       */
-		contoursRed = getConturs(color.get(0),color.get(1), imgHSV); 
-		return getblocks(contoursRed);
+		contours = getConturs(color.get(0),color.get(1), imgHSV); 
+		return getblocks(contours);
     //  contoursGreen = getConturs(lowG, highG, imgHSV);  
 
 	//	img = mat2Img(frameBlur);
@@ -253,6 +253,54 @@ public class PictureAnalyser {
 	       double Y_Diff = p.y - q.y;
 	       return Math.sqrt((X_Diff * X_Diff) + (Y_Diff * Y_Diff));
 	   }
+	   public List<Point> Calibrate(BufferedImage img){
+	       
+
+           Mat frameMat = new Mat();
+	frameMat = bufferedImageToMat(img);
+	
+           
+              pic = blur(frameMat,3);
+
+            Mat imgHSV = new Mat();
+           
+              Imgproc.cvtColor(pic, imgHSV, Imgproc.COLOR_BGR2HSV);
+            
+              
+              int højde =10;
+              int brede = 10;   
+                int hue=0;
+              int saturation=0;
+              int vis=0;
+              for(int i=0;i<højde;i++){
+                   for(int j=0;j<brede;j++){
+             double[] testColor=imgHSV.get((imgHSV.height()/2)-(brede/2)+i,(imgHSV.width()/2)-(højde/2)+j);
+            if(testColor[0]>165)testColor[0]=testColor[0]-180;
+             hue= hue+(int)testColor[0];
+             saturation= saturation+(int)testColor[1];
+             vis = vis+(int)testColor[2];
+             
+               }
+              }
+              
+              hue= hue/(højde*brede);
+              saturation= saturation/(højde*brede);
+              vis= vis/(højde*brede);
+              
+            Imgproc.rectangle(imgHSV,new Point(imgHSV.width()/2-brede/2,imgHSV.height()/2-højde/2),new Point(imgHSV.width()/2+brede/2,imgHSV.height()/2+højde/2),new Scalar(hue,saturation,vis));
+           
+             Imgproc.cvtColor(imgHSV, pic, Imgproc.COLOR_HSV2BGR);  
+             Imgproc.circle(pic, new Point(imgHSV.width()/2, imgHSV.height()/2), 4, new Scalar(255,49,255,255));   
+	
+    Scalar high =new Scalar(hue+10,saturation+50,vis+50);
+              Scalar low =new Scalar(hue-10,saturation-50,vis-50);
+   List<Point> color = new ArrayList<>();
+   color.add(new Point(hue-5,hue+5));
+    color.add(new Point(saturation-40,saturation+40));
+   color.add(new Point(vis-40,vis+40));
+  
+   return color;
+}
 
 }
 
