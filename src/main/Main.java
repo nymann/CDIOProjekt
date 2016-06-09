@@ -7,6 +7,7 @@ package main;
 
 import de.yadrone.base.ARDrone;
 import de.yadrone.base.IARDrone;
+import de.yadrone.base.command.CommandManager;
 import de.yadrone.base.configuration.ConfigurationManager;
 import de.yadrone.base.navdata.NavDataManager;
 import de.yadrone.base.video.VideoManager;
@@ -43,10 +44,11 @@ public class Main {
 
 		// getting managers
 		ConfigurationManager cm = drone.getConfigurationManager();
+		CommandManager com = drone.getCommandManager();
 		NavDataManager nm = drone.getNavDataManager();
 
 		VideoManager vm = drone.getVideoManager();
-		video.VideoReader videoReader = new VideoReader(vm);
+		video.VideoReader videoReader = new VideoReader(vm,com);
 
 
 		/*// get battery level
