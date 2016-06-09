@@ -18,6 +18,10 @@ public class NavSpot {
 		this.z=z;
 		this.id=id;
 	}
+	
+	public NavSpot(int id){
+		this.id=id;
+	}
 
 	public int getX() { return x; }
 	public void setX(int x) { this.x = x; }
