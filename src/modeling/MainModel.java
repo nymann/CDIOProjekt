@@ -83,9 +83,9 @@ public class MainModel {
 		wall = new ArrayList<>();
 		wall.add(new QRPoint(847, -10, z, 0200));
 		wall.add(new QRPoint(656, -77, z, 0201));
-		wall.add(new QRPoint(420,   0, z, 0202));
-		wall.add(new QRPoint(350,   0, z, 0203));
-		wall.add(new QRPoint(150,   0, z, 0204));
+		wall.add(new QRPoint(514,   0, z, 0202));
+		wall.add(new QRPoint(328,   0, z, 0203));
+		wall.add(new QRPoint(143,   0, z, 0204));
 		QRPoints.add(wall);
 		//Wall 3
 		wall = new ArrayList<>();

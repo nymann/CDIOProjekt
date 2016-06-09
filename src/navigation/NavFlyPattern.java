@@ -45,12 +45,12 @@ public class NavFlyPattern {
 	//	private List<Point> colorAnalyseGreen = new List<>();
 	private IARDrone drone;
 
-	public void flyLane(){
+	public void flyLane(int startSpot, int endSpot){
 		/*
 		 * using OF, fly between one start and end
-		 * finde ud af hvordan man ikke flyver ind i ting!!
 		 * once every 1 meter or something take picture, get this analyzed for cubes
 		 * needs plan for flying around/over boxes
+		 * finde ud af hvordan man ikke flyver ind i ting!!
 		 *  Optical flow:
 		 * tage to billeder og give OF
 		 * få en gennemsnits vektor for dronens bevægelse
@@ -60,7 +60,11 @@ public class NavFlyPattern {
 		//		colorAnalyseGreen.add(new Point(926, 904));
 		//		paGreen.setColor(colorAnalyseRed);
 //		of.(image);
-
+		
+		NavSpot sSpot = spots.get(startSpot);
+		NavSpot eSpot = spots.get(endSpot);
+		
+		
 		findCubes();
 
 	}
@@ -98,13 +102,20 @@ public class NavFlyPattern {
 		 * ud fra current position, ska regnet vinklen til spotIDs position og distancen
 		 * flyve afstanden.
 		 */
+		NavSpot goToSpot = spots.get(spotID);
+		int goToX = goToSpot.getX();
+		int goToY = goToSpot.getY();
+		double difX = currentX-goToX; 
+		double difY = currentY-goToY;
 		
+		double atan = Math.atan2(difY, difX);
+		double changeAngle = atan-droneAngle;
 		
 	}
 
 	private void findCubes(){
 		/* Cubes:
-		 * ska have nuværende droneposition og attitude
+		 * ska have nuværende dronePosition og attitude(YAW)
 		 * DronePos burde kunne regnes ud fra OF
 		 * resultat af analyze og attitude ska sendes til anden klasse som gemmer dem i modellen
 		 */

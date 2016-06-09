@@ -24,13 +24,17 @@ public class NavigationControl {
 	NavFlyPattern flyPat = new NavFlyPattern();
 	IARDrone drone;
 
-	private void runNav (){
+	private void runNav(){
 		double xPos = findPos.getPositionX();
 		double yPos = findPos.getPositionY();
 		
 		flyPat.flyToSpot(xPos, yPos, 0);
-		if(flyPat.atSpot(0)) flyPat.flyLane();
-
+		
+		if(flyPat.atSpot(0)) flyPat.flyLane(0, 1);
+		else flyPat.flyToSpot(xPos, xPos, 0);
+		
+		
+		
 	}
 
 	private void presentResults(){
