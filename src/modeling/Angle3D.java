@@ -13,7 +13,18 @@ public class Angle3D {
 	private double pitch;
 	private double roll;
 	private double yaw;
+	
+	public Angle3D(double pitch, double roll,double yaw){
+		this.pitch = pitch;
+		this.roll = roll;
+		this.yaw = yaw;
+	}
 
+	public Angle3D(double pitch, double roll){
+		this.pitch = pitch;
+		this.roll = roll;
+		this.yaw = 0;
+	}
 
 	public double getPitch() {
 		return pitch;

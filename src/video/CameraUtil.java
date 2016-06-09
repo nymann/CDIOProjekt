@@ -16,12 +16,12 @@ public class CameraUtil {
 	final static double frontCamAngle = 93;
 	final static int frontHeight = 720;
 	final static int frontWidth = 1280;
-	final static double frontDepth = Math.sqrt(frontWidth*frontWidth + frontHeight*frontHeight) / Math.tan(Math.toRadians(frontCamAngle/2));
+	final static double frontDepth = Math.sqrt(frontWidth*frontWidth + frontHeight*frontHeight) / 2 / Math.tan(Math.toRadians(frontCamAngle/2));
 	
 	final static float downCamAngle = 64;
 	final static int downHeight = 240;
 	final static int downWidth = 320;
-	final static double downDepth = Math.sqrt(downWidth*downWidth + downHeight*downHeight) / Math.tan(Math.toRadians(downCamAngle/2));
+	final static double downDepth = Math.sqrt(downWidth*downWidth + downHeight*downHeight)/ 2 / Math.tan(Math.toRadians(downCamAngle/2));
 	
 	/**
 	 *
@@ -33,8 +33,7 @@ public class CameraUtil {
 		x = convertX(x, frontWidth);
 		y = convertY(y, frontHeight);
 		Point3D point = new Point3D(x, y, frontDepth);
-		point.normalize();
-		return point;
+		return point.normalize();
 	} 
 
 	/**
@@ -47,8 +46,7 @@ public class CameraUtil {
 		x = convertX(x, downWidth);
 		y = convertY(y, downHeight);
 		Point3D point = new Point3D(x, y, downDepth);
-		point.normalize();
-		return point;
+		return point.normalize();
 	}
 	
 	private static int convertX(int x, int width){
