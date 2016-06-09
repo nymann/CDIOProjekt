@@ -28,7 +28,7 @@ public class PictureAnalyser {
 	static Mat pic ;
     private List<Scalar> color;
     
-	public void init() {
+	public static void init() {
 		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
 	}
 	public void setColor(List<Point> coloranalyse) {
@@ -43,7 +43,7 @@ public class PictureAnalyser {
 		Mat frameBlur = new Mat();
 		pic = blur(frameMat, 5);
 		Mat imgHSV = new Mat();
-		Imgproc.cvtColor(pic, imgHSV, Imgproc.COLOR_BGR2HSV);
+		Imgproc.cvtColor(pic, imgHSV, Imgproc.COLOR_RGB2HSV);
 		/*
 		Scalar high = new Scalar(125, 255, 255);
 		Scalar low = new Scalar(100, 40, 40);
@@ -82,6 +82,7 @@ public class PictureAnalyser {
 	//	System.out.println("count Green: "+ counterG+" count Red: " +counterR);
 	//	return img;
 	}
+	
 	   public static List<Point> getblocks ( List<MatOfPoint> contours ){
 	        List<Moments> mu = new ArrayList<Moments>(contours.size());
 	       // List<Moments> muOld = new ArrayList<Moments>(contours.size());
@@ -104,9 +105,24 @@ public class PictureAnalyser {
 	   public static List<MatOfPoint> getConturs ( Scalar low, Scalar high, Mat img  ){
 		     
            
-	        Mat imgThresholded = new Mat();
-	       Core.inRange(img, low, high, imgThresholded);
-	       
+		   Mat imgThresholded = new Mat();
+	       Mat imgThresholded2 = new Mat();
+	         Core.inRange(img, low, high, imgThresholded);
+	       if(low.val[0]<0){
+	           low.val[0]=180-low.val[0];
+	           high.val[0]=179;
+	           
+	           Core.inRange(img, low, high, imgThresholded2);
+	           Core.bitwise_or(imgThresholded, imgThresholded2, imgThresholded);
+	           
+	       }if(high.val[0]>179){
+	           low.val[0]=0;
+	           high.val[0]=high.val[0]-180;
+	           
+	           Core.inRange(img, low, high, imgThresholded2);
+	           Core.bitwise_or(imgThresholded, imgThresholded2, imgThresholded);
+	       }
+	        
 	       
 	       List<MatOfPoint> contours = new ArrayList<MatOfPoint>();
 	         int dilation_size = 3;
@@ -253,8 +269,9 @@ public class PictureAnalyser {
 	       double Y_Diff = p.y - q.y;
 	       return Math.sqrt((X_Diff * X_Diff) + (Y_Diff * Y_Diff));
 	   }
-	   public List<Point> Calibrate(BufferedImage img){
-	       
+	//   public List<Point> Calibrate(BufferedImage img){
+	   public static BufferedImage Calibrate(BufferedImage img){
+			       
 
            Mat frameMat = new Mat();
 	frameMat = bufferedImageToMat(img);
@@ -262,44 +279,52 @@ public class PictureAnalyser {
            
               pic = blur(frameMat,3);
 
-            Mat imgHSV = new Mat();
-           
-              Imgproc.cvtColor(pic, imgHSV, Imgproc.COLOR_BGR2HSV);
+            
+          
+
+    		Mat imgHSV = new Mat();
+    		Imgproc.cvtColor(pic, imgHSV, Imgproc.COLOR_RGB2HSV);
+    		
+  
             
               
               int højde =10;
               int brede = 10;   
                 int hue=0;
               int saturation=0;
-              int vis=0;
+              int value=0;
               for(int i=0;i<højde;i++){
                    for(int j=0;j<brede;j++){
              double[] testColor=imgHSV.get((imgHSV.height()/2)-(brede/2)+i,(imgHSV.width()/2)-(højde/2)+j);
-            if(testColor[0]>165)testColor[0]=testColor[0]-180;
+            if(testColor[0]>174)testColor[0]=testColor[0]-180;
              hue= hue+(int)testColor[0];
              saturation= saturation+(int)testColor[1];
-             vis = vis+(int)testColor[2];
+             value = value+(int)testColor[2];
              
                }
               }
               
               hue= hue/(højde*brede);
               saturation= saturation/(højde*brede);
-              vis= vis/(højde*brede);
+              value= value/(højde*brede);
               
-            Imgproc.rectangle(imgHSV,new Point(imgHSV.width()/2-brede/2,imgHSV.height()/2-højde/2),new Point(imgHSV.width()/2+brede/2,imgHSV.height()/2+højde/2),new Scalar(hue,saturation,vis));
+            Imgproc.rectangle(imgHSV,new Point(imgHSV.width()/2-brede/2,imgHSV.height()/2-højde/2),new Point(imgHSV.width()/2+brede/2,imgHSV.height()/2+højde/2),new Scalar(hue,saturation,value));
            
-             Imgproc.cvtColor(imgHSV, pic, Imgproc.COLOR_HSV2BGR);  
+             Imgproc.cvtColor(imgHSV, pic, Imgproc.COLOR_HSV2RGB);  
              Imgproc.circle(pic, new Point(imgHSV.width()/2, imgHSV.height()/2), 4, new Scalar(255,49,255,255));   
 	
-    Scalar high =new Scalar(hue+10,saturation+50,vis+50);
-              Scalar low =new Scalar(hue-10,saturation-50,vis-50);
+    Scalar high =new Scalar(hue+10,saturation+50,value+50);
+              Scalar low =new Scalar(hue-10,saturation-50,value-50);
    List<Point> color = new ArrayList<>();
    color.add(new Point(hue-5,hue+5));
     color.add(new Point(saturation-40,saturation+40));
-   color.add(new Point(vis-40,vis+40));
+   color.add(new Point(value-40,value+40));
+   System.out.println("test the system:" +hue+" "+saturation+" "+value);
+		img = mat2Img(pic);
+	//	System.out.println("count Green: "+ counterG+" count Red: " +counterR);
+		return img;
   
-   return color;
+ //  return color;
 }
 
 }
