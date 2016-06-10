@@ -1,10 +1,6 @@
 package navigation;
 
-import QRWallMarks.QRInfo;
 import de.yadrone.base.IARDrone;
-import de.yadrone.base.video.ImageListener;
-
-import java.awt.image.BufferedImage;
 
 /**
  * @author Kim
@@ -12,8 +8,16 @@ import java.awt.image.BufferedImage;
 
 public class NavFindPosition {
 
+    // This class needs: video.VideoReader, modeling.MainModel
+    //
+    // and a attitudeListener to get the YAW value for the turn360().
+    // We need modeling.MainModel, to specify number of scanned QRPoints pr.
+    // rotation.
+    // DronePosition is retrievable in modeling.MainModel.
+
+
 	/*
-	 * call QR-reader
+     * call QR-reader
 	 * spin to read 3 QR points
 	 * get the calculation of position
 	 * declare the position
@@ -27,7 +31,6 @@ public class NavFindPosition {
         //dronePossition.PointNavigation
         //positionX = ;
         //positionY = ;
-
     }
 
     private void navigateWhenLost() {
@@ -38,8 +41,6 @@ public class NavFindPosition {
             a wall.
         */
 
-        // hovering should probably be done in another class.
-        drone.hover();
 
         /* 1. call turn360degrees();
         *  2. if (qRCodesFound < 3) {
@@ -50,8 +51,18 @@ public class NavFindPosition {
 
     }
 
-    // Bliver kaldt i NavFlyPattern pt, men NavFlyPattern bør kalde
-    // QRPossitioning/PointNavigation.
+    // we could take yaw as a parameter, and then spin left until the yaw is
+    // back to that value (from +180 to -180).
+    private void turn360degrees() {
+
+        // until we can get yaw value from modeling.MainModel we implement it
+        // this way..
+        drone.getCommandManager().spinLeft(5).doFor(5000);
+    }
+
+
+    // Currently gets called by NavFlyPattern, but NavFlyPattern should call
+    // modeling.MainModel.
     public double getPositionX() {
         return positionX;
     }
