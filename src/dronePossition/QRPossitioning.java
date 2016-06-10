@@ -34,6 +34,14 @@ public class QRPossitioning implements ImageListener, AttitudeListener {
 	public void setOutput(TextPanel panel){
 		this.output = panel;
 	}
+	
+	public int getQRCount(){
+		return qrListe.size();
+	}
+	
+	public void reset(){
+		this.qrListe = new ArrayList<>();
+	}
 
 	@Override
 	public void imageUpdated(BufferedImage qrcodeImage) {
@@ -147,6 +155,7 @@ public class QRPossitioning implements ImageListener, AttitudeListener {
 				Point2D position = nav.findPosition();
 				output("Found position at " + position);
 				model.setDronePosition(position);
+				
 			} 
 		}			
 	}
