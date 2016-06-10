@@ -146,7 +146,35 @@ public class QRPossitioning implements ImageListener, AttitudeListener {
 
 				Point2D position = nav.findPosition();
 				output("Found position at " + position);
+
+				// Her er dronens position i koordinater.
 				model.setDronePosition(position);
+				
+				// Vinkel fra 'frem' og QR-koden og vinkel drone og QR-koden.
+				double dronex = position.getX();
+				double droney = position.getY();
+				
+				double qrx = model.getQRPoint(qri).getX();
+				double qry = model.getQRPoint(qri).getY();
+				
+				double diffx = qrx-dronex;
+				double diffy = qry-droney;
+				
+				// Mellem drone og QR.
+				double atan = Math.atan2(diffy, diffx);
+				
+				// Mellem QR og frem.
+				double diffx2 = qrx-0;
+				double diffy2 = qry-1;
+				
+				double forwardAngle = Math.atan2(diffy2, diffx2);
+				
+				//Forskel på virkligheden.
+				double diffAngle = forwardAngle-atan;
+				
+				//Vinkel forskellen lægges til/trækkes fra.
+				atan = atan+diffAngle;
+				
 			} 
 		}			
 	}
