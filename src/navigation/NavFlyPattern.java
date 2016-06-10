@@ -118,7 +118,7 @@ public class NavFlyPattern {
 		double difY = currentY-goToY;
 		
 		double atan = Math.atan2(difY, difX);
-//		double changeAngle = atan-droneAngle;
+		double changeAngle = atan-droneAngle;
 		
 	}
 
