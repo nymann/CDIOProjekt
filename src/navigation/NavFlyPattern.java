@@ -33,17 +33,25 @@ public class NavFlyPattern {
 	drone.reset();
 	 */
 
-	private NavigationControl nc = new NavigationControl();
-	private NavFindPosition fp = new NavFindPosition();
-	private List<NavSpot> spots = new ArrayList<>();
-	private modeling.MainModel mm = new MainModel();
+//	private NavigationControl nc = new NavigationControl();
+	private NavFindPosition fp;
+	private List<NavSpot> spots;
+	private modeling.MainModel mm;
 	private BufferedImage image;
-	private modeling.AverageFlowVector of = new AverageFlowVector();
+	private modeling.AverageFlowVector of;
 	//	private video.PictureAnalyser paRed = new PictureAnalyser();
 	//	private List<Point> colorAnalyseRed = new List<>();
 	//	private video.PictureAnalyser paGreen = new PictureAnalyser();
 	//	private List<Point> colorAnalyseGreen = new List<>();
 	private IARDrone drone;
+	
+	public NavFlyPattern(){
+		fp = new NavFindPosition();
+		spots = new ArrayList<>();
+		mm = new MainModel();
+		of = new AverageFlowVector();
+		
+	}
 
 	public void flyLane(int startSpot, int endSpot){
 		/*
@@ -61,8 +69,9 @@ public class NavFlyPattern {
 		//		paGreen.setColor(colorAnalyseRed);
 //		of.(image);
 		
-		NavSpot sSpot = spots.get(startSpot);
-		NavSpot eSpot = spots.get(endSpot);
+		
+		NavSpot ss = spots.get(startSpot);
+		NavSpot es = spots.get(endSpot);
 		
 		
 		findCubes();
@@ -109,7 +118,7 @@ public class NavFlyPattern {
 		double difY = currentY-goToY;
 		
 		double atan = Math.atan2(difY, difX);
-		double changeAngle = atan-droneAngle;
+//		double changeAngle = atan-droneAngle;
 		
 	}
 
@@ -124,10 +133,7 @@ public class NavFlyPattern {
 		
 
 	}
-    
-	private void imageUpdated(BufferedImage bufferedImage) {
-        this.image = bufferedImage;
-    }
+
 
 
 }

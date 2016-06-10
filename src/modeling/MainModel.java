@@ -22,7 +22,7 @@ public class MainModel {
 	private List<Cube> cubes = new ArrayList<>();
 	
 	private Point3D dronePosition;
-	private Angle3D droneOrientation;
+	private Angle3D droneAttitude;
 	private Point3D droneDirection;
 	private Point3D roomSize;
 

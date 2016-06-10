@@ -1,6 +1,12 @@
 package navigation;
 
+import java.awt.image.BufferedImage;
+
 import de.yadrone.base.IARDrone;
+import de.yadrone.base.command.CommandManager;
+import de.yadrone.base.video.ImageListener;
+import de.yadrone.base.video.VideoManager;
+import video.VideoReader;
 
 /**
  *
@@ -8,36 +14,48 @@ import de.yadrone.base.IARDrone;
  */
 
 public class NavigationControl {
-	/*
-	 * NavFindPosition 
-	 * NavFlyPattern from currentPos -> startSpot1
-	 * NavFlyPattern(1)
-	 * NavFindPosition
-	 * NavFlyPattern(2)
-	 * .
-	 * .
-	 * Ha metode som holder øje med om vi er fløjet over slutstedet
-	 * PresentResults()
-	 */
+ 
+	private VideoManager vm;
+	private CommandManager cm;
+	private NavFlyPattern flyPat;
+	private NavFindPosition findPos;
+	private video.VideoReader vr;
+	private IARDrone drone;
+	private BufferedImage buffI;
 
-	NavFindPosition findPos = new NavFindPosition();
-	NavFlyPattern flyPat = new NavFlyPattern();
-	IARDrone drone;
+	NavigationControl(ImageListener imgList){
+		findPos = new NavFindPosition();
+		flyPat = new NavFlyPattern();
+		vm = drone.getVideoManager();
+		cm = drone.getCommandManager();
+		vr = new VideoReader(vm, cm);
+		
+		runNav();
+		presentResults();
+	}
 
 	private void runNav(){
+		
 		double xPos = findPos.getPositionX();
 		double yPos = findPos.getPositionY();
 		
-		flyPat.flyToSpot(xPos, yPos, 0);
+		try {
+			for (int i=0; i<14; i++) {
+				flyPat.flyToSpot(xPos, yPos, i);
+				if(flyPat.atSpot(0)) flyPat.flyLane(i, i+1);
+				else flyPat.flyToSpot(xPos, xPos, i);
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
 		
-		if(flyPat.atSpot(0)) flyPat.flyLane(0, 1);
-		else flyPat.flyToSpot(xPos, xPos, 0);
 		
 		
 		
 	}
 
 	private void presentResults(){
+		
 
 	}
 }

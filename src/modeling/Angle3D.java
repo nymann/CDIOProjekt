@@ -10,6 +10,7 @@ package modeling;
  * @author Mikkel
  */
 public class Angle3D {
+	// Saing
 	private double pitch;
 	private double roll;
 	private double yaw;
