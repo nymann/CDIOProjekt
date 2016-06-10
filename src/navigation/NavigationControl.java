@@ -35,13 +35,20 @@ public class NavigationControl {
 	}
 
 	private void runNav(){
+		
 		double xPos = findPos.getPositionX();
 		double yPos = findPos.getPositionY();
-
-		flyPat.flyToSpot(xPos, yPos, 0);
-
-		if(flyPat.atSpot(0)) flyPat.flyLane(0, 1);
-		else flyPat.flyToSpot(xPos, xPos, 0);
+		
+		try {
+			for (int i=0; i<14; i++) {
+				flyPat.flyToSpot(xPos, yPos, i);
+				if(flyPat.atSpot(0)) flyPat.flyLane(i, i+1);
+				else flyPat.flyToSpot(xPos, xPos, i);
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		
 		
 		
 		
