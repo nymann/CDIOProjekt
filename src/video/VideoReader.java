@@ -87,5 +87,4 @@ public class VideoReader implements ImageListener {
 		}
 		this.camMode = mode;
 	}
-
 }
