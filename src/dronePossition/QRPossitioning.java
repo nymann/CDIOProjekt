@@ -169,20 +169,11 @@ public class QRPossitioning implements ImageListener, AttitudeListener {
 				double diffy = qry-droney;
 				
 				// Mellem drone og QR.
-				double atan = Math.atan2(diffy, diffx);
-				
-				// Mellem QR og frem.
-				double diffx2 = qrx-0;
-				double diffy2 = qry-1;
-				
-				double forwardAngle = Math.atan2(diffy2, diffx2);
+				double angelToQR = Math.atan2(diffy, diffx);
 				
 				//Forskel på virkligheden.
-				double diffAngle = forwardAngle-atan;
-				
-				//Vinkel forskellen lægges til/trækkes fra.
-				atan = atan+diffAngle;
-				
+				double diffAngle = qri.angle+angelToQR-0.5*Math.PI;
+				model.setAngleOffset(diffAngle);
 			} 
 		}			
 	}

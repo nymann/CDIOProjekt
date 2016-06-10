@@ -23,8 +23,25 @@ public class MainModel {
 	
 	private Point3D dronePosition;
 	private Angle3D droneAttitude;
+	public Angle3D getDroneAttitude() {
+		return droneAttitude;
+	}
+
+	public void setDroneAttitude(Angle3D droneAttitude) {
+		this.droneAttitude = droneAttitude;
+	}
+
 	private Point3D droneDirection;
 	private Point3D roomSize;
+	private double angleOffset;
+
+	public double getAngleOffset() {
+		return angleOffset;
+	}
+
+	public void setAngleOffset(double angleOffset) {
+		this.angleOffset = angleOffset;
+	}
 
 	public MainModel() {
 		FillQRPoints();
