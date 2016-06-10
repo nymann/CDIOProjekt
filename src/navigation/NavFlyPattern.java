@@ -70,8 +70,8 @@ public class NavFlyPattern {
 //		of.(image);
 		
 		
-		NavSpot sSpot = spots.get(startSpot);
-		NavSpot eSpot = spots.get(endSpot);
+		NavSpot ss = spots.get(startSpot);
+		NavSpot es = spots.get(endSpot);
 		
 		
 		findCubes();
@@ -118,7 +118,7 @@ public class NavFlyPattern {
 		double difY = currentY-goToY;
 		
 		double atan = Math.atan2(difY, difX);
-		double changeAngle = atan-droneAngle;
+//		double changeAngle = atan-droneAngle;
 		
 	}
 
