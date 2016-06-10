@@ -19,8 +19,6 @@ public class NavFindPosition {
 	 * declare the position
 	 */
 
-    public BufferedImage image;
-    NavigationControl nc = new NavigationControl();
     IARDrone drone;
     double positionX;
     double positionY;

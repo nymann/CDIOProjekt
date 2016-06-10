@@ -1,5 +1,7 @@
 package QRWallMarks;
 
+import java.util.ArrayList;
+
 /**
  * Created by Nymann on 06-06-2016.
  */
