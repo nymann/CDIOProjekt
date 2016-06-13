@@ -24,7 +24,7 @@ public class YawTest {
 		// connecting to drone
 		try {
 			drone = new ARDrone();
-			System.out.println("Starting Drone");
+			System.out.println("Starting Drone.");
 			drone.start();
 		} catch (Exception exc) {
 			System.err.println(exc.getMessage());
@@ -45,7 +45,7 @@ public class YawTest {
 				System.out.println("Yaw = " + model.getDroneAttitude().getYaw());
 			}
 			try {
-				Thread.currentThread().wait(500);
+				Thread.currentThread().wait(300);
 			} catch (Exception e){
 				
 			}
