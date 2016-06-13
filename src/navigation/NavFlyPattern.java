@@ -130,7 +130,7 @@ public class NavFlyPattern {
 
 		// Drej til spot, derefter flyv til spot.
 		double maxSpin = (7*Math.PI/6);
-		if(drone.spinLeft() < maxSpin) {
+		if(true) {
 			double test1 = mm.getDroneAttitude().getYaw();
 			drone.spinLeft();
 		}
