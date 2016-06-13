@@ -6,6 +6,7 @@ import de.yadrone.base.IARDrone;
 import de.yadrone.base.command.CommandManager;
 import de.yadrone.base.video.ImageListener;
 import de.yadrone.base.video.VideoManager;
+import modeling.MainModel;
 import video.VideoReader;
 
 /**
@@ -17,18 +18,20 @@ public class NavigationControl {
  
 	private VideoManager vm;
 	private CommandManager cm;
+	private MainModel mm;
 	private NavFlyPattern flyPat;
 	private NavFindPosition findPos;
-	private video.VideoReader vr;
+	private VideoReader vr;
 	private IARDrone drone;
 	private BufferedImage buffI;
 
-	NavigationControl(ImageListener imgList){
-		findPos = new NavFindPosition();
-		flyPat = new NavFlyPattern();
+	NavigationControl(VideoReader vr){
+		this.vr = vr;
 		vm = drone.getVideoManager();
 		cm = drone.getCommandManager();
 		vr = new VideoReader(vm, cm);
+		findPos = new NavFindPosition(mm, vr, drone);
+		flyPat = new NavFlyPattern();
 		
 		runNav();
 		presentResults();
@@ -36,13 +39,13 @@ public class NavigationControl {
 
 	private void runNav(){
 		
-		double xPos = findPos.getPositionX();
-		double yPos = findPos.getPositionY();
+		double xPos = mm.getDronePosition().getX();
+		double yPos = mm.getDronePosition().getY();
 		
 		try {
 			for (int i=0; i<14; i++) {
 				flyPat.flyToSpot(xPos, yPos, i);
-				if(flyPat.atSpot(0)) flyPat.flyLane(i, i+1);
+				if(flyPat.atSpot(xPos, yPos, i)) flyPat.flyLane(i, i+1);
 				else flyPat.flyToSpot(xPos, xPos, i);
 			}
 		} catch (Exception e) {
@@ -55,7 +58,9 @@ public class NavigationControl {
 	}
 
 	private void presentResults(){
-		
+		/*
+		 * Ska gemme resultaterne vdr cubes og 
+		 */
 
 	}
 }

@@ -78,16 +78,16 @@ public class NavFlyPattern {
 
 	}
 
-	public boolean atSpot(int spotID){
+	public boolean atSpot(double currentX, double currentY, int spotID){
 		/*
 		 * makes sure dronePosition is within acceptable range of spotIDs location
 		 */
 		boolean bool = false;
 
-		double dronePosX = fp.getPositionX();
-		double dronePosY = fp.getPositionY();
-		//		double dronePosX = 75;
-		//		double dronePosY = 76;
+		currentX = mm.getDronePosition().getX();
+		currentY = mm.getDronePosition().getX();
+		//		double currentX = 75;
+		//		double currentY = 76;
 
 		NavSpot spot = mm.getNavSpot(spotID);
 		int xSpot = spot.getX();
@@ -96,10 +96,10 @@ public class NavFlyPattern {
 		System.out.println(xSpot + " " + ySpot );
 
 		int range = 12;
-		int xRangeMax = (int) dronePosX+range;
-		int xRangeMin = (int) dronePosX-range;
-		int yRangeMax = (int) dronePosY+range;
-		int yRangeMin = (int) dronePosY-range;
+		int xRangeMax = (int) currentX+range;
+		int xRangeMin = (int) currentX-range;
+		int yRangeMax = (int) currentY+range;
+		int yRangeMin = (int) currentY-range;
 
 		if ((xRangeMin<=xSpot&&xSpot<=xRangeMax) && (yRangeMin<=ySpot&&ySpot<=yRangeMax)) bool=true;
 
