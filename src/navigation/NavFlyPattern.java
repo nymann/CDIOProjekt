@@ -120,6 +120,23 @@ public class NavFlyPattern {
 		double atan = Math.atan2(difY, difX);
 		double changeAngle = atan-mm.getAngleOffset()+mm.getDroneAttitude().getYaw();
 		
+		// Længde fra dronen til start spot.
+		double distBetweenDroneAndSpot = Math.pow(difX,2) + Math.pow(difY,2);
+		distBetweenDroneAndSpot = Math.sqrt(distBetweenDroneAndSpot);
+		
+		// Drej til spot, derefter flyv til spot.
+		double maxSpin = (7*Math.PI/6);
+		if(drone.spinLeft() < maxSpin) {
+			double test1 = mm.getDroneAttitude().getYaw();
+			drone.spinLeft();
+		}
+		else {
+			drone.spinRight();
+		}
+		/* 1. Drej så vinklen passer.
+		 * 2. Flyv distancen mellem droenens nuværende position og punktet. 
+		 */
+		
 	}
 
 	private void findCubes(){
