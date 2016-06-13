@@ -3,6 +3,7 @@ package navigation;
 import de.yadrone.base.IARDrone;
 import de.yadrone.base.navdata.AttitudeListener;
 import modeling.MainModel;
+import video.VideoReader;
 
 /**
  * @author Kim
@@ -26,11 +27,11 @@ public class NavFindPosition {
 	 */
 
     IARDrone drone;
-    double positionX;
-    double positionY;
     MainModel mainModel;
+    VideoReader videoReader;
 
-    public NavFindPosition(MainModel mainModel) {
+    public NavFindPosition(MainModel mainModel, VideoReader videoReader) {
+        this.videoReader = videoReader;
         this.mainModel = mainModel;
     }
 
@@ -67,8 +68,7 @@ public class NavFindPosition {
 
     }
 
-    // we could take yaw as a parameter, and then spin left until the yaw is
-    // back to that value (from +180 to -180).
+    // yaw is presumed to go from 0 to 2*Math.PI
     private void turn360degrees() {
         double yawAtStart = mainModel.getDroneAttitude().getYaw();
 
@@ -79,7 +79,11 @@ public class NavFindPosition {
         //drone.getCommandManager().spinLeft(5).doFor(5000); LEGACY
 
         while ((mainModel.getDroneAttitude().getYaw() - yawAtStart) > 0.1) {
+            drone.getCommandManager().spinLeft(5);
             // Scanning for QR codes.
+
+            //
+
             System.out.println("Yaw: " + mainModel.getDroneAttitude().getYaw());
         }
 
