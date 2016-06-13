@@ -6,7 +6,6 @@ import de.yadrone.base.IARDrone;
 import de.yadrone.base.video.ImageListener;
 import listeners.Attitude;
 import modeling.MainModel;
-import video.VideoReader;
 
 import java.awt.image.BufferedImage;
 
@@ -48,13 +47,14 @@ public class NiceTest implements ImageListener {
 
             System.out.println("Yaw: " + mainModel.getDroneAttitude().getYaw());
         }
+        System.out.println("QR Codes found: " + qRCodesFound);
 
-        drone.hover();
+        drone.landing();
         //navigateWhenLost(qRCodesFound);
     }
 
     @Override
     public void imageUpdated(BufferedImage bufferedImage) {
-
+        this.bufferedImage = bufferedImage;
     }
 }
