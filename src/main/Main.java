@@ -12,7 +12,8 @@ import de.yadrone.base.configuration.ConfigurationManager;
 import de.yadrone.base.navdata.NavDataManager;
 import de.yadrone.base.video.VideoManager;
 import gui.MainWindow;
-import video.PictureAnalyser;
+import modeling.MainModel;
+import navigation.NavFindPosition;
 import video.VideoReader;
 
 //import control.DroneControl;
@@ -49,8 +50,15 @@ public class Main {
 
 		VideoManager vm = drone.getVideoManager();
 		video.VideoReader videoReader = new VideoReader(vm,com);
+		
+		MainModel model = new MainModel();
 
-
+		// Test af spin 360
+		NavFindPosition navPos = new NavFindPosition(model, videoReader, drone);
+		
+		drone.getCommandManager().takeOff();
+		navPos.turn360degrees();
+		
 		/*// get battery level
 		Battery battery = new Battery();
 		nm.addBatteryListener(battery);

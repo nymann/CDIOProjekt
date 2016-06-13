@@ -13,6 +13,7 @@ import modeling.MainModel;
 import modeling.NavSpot;
 import modeling.QRPoint;
 import video.PictureAnalyser;
+import video.VideoReader;
 
 /**
  *
@@ -33,24 +34,26 @@ public class NavFlyPattern {
 	drone.reset();
 	 */
 
-//	private NavigationControl nc = new NavigationControl();
 	private NavFindPosition fp;
 	private List<NavSpot> spots;
-	private modeling.MainModel mm;
-	private BufferedImage image;
-	private modeling.AverageFlowVector of;
+	private AverageFlowVector of;
+	private IARDrone drone;
+	private MainModel mm;
+	private VideoReader vr;
 	//	private video.PictureAnalyser paRed = new PictureAnalyser();
 	//	private List<Point> colorAnalyseRed = new List<>();
 	//	private video.PictureAnalyser paGreen = new PictureAnalyser();
 	//	private List<Point> colorAnalyseGreen = new List<>();
-	private IARDrone drone;
-	
-	public NavFlyPattern(){
-		fp = new NavFindPosition();
-		spots = new ArrayList<>();
-		mm = new MainModel();
-		of = new AverageFlowVector();
+
+	public NavFlyPattern(MainModel mm, VideoReader vr, IARDrone drone){
+		this.vr = vr;
+		this.mm = mm;
+		this.drone = drone;
 		
+		fp = new NavFindPosition(mm, vr, drone);
+		spots = new ArrayList<>();
+		of = new AverageFlowVector();
+
 	}
 
 	public void flyLane(int startSpot, int endSpot){
@@ -67,27 +70,28 @@ public class NavFlyPattern {
 		//		paRed.setColor(colorAnalyseRed);
 		//		colorAnalyseGreen.add(new Point(926, 904));
 		//		paGreen.setColor(colorAnalyseRed);
-//		of.(image);
+		//		of.(image);
+
 		
-		
+		double vecX, vecY;
+		vecX = of.x;
+		vecY = of.y;
+
 		NavSpot ss = spots.get(startSpot);
 		NavSpot es = spots.get(endSpot);
-		
-		
+
 		findCubes();
 
 	}
 
-	public boolean atSpot(int spotID){
+	public boolean atSpot(double currentX, double currentY, int spotID){
 		/*
 		 * makes sure dronePosition is within acceptable range of spotIDs location
 		 */
 		boolean bool = false;
 
-		double dronePosX = fp.getPositionX();
-		double dronePosY = fp.getPositionY();
-		//		double dronePosX = 75;
-		//		double dronePosY = 76;
+		currentX = mm.getDronePosition().getX();
+		currentY = mm.getDronePosition().getX();
 
 		NavSpot spot = mm.getNavSpot(spotID);
 		int xSpot = spot.getX();
@@ -96,10 +100,10 @@ public class NavFlyPattern {
 		System.out.println(xSpot + " " + ySpot );
 
 		int range = 12;
-		int xRangeMax = (int) dronePosX+range;
-		int xRangeMin = (int) dronePosX-range;
-		int yRangeMax = (int) dronePosY+range;
-		int yRangeMin = (int) dronePosY-range;
+		int xRangeMax = (int) currentX+range;
+		int xRangeMin = (int) currentX-range;
+		int yRangeMax = (int) currentY+range;
+		int yRangeMin = (int) currentY-range;
 
 		if ((xRangeMin<=xSpot&&xSpot<=xRangeMax) && (yRangeMin<=ySpot&&ySpot<=yRangeMax)) bool=true;
 
@@ -116,10 +120,24 @@ public class NavFlyPattern {
 		int goToY = goToSpot.getY();
 		double difX = currentX-goToX; 
 		double difY = currentY-goToY;
-		
+
 		double atan = Math.atan2(difY, difX);
 		double changeAngle = atan-mm.getAngleOffset()+mm.getDroneAttitude().getYaw();
-		
+
+		// Længde fra dronen til start spot.
+		double distBetweenDroneAndSpot = Math.pow(difX,2) + Math.pow(difY,2);
+		distBetweenDroneAndSpot = Math.sqrt(distBetweenDroneAndSpot);
+
+		// Drej til spot, derefter flyv til spot.
+		// Hvis mm bliver opdateret konstant.
+		// Test for commit.
+		while(mm.getDroneAttitude().getYaw() != changeAngle) {
+			drone.spinLeft();
+		}
+		// IKKE KLAR - Skal sættes en fart ind i stedet for ditrance.
+		int distBetweenDroneAndSpot2 = (int) distBetweenDroneAndSpot;
+		drone.getCommandManager().forward(5).doFor(distBetweenDroneAndSpot2);
+
 	}
 
 	private void findCubes(){
@@ -130,7 +148,7 @@ public class NavFlyPattern {
 		 */
 
 		//		paRed.getAnalyse(img);
-		
+
 
 	}
 
