@@ -130,6 +130,7 @@ public class NavFlyPattern {
 
 		// Drej til spot, derefter flyv til spot.
 		// Hvis mm bliver opdateret konstant.
+		// Test for commit.
 		while(mm.getDroneAttitude().getYaw() != changeAngle) {
 			drone.spinLeft();
 		}
