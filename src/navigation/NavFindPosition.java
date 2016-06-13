@@ -1,8 +1,10 @@
 package navigation;
 
+import QRWallMarks.QRInfo;
 import de.yadrone.base.IARDrone;
 import de.yadrone.base.navdata.AttitudeListener;
 import modeling.MainModel;
+import video.VideoReader;
 
 /**
  * @author Kim
@@ -26,12 +28,14 @@ public class NavFindPosition {
 	 */
 
     IARDrone drone;
-    double positionX;
-    double positionY;
     MainModel mainModel;
+    VideoReader videoReader;
 
-    public NavFindPosition(MainModel mainModel) {
+    public NavFindPosition(MainModel mainModel, VideoReader videoReader,
+                           IARDrone drone) {
+        this.videoReader = videoReader;
         this.mainModel = mainModel;
+        this.drone = drone;
     }
 
     private void navigateWhenLost(int qRCodesFound) {
@@ -44,15 +48,19 @@ public class NavFindPosition {
 
         switch (qRCodesFound) {
             case 0:
+                System.out.println("0 qRCodesFound");
                 // move in random direction or spinLeft one more time.
                 break;
             case 1:
+                System.out.println("1 qRCodesFound");
                 // move in one of the three other directions.
                 break;
             case 2:
+                System.out.println("2 qRCodesFound");
                 // we should know the distance between the two qRCodes,
                 break;
             case 3:
+                System.out.println("3 qRCodesFound");
                 // gucci
                 break;
         }
@@ -67,24 +75,30 @@ public class NavFindPosition {
 
     }
 
-    // we could take yaw as a parameter, and then spin left until the yaw is
-    // back to that value (from +180 to -180).
-    private void turn360degrees() {
+    // yaw is presumed to go from 0 to 2*Math.PI
+    public void turn360degrees() {
         double yawAtStart = mainModel.getDroneAttitude().getYaw();
-
-        //mainModel.getDroneAttitude().getYaw();
-        // until we can get yaw value from modeling.MainModel we implement it
-        // this way..
-
+        int qRCodesFound = 0;
         //drone.getCommandManager().spinLeft(5).doFor(5000); LEGACY
 
         while ((mainModel.getDroneAttitude().getYaw() - yawAtStart) > 0.1) {
+            drone.getCommandManager().spinLeft(5);
             // Scanning for QR codes.
+            QRInfo qrInfo = QRWallMarks.GetQRCode.readQRCode(videoReader.getImage());
+            if (qrInfo.error.equals("") && !qrInfo.name.equals("")) {
+                System.out.println("Decodemessage: " + qrInfo.name + ". At: " +
+                        qrInfo.x + ", " + qrInfo.y);
+                qRCodesFound++;
+            } else {
+                System.out.println(qrInfo.error);
+            }
+            //
+
             System.out.println("Yaw: " + mainModel.getDroneAttitude().getYaw());
         }
 
         drone.hover();
-
+        navigateWhenLost(qRCodesFound);
     }
 }
 
