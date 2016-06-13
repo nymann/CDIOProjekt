@@ -31,7 +31,7 @@ public class NavigationControl {
 		cm = drone.getCommandManager();
 		vr = new VideoReader(vm, cm);
 		findPos = new NavFindPosition(mm, vr, drone);
-		flyPat = new NavFlyPattern();
+		flyPat = new NavFlyPattern(mm, vr, drone);
 		
 		runNav();
 		presentResults();
