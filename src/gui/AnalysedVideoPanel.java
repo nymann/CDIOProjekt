@@ -6,6 +6,7 @@
 package gui;
 
 import video.PictureAnalyser;
+import video.PictureView;
 
 import java.awt.image.BufferedImage;
 
@@ -16,11 +17,18 @@ import static main.Main.downCamActive;
  */
 
 public class AnalysedVideoPanel extends VideoPanel {
+	public static BufferedImage bi2;
     @Override
     public void imageUpdated(BufferedImage bi) {
-        if (downCamActive) {
-            //this.image = PictureAnalyser.getAnalyse(bi);
-            this.setSize(image.getWidth(), image.getHeight());
+
+    	
+        if (!downCamActive) {
+        	bi2 = PictureView.setSize( bi,640,360);
+            this.image = MainWindow.paRed.getAnalyse(bi2);
+            bi2 = bi;
+           
+          //  this.setSize(image.getWidth(), image.getHeight());
+            this.repaint();
         }
     }
 }
