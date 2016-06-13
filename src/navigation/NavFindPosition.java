@@ -76,7 +76,7 @@ public class NavFindPosition {
     }
 
     // yaw is presumed to go from 0 to 2*Math.PI
-    private void turn360degrees() {
+    public void turn360degrees() {
         double yawAtStart = mainModel.getDroneAttitude().getYaw();
         int qRCodesFound = 0;
         //drone.getCommandManager().spinLeft(5).doFor(5000); LEGACY
