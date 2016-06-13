@@ -81,6 +81,10 @@ public class NavFindPosition {
         int qRCodesFound = 0;
         //drone.getCommandManager().spinLeft(5).doFor(5000); LEGACY
 
+        // We need to have a different value before we go into the while loop
+        // We should probably change the way this works. :-D
+        drone.getCommandManager().spinLeft(1).doFor(100);
+
         while ((mainModel.getDroneAttitude().getYaw() - yawAtStart) > 0.1) {
             drone.getCommandManager().spinLeft(5);
             // Scanning for QR codes.

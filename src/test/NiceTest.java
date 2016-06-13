@@ -5,9 +5,7 @@ import de.yadrone.base.ARDrone;
 import de.yadrone.base.IARDrone;
 import de.yadrone.base.navdata.AttitudeListener;
 import de.yadrone.base.video.ImageListener;
-import listeners.Attitude;
 import modeling.Angle3D;
-import modeling.MainModel;
 
 import java.awt.image.BufferedImage;
 
