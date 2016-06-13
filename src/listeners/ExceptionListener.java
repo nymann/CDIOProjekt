@@ -24,7 +24,7 @@ public class ExceptionListener implements IExceptionListener{
 	@Override
 	public void exeptionOccurred(ARDroneException arde) {
 		if (output == null){
-			System.out.println(arde.getMessage());
+			System.err.println(arde.getMessage());
 		} else {
 			output.addTextLine(arde.getMessage());
 		}
