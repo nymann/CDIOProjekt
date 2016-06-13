@@ -7,7 +7,12 @@ import de.yadrone.base.command.CommandManager;
 import de.yadrone.base.configuration.ConfigurationManager;
 import de.yadrone.base.navdata.NavDataManager;
 import de.yadrone.base.video.VideoManager;
+import gui.TextPanel;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import javax.swing.JFrame;
 import listeners.Attitude;
+import listeners.ExceptionListener;
 import modeling.MainModel;
 import video.VideoReader;
 
@@ -16,10 +21,30 @@ import video.VideoReader;
  */
 public class NiceTest {
 
+	static TextPanel output, exceptionOut;
+	
 	public static void main(String[] args) {
 		IARDrone drone = null;
 		ConfigurationManager configurationManager = null;
+		
 
+		output = new TextPanel();
+		exceptionOut = new TextPanel();
+		
+		Dimension outputSize = new Dimension(300, 500);
+		output.setPreferredSize(outputSize);
+		exceptionOut.setPreferredSize(outputSize);
+		
+		JFrame mainWindow = new JFrame();
+		mainWindow.getContentPane().setLayout(new FlowLayout());
+		mainWindow.getContentPane().add(output);
+		mainWindow.getContentPane().add(exceptionOut);
+		mainWindow.setVisible(true);
+		mainWindow.pack();
+		mainWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		ExceptionListener exceptionListener = new ExceptionListener(exceptionOut);
+		
 		// connecting to drone
 		do {
 			try {
@@ -29,36 +54,44 @@ public class NiceTest {
 				exc.printStackTrace();
 			}
 		} while (drone == null);
+		
+		drone.addExceptionListener(exceptionListener);
 
-		System.out.println("Starting Drone.");
+		output.addTextLine("Starting Drone.");
 		drone.start();
+		drone.reset();
 
 		try {
-			Thread.currentThread().sleep(1000);
+			Thread.currentThread().sleep(2000);
 		} catch (InterruptedException ex) {
+			output.addTextLine("sleep interupted");
 		}
 
 		configurationManager = drone.getConfigurationManager();
 		while (!configurationManager.isConnected()) {
-			System.out.println("Starting Drone.");
+			output.addTextLine("Couldn't connect to drone, retrying connection");
+			configurationManager.close();
 			drone.start();
+			configurationManager = drone.getConfigurationManager();
 
 			try {
-				Thread.currentThread().sleep(1000);
+				Thread.currentThread().sleep(2000);
 			} catch (InterruptedException ex) {
+				output.addTextLine("sleep interupted");
 			}
-			System.out.println("Drone connected: " + configurationManager.isConnected());
+
+			output.addTextLine("Drone connected: " + configurationManager.isConnected());
 		}
 
 		try {
 			doStuff(drone);
 		} catch (Exception e) {
 
-		} finally {
-			drone.landing();
-			drone.stop();
 		}
 
+		drone.landing();
+		drone.stop();
+		System.exit(0);
 	}
 
 	private static void doStuff(IARDrone drone) {
@@ -71,34 +104,49 @@ public class NiceTest {
 		Attitude att = new Attitude(model);
 		navDataManager.addAttitudeListener(att);
 
-		double startYaw = model.getDroneAttitude().getYaw() + Math.PI;
-		drone.getCommandManager().spinLeft(5);
-
+		output.addTextLine("Taking off");
+		commandManager.takeOff().doFor(5000);
+		//commandManager.hover();
+		//commandManager.backward(5);
+		
+		output.addTextLine("waiting for take off");
 		try {
-			Thread.sleep(100);
+			Thread.sleep(5000);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
 
-		double currentYaw = model.getDroneAttitude().getYaw() + Math.PI;
-		System.out.println("Starting yaw difference:" + (currentYaw - startYaw));
-		int qRCodesFound = 0;
-		while (Math.abs(startYaw - currentYaw) > 0.1) {
+		double startYaw = model.getDroneAttitude().getYaw() + Math.PI;
+		output.addTextLine("Spinning left");
+		commandManager.spinLeft(20);
 
-			if (model.getDroneAttitude() != null) {
-				System.out.println("Yaw = " + model.getDroneAttitude().getYaw());
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		
+
+
+		double currentYaw = model.getDroneAttitude().getYaw() + Math.PI;
+		output.addTextLine("Starting yaw difference:" + (currentYaw - startYaw));
+		int qRCodesFound = 0;
+		while (Math.abs(startYaw - currentYaw) > 0.01) {
+
+			/*if (model.getDroneAttitude() != null) {
+				output.addTextLine("Yaw = " + model.getDroneAttitude().getYaw());
 				QRInfo qrInfo = QRWallMarks.GetQRCode.readQRCode(videoReader.getImage());
 				if (qrInfo.error.equals("") && !qrInfo.name.equals("")) {
-					System.out.println("Decodemessage: " + qrInfo.name + ". At: "
+					output.addTextLine("Decodemessage: " + qrInfo.name + ". At: "
 							+ qrInfo.x + ", " + qrInfo.y);
 					qRCodesFound++;
 				} else {
-					System.out.println(qrInfo.error);
+					output.addTextLine(qrInfo.error);
 				}
-			}
+			}*/
 			currentYaw = model.getDroneAttitude().getYaw() + Math.PI;
 		}
-		System.out.println("QR-codes found: " + qRCodesFound);
+		output.addTextLine("QR-codes found: " + qRCodesFound);
 
 	}
 }

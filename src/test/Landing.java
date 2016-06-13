@@ -7,6 +7,8 @@ package test;
 
 import de.yadrone.base.ARDrone;
 import de.yadrone.base.IARDrone;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -30,6 +32,13 @@ public class Landing {
 		// getting managers
 		assert drone != null;
 		drone.getCommandManager().landing();
+		
+		try {
+			Thread.currentThread().sleep(3000);
+		} catch (InterruptedException ex) {
+		}
+		drone.stop();
+		System.exit(0);
 	}
 
 }
