@@ -71,11 +71,6 @@ public class NavFindPosition {
     // yaw is presumed to go from 0 to 2*Math.PI
     private void turn360degrees() {
         double yawAtStart = mainModel.getDroneAttitude().getYaw();
-
-        //mainModel.getDroneAttitude().getYaw();
-        // until we can get yaw value from modeling.MainModel we implement it
-        // this way..
-
         //drone.getCommandManager().spinLeft(5).doFor(5000); LEGACY
 
         while ((mainModel.getDroneAttitude().getYaw() - yawAtStart) > 0.1) {
