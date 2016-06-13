@@ -17,17 +17,19 @@ public class NiceTest implements ImageListener {
     private BufferedImage bufferedImage;
 
     public NiceTest() {
-
+    	drone = new ARDrone();
+    	drone.takeOff();
+    	turn360degrees();
     }
 
     public static void main(String[] args) {
-
+    	new NiceTest();
     }
 
     public void turn360degrees() {
-        drone = new ARDrone();
         MainModel mainModel = new MainModel();
         Attitude attitude = new Attitude(mainModel);
+        drone.getNavDataManager().addAttitudeListener(attitude);
         double yawAtStart = mainModel.getDroneAttitude().getYaw();
         int qRCodesFound = 0;
         //drone.getCommandManager().spinLeft(5).doFor(5000); LEGACY
