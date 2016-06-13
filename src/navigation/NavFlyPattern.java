@@ -129,17 +129,13 @@ public class NavFlyPattern {
 		distBetweenDroneAndSpot = Math.sqrt(distBetweenDroneAndSpot);
 
 		// Drej til spot, derefter flyv til spot.
-		double maxSpin = (7*Math.PI/6);
-		if(drone.spinLeft() < maxSpin) {
-			double test1 = mm.getDroneAttitude().getYaw();
+		// Hvis mm bliver opdateret konstant.
+		while(mm.getDroneAttitude().getYaw() != changeAngle) {
 			drone.spinLeft();
 		}
-		else {
-			drone.spinRight();
-		}
-		/* 1. Drej så vinklen passer.
-		 * 2. Flyv distancen mellem droenens nuværende position og punktet. 
-		 */
+		// IKKE KLAR - Skal sættes en fart ind i stedet for ditrance.
+		int distBetweenDroneAndSpot2 = (int) distBetweenDroneAndSpot;
+		drone.getCommandManager().forward(5).doFor(distBetweenDroneAndSpot2);
 
 	}
 
