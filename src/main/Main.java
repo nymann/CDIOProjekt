@@ -56,7 +56,7 @@ public class Main {
 		// Test af spin 360
 		NavFindPosition navPos = new NavFindPosition(model, videoReader, drone);
 		
-		drone.getCommandManager().takeOff();
+		//drone.getCommandManager().takeOff();
 		navPos.turn360degrees();
 		
 		/*// get battery level
