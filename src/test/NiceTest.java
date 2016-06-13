@@ -20,6 +20,7 @@ public class NiceTest {
         IARDrone drone = null;
 
         // connecting to drone
+
         try {
             drone = new ARDrone();
             System.out.println("Starting Drone.");
@@ -42,11 +43,26 @@ public class NiceTest {
         Attitude att = new Attitude(model);
         navDataManager.addAttitudeListener(att);
 
+        drone.takeOff();
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        while(model.getDroneAttitude() == null) {
+            try {
+                Thread.sleep(50);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
         double startYaw = model.getDroneAttitude().getYaw()+ Math.PI;
+
         drone.getCommandManager().spinLeft(5);
 
         try {
-            Thread.sleep(100);
+            Thread.sleep(5000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -70,7 +86,7 @@ public class NiceTest {
 			currentYaw = model.getDroneAttitude().getYaw()+ Math.PI;
         }
 
-        System.out.println("QR-codes found: " + qRCodesFound);
+        System.out.println("\t\t\t\t\t\tQR-codes found: " + qRCodesFound);
 		drone.landing();
     }
 }
