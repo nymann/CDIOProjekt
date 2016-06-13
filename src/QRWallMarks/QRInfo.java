@@ -1,14 +1,12 @@
 package QRWallMarks;
 
-import java.util.ArrayList;
-
 /**
  * Created by Nymann on 06-06-2016.
  */
 public class QRInfo {
     public String name;
     public String error;
-    public int x,y;
+    public int x, y;
     public double angle;
     public Boolean qRCodeFoundInCurrentImage;
 
