@@ -288,14 +288,15 @@ public class PictureAnalyser {
   
             
               
-              int højde =10;
+              int hÃ¸jde =10;
               int brede = 10;   
                 int hue=0;
               int saturation=0;
               int value=0;
-              for(int i=0;i<højde;i++){
+              for(int i=0;i<hÃ¸jde;i++){
                    for(int j=0;j<brede;j++){
-             double[] testColor=imgHSV.get((imgHSV.height()/2)-(brede/2)+i,(imgHSV.width()/2)-(højde/2)+j);
+             double[] testColor=imgHSV.get((imgHSV.height()/2)-(brede/2)+i,
+					 (imgHSV.width()/2)-(hÃ¸jde/2)+j);
             if(testColor[0]>174)testColor[0]=testColor[0]-180;
              hue= hue+(int)testColor[0];
              saturation= saturation+(int)testColor[1];
@@ -304,11 +305,13 @@ public class PictureAnalyser {
                }
               }
               
-              hue= hue/(højde*brede);
-              saturation= saturation/(højde*brede);
-              value= value/(højde*brede);
+              hue= hue/(hÃ¸jde*brede);
+              saturation= saturation/(hÃ¸jde*brede);
+              value= value/(hÃ¸jde*brede);
               
-            Imgproc.rectangle(imgHSV,new Point(imgHSV.width()/2-brede/2,imgHSV.height()/2-højde/2),new Point(imgHSV.width()/2+brede/2,imgHSV.height()/2+højde/2),new Scalar(hue,saturation,value));
+            Imgproc.rectangle(imgHSV,new Point(imgHSV.width()/2-brede/2,
+					imgHSV.height()/2-hÃ¸jde/2),new Point(imgHSV.width()
+					/2+brede/2,imgHSV.height()/2+hÃ¸jde/2),new Scalar(hue,saturation,value));
            
              Imgproc.cvtColor(imgHSV, pic, Imgproc.COLOR_HSV2RGB);  
              Imgproc.circle(pic, new Point(imgHSV.width()/2, imgHSV.height()/2), 4, new Scalar(255,49,255,255));   
