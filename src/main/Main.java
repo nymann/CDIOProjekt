@@ -14,6 +14,7 @@ import de.yadrone.base.video.VideoManager;
 import gui.MainWindow;
 import modeling.MainModel;
 import navigation.NavFindPosition;
+import video.PictureView;
 import video.VideoReader;
 
 //import control.DroneControl;
@@ -31,7 +32,7 @@ public class Main {
 
 	static public void main(String[] args) {
 		// Initialising OpenCV
-		//PictureAnalyser.init();
+		PictureView.init();
 
 		// connecting to drone
 		try {
