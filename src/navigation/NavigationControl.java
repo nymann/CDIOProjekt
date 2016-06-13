@@ -21,18 +21,17 @@ public class NavigationControl {
 	private MainModel mm;
 	private NavFlyPattern flyPat;
 	private NavFindPosition findPos;
-	private video.VideoReader vr;
+	private VideoReader vr;
 	private IARDrone drone;
 	private BufferedImage buffI;
 
-	NavigationControl(ImageListener imgList){
-		findPos = new NavFindPosition();
-		flyPat = new NavFlyPattern();
+	NavigationControl(VideoReader vr){
+		this.vr = vr;
 		vm = drone.getVideoManager();
 		cm = drone.getCommandManager();
 		vr = new VideoReader(vm, cm);
-		
-//		mm = NavFlyPattern(vr, , mm);
+		findPos = new NavFindPosition(mm, vr, drone);
+		flyPat = new NavFlyPattern();
 		
 		runNav();
 		presentResults();
@@ -40,8 +39,8 @@ public class NavigationControl {
 
 	private void runNav(){
 		
-		double xPos = findPos.getPositionX();
-		double yPos = findPos.getPositionY();
+		double xPos = mm.getDronePosition().getX();
+		double yPos = mm.getDronePosition().getY();
 		
 		try {
 			for (int i=0; i<14; i++) {
@@ -59,7 +58,9 @@ public class NavigationControl {
 	}
 
 	private void presentResults(){
-		
+		/*
+		 * Ska gemme resultaterne vdr cubes og 
+		 */
 
 	}
 }
