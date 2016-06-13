@@ -45,7 +45,7 @@ public class YawTest {
 				System.out.println("Yaw = " + model.getDroneAttitude().getYaw());
 			}
 			try {
-				Thread.currentThread().wait(500);
+				Thread.currentThread().sleep(500);
 			} catch (Exception e){
 				
 			}
