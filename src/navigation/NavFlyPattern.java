@@ -10,6 +10,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 import de.yadrone.base.IARDrone;
+import main.Main;
 import modeling.AverageFlowVector;
 import modeling.Cube;
 import modeling.MainModel;
@@ -46,7 +47,7 @@ public class NavFlyPattern {
 	private VideoReader vr;
 	private double vecX, vecY;
 	private BufferedImage bi;
-	private long newBit, lastBit;
+	private long pastTimeStamp, currentTimeStamp;
 	private ScheduledExecutorService excCubes;
 	private ScheduledExecutorService excOF;
 	private OpticalFlow opFlow;
@@ -60,6 +61,7 @@ public class NavFlyPattern {
 		fp = new NavFindPosition(mm, vr, drone);
 		of = new AverageFlowVector();
 		spots = new ArrayList<>();
+		drone.setSpeed(Main.globalDroneSpeed);
 
 	}
 
@@ -78,7 +80,8 @@ public class NavFlyPattern {
 
 		
 		bi = vr.getImage();
-		newBit = vr.getImageTime();
+		currentTimeStamp = vr.getImageTime();
+		pastTimeStamp = 0;
 		
 		//Runnable command, long initialDelay, long period, TimeUnit unit
 		excCubes = Executors.newSingleThreadScheduledExecutor();
@@ -93,10 +96,10 @@ public class NavFlyPattern {
 		excCubes.scheduleAtFixedRate(new Runnable() {
 		  @Override
 		  public void run() {
-			  p3d = flowFinderByVectors(bi, newBit);
+			  p3d = flowFinderByVectors(bi, currentTimeStamp);
 			  while(p3d == null){
 				  Thread.sleep(1000);
-				  p3d = flowFinderByVectors(bi, newBit);
+				  p3d = flowFinderByVectors(bi, currentTimeStamp);
 			  };
 		  }
 		}, 0, 1, TimeUnit.SECONDS);
@@ -105,24 +108,38 @@ public class NavFlyPattern {
 	
 	private Point3D flowFinderByVectors(BufferedImage img, long timeStamp){
 		bi = img;
-		newBit = timeStamp;
+		currentTimeStamp = timeStamp;
 		AverageFlowVector afv;
+		double posByqrX;
+		double posByqrY;
 		
-		Point3D p3dUpdated;
+		Point3D posUpdateByOF;
+		
+		posByqrX = mm.getDronePosition().getX();
+		posByqrY = mm.getDronePosition().getX();
 		
 		afv = opFlow.findFlows(bi);
 		vecX = afv.x;
 		vecY = afv.y;
 		
-		return p3d;
+		long timeDifference = currentTimeStamp-pastTimeStamp; 
+		double movedLength = Main.globalDroneSpeed * timeDifference;
+		
+//		posUpdateByOF posByqrX
+		
+		pastTimeStamp = currentTimeStamp;
+		
+		return posUpdateByOF;
 	}
 
 
-	public boolean atSpot(double currentX, double currentY, int spotID){
+	public boolean atSpot(int spotID){
 		/*
 		 * makes sure dronePosition is within acceptable range of spotIDs location
 		 */
 		boolean bool = false;
+		double currentX;
+		double currentY;
 
 		currentX = mm.getDronePosition().getX();
 		currentY = mm.getDronePosition().getX();

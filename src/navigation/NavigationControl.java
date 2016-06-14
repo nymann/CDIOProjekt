@@ -39,13 +39,13 @@ public class NavigationControl {
 
 	private void runNav(){
 		
-		double xPos = mm.getDronePosition().getX();
-		double yPos = mm.getDronePosition().getY();
+//		double xPos = mm.getDronePosition().getX();
+//		double yPos = mm.getDronePosition().getY();
 		
 		try {
 			for (int i=0; i<14; i++) {
 				flyPat.flyToSpot(xPos, yPos, i);
-				if(flyPat.atSpot(xPos, yPos, i)) flyPat.flyLane(i, i+1);
+				if(flyPat.atSpot(i)) flyPat.flyLane(i, i+1);
 				else flyPat.flyToSpot(xPos, xPos, i);
 			}
 		} catch (Exception e) {
