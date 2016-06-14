@@ -21,6 +21,7 @@ public class OpticalFlowTestRasmus {
 			final CommandManager cmd = drone.getCommandManager();
 			final VideoManager vmd = drone.getVideoManager();
 			video.VideoReader vid = new VideoReader(vmd, cmd);
+			drone.setVerticalCamera();
 			testOne(cmd);
 			testTwo(cmd, vid);
 		} catch (Exception exc) {
