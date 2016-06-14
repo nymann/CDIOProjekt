@@ -21,8 +21,8 @@ public class TestFloorPosition {
 		Point3D position = new Point3D(400, 300, 180);
 		Point3D direction = CameraUtil.pictureCoordToVectorDown(160, 120);
 		TranslatePoint translate = new TranslatePoint();
-		translate.setRotation(rotation);
-		Point2D floorPosition = translate.intersectFloor(direction, position);
+		translate.setDroneInfo(rotation, position);
+		Point2D floorPosition = translate.intersectFloor(direction);
 		System.out.println("direction:" + direction);
 		System.out.println("floorPosition:" + floorPosition);
 	}
