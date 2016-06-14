@@ -103,28 +103,29 @@ public class NiceTest {
 		VideoReader videoReader = new VideoReader(videoManager, commandManager);
 		Attitude att = new Attitude(model);
 		navDataManager.addAttitudeListener(att);
+		commandManager.setOutdoor(false, true);
 
 		output.addTextLine("Taking off");
 		commandManager.takeOff().doFor(5000);
 		//commandManager.hover();
 		//commandManager.backward(5);
 		
-		output.addTextLine("waiting for take off");
+/*		output.addTextLine("waiting for take off");
 		try {
 			Thread.sleep(5000);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
-		}
+		}*/
 
 		double startYaw = model.getDroneAttitude().getYaw() + Math.PI;
 		output.addTextLine("Spinning left");
-		commandManager.spinLeft(20);
+		commandManager.spinLeft(50).doFor(1000);
 
-		try {
+/*		try {
 			Thread.sleep(1000);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
-		}
+		}*/
 		
 
 
