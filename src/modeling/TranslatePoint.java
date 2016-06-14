@@ -15,8 +15,10 @@ import javax.vecmath.*;
  */
 public class TranslatePoint {
 	Matrix4d rotation;
+	Point3D position;
 	
-	public void setRotation(Angle3D angle){
+	public void setDroneInfo(Angle3D angle, Point3D position){
+		this.position = position;
 		Matrix4d yaw = new Matrix4d();
 		Matrix4d pitch = new Matrix4d();
 		Matrix4d roll = new Matrix4d();
@@ -30,7 +32,7 @@ public class TranslatePoint {
 		rotation.mul(yaw);
 	}
 	
-	public Point2D intersectFloor(Point3D direction, Point3D position){
+	public Point2D intersectFloor(Point3D direction){
 		Vector3d vector = new Vector3d(direction.getX(), direction.getY(), direction.getZ());
 		rotation.transform(vector);
 		double factor = position.getZ()/vector.z;
