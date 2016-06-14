@@ -4,15 +4,23 @@ import QRWallMarks.QRInfo;
 import de.yadrone.base.ARDrone;
 import de.yadrone.base.IARDrone;
 import de.yadrone.base.command.CommandManager;
+import de.yadrone.base.configuration.ConfigurationListener;
 import de.yadrone.base.configuration.ConfigurationManager;
 import de.yadrone.base.navdata.NavDataManager;
 import de.yadrone.base.video.VideoManager;
+import gui.InfoPanel;
 import gui.TextPanel;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.geometry.Point3D;
 import javax.swing.JFrame;
+import listeners.Altitude;
 import listeners.Attitude;
 import listeners.ExceptionListener;
+import listeners.UltraSound;
+import listeners.Velocity;
 import modeling.MainModel;
 import video.VideoReader;
 
@@ -22,29 +30,47 @@ import video.VideoReader;
 public class NiceTest {
 
 	static TextPanel output, exceptionOut;
+	static InfoPanel infoPanel;
+	static Velocity vel = new Velocity();
+	static UltraSound ult = new UltraSound();
+	static Altitude alt = new Altitude();
+	static NavDataManager navDataManager;
+	static VideoManager videoManager;
+	static CommandManager commandManager;
+	static ConfigurationManager configurationManager;
+	static final double movingSpeed = 50.0;
+	static final double takeOffSpeed = 100.0;
+	static final double hoverSpeed = 40.0;
+
 	
 	public static void main(String[] args) {
 		IARDrone drone = null;
-		ConfigurationManager configurationManager = null;
-		
 
 		output = new TextPanel();
 		exceptionOut = new TextPanel();
-		
+		infoPanel = new InfoPanel();
+//		infoPanel.setColumns(18);
+		infoPanel.setColumns(80);
+
 		Dimension outputSize = new Dimension(300, 500);
 		output.setPreferredSize(outputSize);
 		exceptionOut.setPreferredSize(outputSize);
-		
+//		Dimension infoDimension = new Dimension(200, 50);
+		Dimension infoDimension = new Dimension(1200, 200);
+		infoPanel.setPreferredSize(infoDimension);
+		infoPanel.setSize(infoDimension);
+
 		JFrame mainWindow = new JFrame();
 		mainWindow.getContentPane().setLayout(new FlowLayout());
 		mainWindow.getContentPane().add(output);
 		mainWindow.getContentPane().add(exceptionOut);
+		mainWindow.getContentPane().add(infoPanel);
 		mainWindow.setVisible(true);
 		mainWindow.pack();
 		mainWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
+
 		ExceptionListener exceptionListener = new ExceptionListener(exceptionOut);
-		
+
 		// connecting to drone
 		do {
 			try {
@@ -54,7 +80,7 @@ public class NiceTest {
 				exc.printStackTrace();
 			}
 		} while (drone == null);
-		
+
 		drone.addExceptionListener(exceptionListener);
 
 		output.addTextLine("Starting Drone.");
@@ -82,70 +108,143 @@ public class NiceTest {
 
 			output.addTextLine("Drone connected: " + configurationManager.isConnected());
 		}
+		
+		navDataManager = drone.getNavDataManager();
+		videoManager = drone.getVideoManager();
+		commandManager = drone.getCommandManager();
 
+		navDataManager.addVelocityListener(vel);
+		navDataManager.addUltrasoundListener(ult);
+		navDataManager.addAltitudeListener(alt);
+		
+		commandManager.setNavDataDemo(true);
+		
 		try {
 			doStuff(drone);
 		} catch (Exception e) {
-
+			exceptionOut.addTextLine(e.getMessage());
+			StackTraceElement[] stackTrace = e.getStackTrace();
+			for (int i = 0; i < stackTrace.length;i++){
+				exceptionOut.addTextLine(stackTrace[i].toString());
+			}
 		}
 
+		output.addTextLine("Landing drone");
 		drone.landing();
+		while (vel.velocity == null || vel.velocity.magnitude() > 0.1){
+			try {
+				Thread.sleep(500);
+			} catch (InterruptedException ex) {
+			}
+		}
+		output.addTextLine("Stopping drone");
 		drone.stop();
-		System.exit(0);
 	}
 
 	private static void doStuff(IARDrone drone) {
-		NavDataManager navDataManager = drone.getNavDataManager();
-		VideoManager videoManager = drone.getVideoManager();
-		CommandManager commandManager = drone.getCommandManager();
 
 		MainModel model = new MainModel();
 		VideoReader videoReader = new VideoReader(videoManager, commandManager);
 		Attitude att = new Attitude(model);
 		navDataManager.addAttitudeListener(att);
-		commandManager.setOutdoor(false, true);
-
-		output.addTextLine("Taking off");
-		commandManager.takeOff().doFor(5000);
-		//commandManager.hover();
-		//commandManager.backward(5);
+		//commandManager.setOutdoor(false, true);
+		commandManager.setOutdoor(true, true);
 		
-/*		output.addTextLine("waiting for take off");
-		try {
-			Thread.sleep(5000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}*/
+		Runnable infoUpdate = () -> {
+			while (true){
+				if (NiceTest.vel.velocity != null){
+					NiceTest.infoPanel.setInfo("Speed X", NiceTest.vel.velocity.getX());
+					NiceTest.infoPanel.setInfo("Speed Y", NiceTest.vel.velocity.getY());
+					NiceTest.infoPanel.setInfo("Speed Z", NiceTest.vel.velocity.getZ());
+					NiceTest.infoPanel.setInfo("Counter X", (int) -NiceTest.vel.velocity.getX()/100);
+					NiceTest.infoPanel.setInfo("Counter Y", (int) -NiceTest.vel.velocity.getY()/100);
+				}else{
+					NiceTest.infoPanel.setInfo("Speed X", "null");	
+					NiceTest.infoPanel.setInfo("Speed Y", "null");	
+					NiceTest.infoPanel.setInfo("Speed Z", "null");	
+				}
+				
+				if (NiceTest.ult.arg0 != null)
+					NiceTest.infoPanel.setInfo("Ultrasound", NiceTest.ult.arg0);	
+				else
+					NiceTest.infoPanel.setInfo("Ultrasound", "null");	
+				
+				if (NiceTest.alt.extendedAltitude != null)
+					NiceTest.infoPanel.setInfo("Altitude", NiceTest.alt.extendedAltitude);	
+				else
+					NiceTest.infoPanel.setInfo("Altitude", "null");
 
+			}
+		};
+		new Thread(infoUpdate).start();
+		
+		output.addTextLine("Taking off");
+		commandManager.takeOff();
+
+		while(vel.velocity == null || vel.velocity.magnitude() < takeOffSpeed){
+			try {
+				Thread.sleep(500);
+			} catch (InterruptedException ex) {
+			}
+		}
+		
+		output.addTextLine("Started moving");
+		while(vel.velocity.getZ() > 2.0){
+			try {
+				Thread.sleep(500);
+			} catch (InterruptedException ex) {
+			}
+		}
+		output.addTextLine("Reached hover height");
+
+		while(vel.velocity.magnitude() > hoverSpeed){
+			//Point3D v = vel.velocity;
+			//commandManager.move((int)-v.getX()/100, (int)-v.getY()/100, 0, 0);
+			//commandManager.move(0, 0, 0, 0);
+			
+			try {
+				Thread.sleep(500);
+			} catch (InterruptedException ex) {
+			}
+		}
+		output.addTextLine("Stable hover");
+		
 		double startYaw = model.getDroneAttitude().getYaw() + Math.PI;
 		output.addTextLine("Spinning left");
-		commandManager.spinLeft(50).doFor(1000);
+		commandManager.spinLeft(50);
 
-/*		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}*/
-		
+		output.addTextLine("Waiting for difference");
+		double currentYaw;
+		do {
+			currentYaw = model.getDroneAttitude().getYaw() + Math.PI;
+			commandManager.spinLeft(50).doFor(50);
+			//Point3D v = vel.velocity;
+			//commandManager.move((int)-v.getX()/100, (int)-v.getY()/100, 0, 0).doFor(50);
+		} while (Math.abs(startYaw - currentYaw) < 0.01);
 
-
-		double currentYaw = model.getDroneAttitude().getYaw() + Math.PI;
 		output.addTextLine("Starting yaw difference:" + (currentYaw - startYaw));
+		
 		int qRCodesFound = 0;
 		while (Math.abs(startYaw - currentYaw) > 0.01) {
+			commandManager.spinLeft(50).doFor(50);
+			//Point3D v = vel.velocity;
+			//commandManager.move((int)-v.getX()/100, (int)-v.getY()/100, 0, 0).doFor(50);
 
-			/*if (model.getDroneAttitude() != null) {
-				output.addTextLine("Yaw = " + model.getDroneAttitude().getYaw());
-				QRInfo qrInfo = QRWallMarks.GetQRCode.readQRCode(videoReader.getImage());
+			
+			infoPanel.setInfo("Current Yaw", currentYaw);
+			infoPanel.setInfo("Yaw difference", Math.abs(startYaw - currentYaw));
+
+			// output.addTextLine("Current Yaw = " + currentYaw);
+			/*QRInfo qrInfo = QRWallMarks.GetQRCode.readQRCode(videoReader.getImage());
 				if (qrInfo.error.equals("") && !qrInfo.name.equals("")) {
 					output.addTextLine("Decodemessage: " + qrInfo.name + ". At: "
 							+ qrInfo.x + ", " + qrInfo.y);
 					qRCodesFound++;
 				} else {
 					output.addTextLine(qrInfo.error);
-				}
-			}*/
+				}*/
 			currentYaw = model.getDroneAttitude().getYaw() + Math.PI;
+
 		}
 		output.addTextLine("QR-codes found: " + qRCodesFound);
 

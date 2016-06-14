@@ -6,21 +6,26 @@
 package gui;
 
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 /**
  *
  * @author Mikkel
  */
-public class TextPanel extends JPanel{
+public class TextPanel extends JScrollPane{
 	JTextArea jTextArea;
+	JPanel panel;
 
 	public TextPanel() {
 		this.jTextArea = new JTextArea();
-		this.add(jTextArea);
+		this.panel = new JPanel();
+		panel.add(jTextArea);
+		super.setViewportView(panel);
 	}
 	
 	public void addTextLine(String text){
 		this.jTextArea.setText(this.jTextArea.getText() + text + "\n");
+		
 	}
 }

@@ -1,16 +1,14 @@
 package listeners;
 
 import de.yadrone.base.navdata.VelocityListener;
+import javafx.geometry.Point3D;
 
 public class Velocity implements VelocityListener {
 
-	public float vx, vy, vz;
+	public Point3D velocity;
 	
 	@Override
 	public void velocityChanged(float vx, float vy, float vz) {
-		this.vx = vx;
-		this.vy = vy;
-		this.vz = vz;
-		
+		velocity = new Point3D(vx, vy, vz);
 	}
 }
