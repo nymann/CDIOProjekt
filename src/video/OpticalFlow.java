@@ -54,15 +54,14 @@ public class OpticalFlow implements Runnable {
 		new Thread(new OpticalFlow()).start();
 	}
 
-	public void findFlows(BufferedImage img) {
+	public AverageFlowVector findFlows(BufferedImage img) {
 		if (prev == null) {
 			prev = bufferedImageToMat(img);
-			return;
+			return null;
 		} else
 			next = bufferedImageToMat(img);
 		flows = new ArrayList<FlowVector>();
 		avgVector = new AverageFlowVector();
-		long tid = System.currentTimeMillis();
 		Mat grayImagePrev = new Mat();
 		Mat grayImageNext = new Mat();
 		MatOfByte status = new MatOfByte();
@@ -86,15 +85,8 @@ public class OpticalFlow implements Runnable {
 		// System.out.println("Average vector length = "+avgVector.getLength());
 		// System.out.println("Average x = "+avgVector.x+", y = "+avgVector.y);
 		// System.out.println("Antal vektorer = "+flows.size());
-		// String filename = "/Users/Simon/Pictures/opticalFlows.png";
-		// String filenameCanny = "/Users/Simon/Pictures/opticalCanny.png";
-		// drawFlowLines(next);
-		// Imgproc.arrowedLine(next, centerPoint, new Point(centerPoint.x +
-		// avgVector.x, centerPoint.y + avgVector.y), new Scalar(0, 255, 255));
-		// Imgcodecs.imwrite(filename, next);
-		// Imgcodecs.imwrite(filenameCanny, grayImagePrev);
 		determineMovement();
-		// System.out.println("Tid = " + (System.currentTimeMillis() - tid));
+		return avgVector;
 	}
 
 	// Computes the average vector length
