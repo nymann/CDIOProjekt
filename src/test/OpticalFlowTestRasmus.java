@@ -53,11 +53,21 @@ public class OpticalFlowTestRasmus {
 		doCommand(cmd,7,100);
 		BufferedImage prev = vid.getImage();
 		while(prev == null) prev = vid.getImage(); 
+		System.out.println("picture taken");
 		flow.findFlows(prev);
 		doCommand(cmd,1,50);
 		doCommand(cmd,7,100);
-		BufferedImage next = vid.getImage();
-		while(next == null) prev = vid.getImage();
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			System.out.println("Error");
+			e.printStackTrace();
+		}
+		BufferedImage next = null;
+		do { next = vid.getImage();}
+		while(next == null);
+		System.out.println("Picture 2 taken");
 		doCommand(cmd,6,50);
 		flow.findFlows(next);
 	}
