@@ -5,6 +5,9 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import de.yadrone.base.IARDrone;
 import modeling.AverageFlowVector;
@@ -40,10 +43,8 @@ public class NavFlyPattern {
 	private IARDrone drone;
 	private MainModel mm;
 	private VideoReader vr;
-	//	private video.PictureAnalyser paRed = new PictureAnalyser();
-	//	private List<Point> colorAnalyseRed = new List<>();
-	//	private video.PictureAnalyser paGreen = new PictureAnalyser();
-	//	private List<Point> colorAnalyseGreen = new List<>();
+	private double vecX, vecY;
+	private ScheduledExecutorService exec;
 
 	public NavFlyPattern(MainModel mm, VideoReader vr, IARDrone drone){
 		this.vr = vr;
@@ -51,8 +52,8 @@ public class NavFlyPattern {
 		this.drone = drone;
 		
 		fp = new NavFindPosition(mm, vr, drone);
-		spots = new ArrayList<>();
 		of = new AverageFlowVector();
+		spots = new ArrayList<>();
 
 	}
 
@@ -66,22 +67,26 @@ public class NavFlyPattern {
 		 * tage to billeder og give OF
 		 * få en gennemsnits vektor for dronens bevægelse
 		 */
-		//		colorAnalyseRed.add(new Point(926, 904));
-		//		paRed.setColor(colorAnalyseRed);
-		//		colorAnalyseGreen.add(new Point(926, 904));
-		//		paGreen.setColor(colorAnalyseRed);
-		//		of.(image);
-
-		
-		double vecX, vecY;
-		vecX = of.x;
-		vecY = of.y;
 
 		NavSpot ss = spots.get(startSpot);
 		NavSpot es = spots.get(endSpot);
+		
+		vr.getImage();
+		vr.getImageTime();
+		
+		vecX = of.x;
+		vecY = of.y;
 
-		findCubes();
-
+		//Runnable command, long initialDelay, long period, TimeUnit unit
+		exec = Executors.newSingleThreadScheduledExecutor();
+		exec.scheduleAtFixedRate(new Runnable() {
+		  @Override
+		  public void run() {
+			  findCubes();
+		  }
+		}, 0, 5, TimeUnit.SECONDS);
+		
+		
 	}
 
 	public boolean atSpot(double currentX, double currentY, int spotID){
@@ -97,15 +102,14 @@ public class NavFlyPattern {
 		int xSpot = spot.getX();
 		int ySpot = spot.getY();
 
-		System.out.println(xSpot + " " + ySpot );
-
 		int range = 12;
 		int xRangeMax = (int) currentX+range;
 		int xRangeMin = (int) currentX-range;
 		int yRangeMax = (int) currentY+range;
 		int yRangeMin = (int) currentY-range;
 
-		if ((xRangeMin<=xSpot&&xSpot<=xRangeMax) && (yRangeMin<=ySpot&&ySpot<=yRangeMax)) bool=true;
+		if ((xRangeMin<=xSpot&&xSpot<=xRangeMax) && (yRangeMin<=ySpot&&ySpot<=yRangeMax)) 
+			bool=true;
 
 		return bool;
 	}
@@ -130,7 +134,6 @@ public class NavFlyPattern {
 
 		// Drej til spot, derefter flyv til spot.
 		// Hvis mm bliver opdateret konstant.
-		// Test for commit.
 		while(mm.getDroneAttitude().getYaw() != changeAngle) {
 			drone.spinLeft();
 		}
@@ -147,7 +150,6 @@ public class NavFlyPattern {
 		 * resultat af analyze og attitude ska sendes til anden klasse som gemmer dem i modellen
 		 */
 
-		//		paRed.getAnalyse(img);
 
 
 	}

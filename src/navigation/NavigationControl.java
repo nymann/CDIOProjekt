@@ -59,7 +59,7 @@ public class NavigationControl {
 
 	private void presentResults(){
 		/*
-		 * Ska gemme resultaterne vdr cubes og 
+		 * Ska gemme resultaterne vdr cubes i en fil
 		 */
 
 	}
