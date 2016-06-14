@@ -134,8 +134,13 @@ public class NavFlyPattern {
 			double movedLength = Main.globalDroneSpeed * timeDifference;
 
 			pastTimeStamp = currentTimeStamp;
-			double diffX = posByqrX+afv.x;
-			double diffY = posByqrY+afv.y;
+			
+			/* movedLenght skal lægges til de foregående koordinater, så man får det nye koordinatsæt.
+			 * vectoren fra opticalflow skal bruges til at sige, hvilken retning movedLenght skal lægges til.
+			 */
+			
+			double diffX = posByqrX+movedLength*vecX;
+			double diffY = posByqrY+movedLength*vecY;
 
 			// Z-værdien skal ændres.
 			posUpdateByOF = new Point3D(diffX, diffY, hightZ);
