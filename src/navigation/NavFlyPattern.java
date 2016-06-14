@@ -10,6 +10,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 import de.yadrone.base.IARDrone;
+import javafx.geometry.Point3D;
 import main.Main;
 import modeling.AverageFlowVector;
 import modeling.Cube;
@@ -45,19 +46,19 @@ public class NavFlyPattern {
 	private IARDrone drone;
 	private MainModel mm;
 	private VideoReader vr;
-	private double vecX, vecY;
+	private double vecX, vecY, hightZ;
 	private BufferedImage bi;
 	private long pastTimeStamp, currentTimeStamp;
 	private ScheduledExecutorService excCubes;
 	private ScheduledExecutorService excOF;
 	private OpticalFlow opFlow;
 	private Point3D p3d;
-	
+
 	public NavFlyPattern(MainModel mm, VideoReader vr, IARDrone drone){
 		this.vr = vr;
 		this.mm = mm;
 		this.drone = drone;
-		
+
 		fp = new NavFindPosition(mm, vr, drone);
 		of = new AverageFlowVector();
 		spots = new ArrayList<>();
@@ -78,57 +79,72 @@ public class NavFlyPattern {
 		NavSpot ss = spots.get(startSpot);
 		NavSpot es = spots.get(endSpot);
 
-		
+
 		bi = vr.getImage();
 		currentTimeStamp = vr.getImageTime();
 		pastTimeStamp = 0;
-		
+
 		//Runnable command, long initialDelay, long period, TimeUnit unit
 		excCubes = Executors.newSingleThreadScheduledExecutor();
 		excCubes.scheduleAtFixedRate(new Runnable() {
-		  @Override
-		  public void run() {
-			  findCubes();
-		  }
+			@Override
+			public void run() {
+				findCubes();
+			}
 		}, 0, 5, TimeUnit.SECONDS);
-		
+
 		excCubes = Executors.newSingleThreadScheduledExecutor();
 		excCubes.scheduleAtFixedRate(new Runnable() {
-		  @Override
-		  public void run() {
-			  p3d = flowFinderByVectors(bi, currentTimeStamp);
-			  while(p3d == null){
-				  Thread.sleep(1000);
-				  p3d = flowFinderByVectors(bi, currentTimeStamp);
-			  };
-		  }
+			@Override
+			public void run() {
+				p3d = flowFinderByVectors(bi, currentTimeStamp);
+				while(p3d == null){
+					try {
+						Thread.sleep(1000);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					p3d = flowFinderByVectors(bi, currentTimeStamp);
+				};
+			}
 		}, 0, 1, TimeUnit.SECONDS);
-		
+
 	}
-	
+
 	private Point3D flowFinderByVectors(BufferedImage img, long timeStamp){
 		bi = img;
 		currentTimeStamp = timeStamp;
 		AverageFlowVector afv;
 		double posByqrX;
 		double posByqrY;
-		
-		Point3D posUpdateByOF;
-		
+
+		Point3D posUpdateByOF = null;
+
 		posByqrX = mm.getDronePosition().getX();
 		posByqrY = mm.getDronePosition().getX();
-		
+
 		afv = opFlow.findFlows(bi);
-		vecX = afv.x;
-		vecY = afv.y;
-		
-		long timeDifference = currentTimeStamp-pastTimeStamp; 
-		double movedLength = Main.globalDroneSpeed * timeDifference;
-		
-//		posUpdateByOF posByqrX
-		
-		pastTimeStamp = currentTimeStamp;
-		
+
+		if(afv != null) {
+			vecX = afv.x;
+			vecY = afv.y;
+
+			long timeDifference = currentTimeStamp-pastTimeStamp; 
+			double movedLength = Main.globalDroneSpeed * timeDifference;
+
+			pastTimeStamp = currentTimeStamp;
+			
+			/* movedLenght skal lægges til de foregående koordinater, så man får det nye koordinatsæt.
+			 * vectoren fra opticalflow skal bruges til at sige, hvilken retning movedLenght skal lægges til.
+			 */
+			
+			double diffX = posByqrX+movedLength*vecX;
+			double diffY = posByqrY+movedLength*vecY;
+
+			// Z-værdien skal ændres.
+			posUpdateByOF = new Point3D(diffX, diffY, hightZ);
+		}
 		return posUpdateByOF;
 	}
 
