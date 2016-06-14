@@ -1,0 +1,63 @@
+package test;
+
+import java.awt.image.BufferedImage;
+
+import de.yadrone.base.ARDrone;
+import de.yadrone.base.IARDrone;
+import de.yadrone.base.command.CommandManager;
+import de.yadrone.base.video.VideoManager;
+import video.OpticalFlow;
+import video.VideoReader;
+
+public class OpticalFlowTestRasmus {
+
+	public static void main(String[] args) {
+		IARDrone drone = null;
+		// connecting to drone
+		try {
+			drone = new ARDrone();
+			System.out.println("Starting Drone");
+			drone.start();
+			final CommandManager cmd = drone.getCommandManager();
+			final VideoManager vmd = drone.getVideoManager();
+			video.VideoReader vid = new VideoReader(vmd, cmd);
+			testOne(cmd);
+			testTwo(cmd, vid);
+		} catch (Exception exc) {
+			System.err.println(exc.getMessage());
+			exc.printStackTrace();
+		} 
+//		finally {
+//			if (drone != null)
+//				drone.stop();
+//
+//			System.exit(0);
+//		}
+
+	}
+	
+	public static void testOne(CommandManager cmd){
+		cmd.takeOff().doFor(5000);
+		cmd.hover().doFor(1000);
+		cmd.forward(30).doFor(500);
+		cmd.hover().doFor(1000);
+		cmd.forward(30).doFor(1000);
+		cmd.hover().doFor(1000);
+		cmd.landing();
+	}
+	
+	public static void testTwo(CommandManager cmd, VideoReader vid){
+		OpticalFlow flow = new OpticalFlow();
+		cmd.takeOff().doFor(5000);
+		cmd.hover().doFor(1000);
+		BufferedImage prev = vid.getImage();
+		flow.findFlows(prev);
+		cmd.forward(30).doFor(500);
+		cmd.hover().doFor(1000);
+		BufferedImage next = vid.getImage();
+		cmd.landing();
+		flow.findFlows(next);
+		
+		
+	}
+}
