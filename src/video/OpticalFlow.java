@@ -30,7 +30,7 @@ import modeling.FlowVector;
  * @author Simon
  *
  */
-public class OpticalFlow implements Runnable {
+public class OpticalFlow {
 
 	Point centerPoint;
 	final double NOISE_FACTOR_X = 0.6;
@@ -41,28 +41,19 @@ public class OpticalFlow implements Runnable {
 	private ArrayList<FlowVector> flows;
 	private Mat prev, next;
 
-	// GUI-elementer
-	private JFrame frame;
-	private JLabel label;
-
 	public OpticalFlow() {
 		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
 		centerPoint = new Point(640, 360);
 	}
 
-	public static void main(String[] args) {
-		new Thread(new OpticalFlow()).start();
-	}
-
-	public void findFlows(BufferedImage img) {
+	public AverageFlowVector findFlows(BufferedImage img) {
 		if (prev == null) {
 			prev = bufferedImageToMat(img);
-			return;
+			return null;
 		} else
 			next = bufferedImageToMat(img);
 		flows = new ArrayList<FlowVector>();
 		avgVector = new AverageFlowVector();
-		long tid = System.currentTimeMillis();
 		Mat grayImagePrev = new Mat();
 		Mat grayImageNext = new Mat();
 		MatOfByte status = new MatOfByte();
@@ -86,15 +77,8 @@ public class OpticalFlow implements Runnable {
 		// System.out.println("Average vector length = "+avgVector.getLength());
 		// System.out.println("Average x = "+avgVector.x+", y = "+avgVector.y);
 		// System.out.println("Antal vektorer = "+flows.size());
-		// String filename = "/Users/Simon/Pictures/opticalFlows.png";
-		// String filenameCanny = "/Users/Simon/Pictures/opticalCanny.png";
-		// drawFlowLines(next);
-		// Imgproc.arrowedLine(next, centerPoint, new Point(centerPoint.x +
-		// avgVector.x, centerPoint.y + avgVector.y), new Scalar(0, 255, 255));
-		// Imgcodecs.imwrite(filename, next);
-		// Imgcodecs.imwrite(filenameCanny, grayImagePrev);
 		determineMovement();
-		// System.out.println("Tid = " + (System.currentTimeMillis() - tid));
+		return avgVector;
 	}
 
 	// Computes the average vector length
@@ -160,22 +144,6 @@ public class OpticalFlow implements Runnable {
 					System.out.println("Moved forward");
 			}
 		}
-	}
-
-	@Override
-	public void run() {
-		ImageCapture ic = new ImageCapture();
-		frame = new JFrame("Optical Flow");
-		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-		frame.setPreferredSize(new Dimension(1260, 700));
-		label = new JLabel();
-//		Mat prevImg = ic.run();
-//		Mat nextImg = ic.run();
-//		Mat img = findFlows(prevImg, nextImg);
-//		label.setIcon(new ImageIcon(matToBufferedImage(img)));
-//		frame.add(label);
-//		frame.pack();
-//		frame.setVisible(true);
 	}
 
 	private BufferedImage matToBufferedImage(Mat matrix) {
