@@ -49,14 +49,53 @@ public class OpticalFlowTestRasmus {
 	
 	public static void testTwo(CommandManager cmd, VideoReader vid){
 		OpticalFlow flow = new OpticalFlow();
-		cmd.takeOff().doFor(5000);
-		cmd.hover().doFor(1000);
+		doCommand(cmd, 5, 50);
+		doCommand(cmd,7,100);
 		BufferedImage prev = vid.getImage();
+		while(prev == null) prev = vid.getImage(); 
 		flow.findFlows(prev);
-		cmd.forward(30).doFor(500);
-		cmd.hover().doFor(1000);
+		doCommand(cmd,1,50);
+		doCommand(cmd,7,100);
 		BufferedImage next = vid.getImage();
-		cmd.landing();
+		while(next == null) prev = vid.getImage();
+		doCommand(cmd,6,50);
 		flow.findFlows(next);
+	}
+	
+	public static void doCommand(CommandManager cmd, int direction, int time){
+		switch(direction){
+			case 1: for(int i = 0; i < time; i++){
+				cmd.forward(20);
+			}
+			break;
+			case 2: for(int i = 0; i < time; i++){
+				cmd.backward(20);
+			}
+			break;
+			case 3: for(int i = 0; i < time; i++){
+				cmd.goLeft(20);
+			}
+			break;
+			case 4: for(int i = 0; i < time; i++){
+				cmd.goRight(20);
+			}
+			break;
+			case 5: for(int i = 0; i < time; i++){
+				cmd.takeOff();
+			}
+			break;
+			case 6: for(int i = 0; i < time; i++){
+				cmd.landing();
+			}
+			break;
+			case 7: for(int i = 0; i < time; i++){
+				cmd.hover();
+			}
+			break;
+			default: 
+				cmd.hover();
+			
+					
+		}
 	}
 }
