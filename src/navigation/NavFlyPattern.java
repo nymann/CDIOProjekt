@@ -15,6 +15,7 @@ import modeling.Cube;
 import modeling.MainModel;
 import modeling.NavSpot;
 import modeling.QRPoint;
+import video.OpticalFlow;
 import video.PictureAnalyser;
 import video.VideoReader;
 
@@ -44,8 +45,13 @@ public class NavFlyPattern {
 	private MainModel mm;
 	private VideoReader vr;
 	private double vecX, vecY;
-	private ScheduledExecutorService exec;
-
+	private BufferedImage bi;
+	private long newBit, lastBit;
+	private ScheduledExecutorService excCubes;
+	private ScheduledExecutorService excOF;
+	private OpticalFlow opFlow;
+	private Point3D p3d;
+	
 	public NavFlyPattern(MainModel mm, VideoReader vr, IARDrone drone){
 		this.vr = vr;
 		this.mm = mm;
@@ -67,27 +73,50 @@ public class NavFlyPattern {
 		 * tage to billeder og give OF
 		 * få en gennemsnits vektor for dronens bevægelse
 		 */
-
 		NavSpot ss = spots.get(startSpot);
 		NavSpot es = spots.get(endSpot);
-		
-		vr.getImage();
-		vr.getImageTime();
-		
-		vecX = of.x;
-		vecY = of.y;
 
+		
+		bi = vr.getImage();
+		newBit = vr.getImageTime();
+		
 		//Runnable command, long initialDelay, long period, TimeUnit unit
-		exec = Executors.newSingleThreadScheduledExecutor();
-		exec.scheduleAtFixedRate(new Runnable() {
+		excCubes = Executors.newSingleThreadScheduledExecutor();
+		excCubes.scheduleAtFixedRate(new Runnable() {
 		  @Override
 		  public void run() {
 			  findCubes();
 		  }
 		}, 0, 5, TimeUnit.SECONDS);
 		
+		excCubes = Executors.newSingleThreadScheduledExecutor();
+		excCubes.scheduleAtFixedRate(new Runnable() {
+		  @Override
+		  public void run() {
+			  p3d = flowFinderByVectors(bi, newBit);
+			  while(p3d == null){
+				  Thread.sleep(1000);
+				  p3d = flowFinderByVectors(bi, newBit);
+			  };
+		  }
+		}, 0, 1, TimeUnit.SECONDS);
 		
 	}
+	
+	private Point3D flowFinderByVectors(BufferedImage img, long timeStamp){
+		bi = img;
+		newBit = timeStamp;
+		AverageFlowVector afv;
+		
+		Point3D p3dUpdated;
+		
+		afv = opFlow.findFlows(bi);
+		vecX = afv.x;
+		vecY = afv.y;
+		
+		return p3d;
+	}
+
 
 	public boolean atSpot(double currentX, double currentY, int spotID){
 		/*
