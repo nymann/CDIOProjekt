@@ -28,9 +28,12 @@ public class Main {
 	public static Boolean downCamActive = false;
 
 	static private IARDrone drone = null;
-	static private int globalDroneSpeed = 5;
+	static public int globalDroneSpeed;
 
 	static public void main(String[] args) {
+		//Setting the global speed of the drone
+		globalDroneSpeed = 5;
+		
 		// Initialising OpenCV
 		
 		// connecting to drone
