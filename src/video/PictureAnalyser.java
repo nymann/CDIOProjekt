@@ -41,8 +41,8 @@ public class PictureAnalyser {
 	}
 
 
-	//public List<Point> getAnalyse(BufferedImage img) {
-	public BufferedImage getAnalyse(BufferedImage img) {
+	public List<Point> getAnalyse(BufferedImage img) {
+	//public BufferedImage getAnalyse(BufferedImage img) {
 
 		Mat frameMat = new Mat();
 		frameMat = PictureView.bufferedImageToMat(img);
@@ -53,13 +53,13 @@ public class PictureAnalyser {
 		Imgproc.cvtColor(pic, imgHSV, Imgproc.COLOR_RGB2HSV);
 		contours = getConturs(color.get(0), color.get(1), imgHSV);
 		
-		getblocks(contours);
-		Imgproc.cvtColor(imgHSV, pic, Imgproc.COLOR_HSV2RGB);
+		return getblocks(contours);
+		/*Imgproc.cvtColor(imgHSV, pic, Imgproc.COLOR_HSV2RGB);
 		Imgproc.circle(pic, new Point(pic.width() / 2,
 				pic.height() / 2), 4, new Scalar(255, 49, 255, 255));
 		 img = PictureView.mat2Img(pic);
 		 return img;
-	}
+	*/}
 
 	public  List<Point> getblocks(List<MatOfPoint> contours) {
 		List<Moments> mu = new ArrayList<Moments>(contours.size());
