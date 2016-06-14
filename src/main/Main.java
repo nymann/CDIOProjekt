@@ -11,6 +11,7 @@ import de.yadrone.base.command.CommandManager;
 import de.yadrone.base.configuration.ConfigurationManager;
 import de.yadrone.base.navdata.NavDataManager;
 import de.yadrone.base.video.VideoManager;
+import gui.AnalysedVideoPanel;
 import gui.MainWindow;
 import modeling.MainModel;
 import navigation.NavFindPosition;
@@ -88,7 +89,7 @@ public class Main {
             System.out.println(arde.getMessage());
 				//Main.shutDown();
         });
-
+		MainWindow.paRed.getAnalyse(AnalysedVideoPanel.bi2);
 		System.out.println("Drone connected: " + cm.isConnected());
 
 		// start drone control
