@@ -21,6 +21,7 @@ public class UltraSoundTest {
 //			final VideoManager vmd = drone.getVideoManager();
 //			video.VideoReader vid = new VideoReader(vmd, cmd);
 			new UltraSoundListener(drone);
+			Thread.sleep(5000);
 		} catch (Exception exc) {
 			System.err.println(exc.getMessage());
 			exc.printStackTrace();

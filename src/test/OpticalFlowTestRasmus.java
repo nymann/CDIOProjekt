@@ -22,7 +22,7 @@ public class OpticalFlowTestRasmus {
 			final VideoManager vmd = drone.getVideoManager();
 			video.VideoReader vid = new VideoReader(vmd, cmd);
 			drone.setVerticalCamera();
-			testOne(cmd);
+//			testOne(cmd);
 			testTwo(cmd, vid);
 		} catch (Exception exc) {
 			System.err.println(exc.getMessage());
@@ -58,7 +58,5 @@ public class OpticalFlowTestRasmus {
 		BufferedImage next = vid.getImage();
 		cmd.landing();
 		flow.findFlows(next);
-		
-		
 	}
 }
