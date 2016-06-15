@@ -27,6 +27,7 @@ public class ImageDataListener implements ImageListener {
 		this.data = new ImageData(
 				bi, 
 				model.getDroneAttitude(),
+				model.getDronePosition(),
 				System.currentTimeMillis()
 		);
 	}

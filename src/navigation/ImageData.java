@@ -6,6 +6,7 @@
 package navigation;
 
 import java.awt.image.BufferedImage;
+import javafx.geometry.Point3D;
 import modeling.Angle3D;
 
 /**
@@ -16,15 +17,18 @@ public class ImageData {
 	
 	public BufferedImage image;
 	public Angle3D attitude;
+	public Point3D position;
 	public long time;
 
 	ImageData(
 			BufferedImage image, 
 			Angle3D droneAttitude,
+			Point3D position,
 			long time
 		) {
 		this.image = image;
 		this.attitude = droneAttitude;
+		this.position = position;
 		this.time = time;
 	}
 	
