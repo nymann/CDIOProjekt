@@ -55,7 +55,7 @@ public class OpticalFlowTestRasmus {
 		while(prev == null) prev = vid.getImage(); 
 		System.out.println("picture taken");
 		flow.findFlows(prev);
-		doCommand(cmd,1,50);
+		doCommand(cmd,3,80);
 		doCommand(cmd,7,100);
 		try {
 			Thread.sleep(1000);
