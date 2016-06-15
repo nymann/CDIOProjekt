@@ -130,13 +130,17 @@ public class NavFlyPattern {
 			vecX = afv.x;
 			vecY = afv.y;
 
+			/* Finder tidsforskellen, som vi skal bruge sammen med farten til dronen.
+			 * Herved kan vi finde den afstand vi har flyttet.
+			 */
+			
 			long timeDifference = currentTimeStamp-pastTimeStamp; 
 			double movedLength = Main.globalDroneSpeed * timeDifference;
 
 			pastTimeStamp = currentTimeStamp;
 			
-			/* movedLenght skal lægges til de foregående koordinater, så man får det nye koordinatsæt.
-			 * vectoren fra opticalflow skal bruges til at sige, hvilken retning movedLenght skal lægges til.
+			/* Her kan vi bruge den flyttede længde, sammen med retningsvektoren og det gamle koordinatsæt.
+			 * Herved finder vi den nye position.
 			 */
 			
 			double diffX = posByqrX+movedLength*vecX;
@@ -178,8 +182,8 @@ public class NavFlyPattern {
 
 	public void flyToSpot(double currentX, double currentY, int spotID){
 		/*
-		 * ud fra current position, ska regnet vinklen til spotIDs position og distancen
-		 * flyve afstanden.
+		 * Ud fra current position, skal vinklen være regnet til spotIDs position og distancen.
+		 * Flyve afstanden.
 		 */
 		NavSpot goToSpot = spots.get(spotID);
 		int goToX = goToSpot.getX();
@@ -207,9 +211,9 @@ public class NavFlyPattern {
 
 	private void findCubes(){
 		/* Cubes:
-		 * ska have nuværende dronePosition og attitude(YAW)
-		 * DronePos burde kunne regnes ud fra OF
-		 * resultat af analyze og attitude ska sendes til anden klasse som gemmer dem i modellen
+		 * Skal have nuværende dronePosition og attitude(YAW).
+		 * DronePos burde kunne regnes ud fra OF.
+		 * Resultat af analyze og attitude skal sendes til anden klasse som gemmer dem i modellen.
 		 */
 
 
