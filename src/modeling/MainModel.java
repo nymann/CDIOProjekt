@@ -23,6 +23,11 @@ public class MainModel {
 	
 	private Point3D dronePosition;
 	private Angle3D droneAttitude;
+	
+	private Point3D droneDirection;
+	private Point3D roomSize;
+	private double angleOffset;
+	
 	public Angle3D getDroneAttitude() {
 		return droneAttitude;
 	}
@@ -30,10 +35,6 @@ public class MainModel {
 	public void setDroneAttitude(Angle3D droneAttitude) {
 		this.droneAttitude = droneAttitude;
 	}
-
-	private Point3D droneDirection;
-	private Point3D roomSize;
-	private double angleOffset;
 
 	public double getAngleOffset() {
 		return angleOffset;
@@ -57,12 +58,13 @@ public class MainModel {
 	 * eg. same color and similar position
 	 * @param newCube
 	 * @param tolerance
-	 * @return ture if the model contains a similar cube
+	 * @return true if the model contains a similar cube
 	 */
 	public boolean compareCube(Cube newCube, double tolerance){
 		for (Cube currentCube: cubes){
 			if (newCube.getColor().equals(currentCube.getColor())){
-				if (newCube.getPosition().subtract(currentCube.getPosition()).distance(CustomPoint3D.ZERO) < tolerance){
+				if (newCube.getPosition().subtract(currentCube.getPosition())
+						.distance(Point3D.ZERO) < tolerance){
 					return true;
 				}
 			}

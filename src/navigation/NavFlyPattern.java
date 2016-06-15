@@ -1,6 +1,8 @@
 package navigation;
 
+import java.awt.Color;
 import java.awt.Point;
+import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,11 +14,16 @@ import java.util.concurrent.TimeUnit;
 import de.yadrone.base.IARDrone;
 import javafx.geometry.Point3D;
 import main.Main;
+import modeling.Angle3D;
 import modeling.AverageFlowVector;
 import modeling.Cube;
+import modeling.CubeStore;
+import modeling.CustomPoint3D;
 import modeling.MainModel;
 import modeling.NavSpot;
 import modeling.QRPoint;
+import modeling.TranslatePoint;
+import video.CameraUtil;
 import video.OpticalFlow;
 import video.PictureAnalyser;
 import video.VideoReader;
@@ -46,6 +53,7 @@ public class NavFlyPattern {
 	private IARDrone drone;
 	private MainModel mm;
 	private VideoReader vr;
+	private ImageDataListener idl;
 	private double vecX, vecY, hightZ;
 	private BufferedImage bi;
 	private long pastTimeStamp, currentTimeStamp;
@@ -53,12 +61,18 @@ public class NavFlyPattern {
 	private ScheduledExecutorService excOF;
 	private OpticalFlow opFlow;
 	private Point3D p3d;
+	private PictureAnalyser paRed, paGreen;
+	private List<Point> lsR, lsG;
+	private CameraUtil ca;
+	private TranslatePoint tp;
 
-	public NavFlyPattern(MainModel mm, VideoReader vr, IARDrone drone){
-		this.vr = vr;
+	public NavFlyPattern(MainModel mm, ImageDataListener idl, IARDrone drone){
+//		this.vr = vr;
+		this.idl = idl;
 		this.mm = mm;
 		this.drone = drone;
 
+		//Ændr vr til idl senere.
 		fp = new NavFindPosition(mm, vr, drone);
 		of = new AverageFlowVector();
 		spots = new ArrayList<>();
@@ -67,54 +81,40 @@ public class NavFlyPattern {
 	}
 
 	public void flyLane(int startSpot, int endSpot){
-		/*
-		 * using OF, fly between one start and end
-		 * once every 1 meter or something take picture, get this analyzed for cubes
-		 * needs plan for flying around/over boxes
-		 * finde ud af hvordan man ikke flyver ind i ting!!
-		 *  Optical flow:
-		 * tage to billeder og give OF
-		 * få en gennemsnits vektor for dronens bevægelse
-		 */
 		NavSpot ss = spots.get(startSpot);
 		NavSpot es = spots.get(endSpot);
-
-
-		bi = vr.getImage();
-		currentTimeStamp = vr.getImageTime();
 		pastTimeStamp = 0;
 
 		//Runnable command, long initialDelay, long period, TimeUnit unit
-		excCubes = Executors.newSingleThreadScheduledExecutor();
-		excCubes.scheduleAtFixedRate(new Runnable() {
+		excOF = Executors.newSingleThreadScheduledExecutor();
+		excOF.scheduleAtFixedRate(new Runnable() {
 			@Override
 			public void run() {
-				findCubes();
-			}
-		}, 0, 5, TimeUnit.SECONDS);
-
-		excCubes = Executors.newSingleThreadScheduledExecutor();
-		excCubes.scheduleAtFixedRate(new Runnable() {
-			@Override
-			public void run() {
-				p3d = flowFinderByVectors(bi, currentTimeStamp);
+				p3d = flowFinderByVectors(idl);
 				while(p3d == null){
 					try {
 						Thread.sleep(1000);
 					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-					p3d = flowFinderByVectors(bi, currentTimeStamp);
+					p3d = flowFinderByVectors(idl);
 				};
 			}
 		}, 0, 1, TimeUnit.SECONDS);
+		
+		excCubes = Executors.newSingleThreadScheduledExecutor();
+		excCubes.scheduleAtFixedRate(new Runnable() {
+			@Override
+			public void run() {
+				findCubes(idl);
+			}
+		}, 0, 5, TimeUnit.SECONDS);
 
 	}
 
-	private Point3D flowFinderByVectors(BufferedImage img, long timeStamp){
-		bi = img;
-		currentTimeStamp = timeStamp;
+	private Point3D flowFinderByVectors(ImageDataListener idl){
+		bi = idl.getImageData().image;
+		currentTimeStamp = idl.getImageData().time;
 		AverageFlowVector afv;
 		double posByqrX;
 		double posByqrY;
@@ -209,14 +209,49 @@ public class NavFlyPattern {
 
 	}
 
-	private void findCubes(){
-		/* Cubes:
-		 * Skal have nuværende dronePosition og attitude(YAW).
-		 * DronePos burde kunne regnes ud fra OF.
-		 * Resultat af analyze og attitude skal sendes til anden klasse som gemmer dem i modellen.
+	private void findCubes(ImageDataListener idl){
+		/*
+		 * video.PictureView.init()
 		 */
+		lsR = paRed.getAnalyse(idl.getImageData().image);
+		lsG = paGreen.getAnalyse(idl.getImageData().image);
+		Angle3D a3d = idl.getImageData().attitude;
+		Point2D p2d;
+		Point3D p3d;
+		CubeStore cs;
+		CustomPoint3D cp3d;
+		boolean bool;
+		
+		for(Point p : lsR){
+			int y = (int) p.getY();
+			p3d = ca.pictureCoordToVectorDown(x, y);
+			tp.setDroneInfo(a3d, p3d);
+			p2d = tp.intersectFloor(p3d);
+			Point3D found3d = new Point3D(p2d.getX(), p2d.getY(), 0);
+			Cube c = new Cube(found3d, Color.RED);
+			bool = mm.compareCube(c, 10.0);
+			if(bool==false) mm.addCube(c);			
+		}
 
-
+		for(Point p : lsG){
+			int x = (int) p.getX();
+			int y = (int) p.getY();
+			p3d = ca.pictureCoordToVectorDown(x, y);
+			tp.setDroneInfo(a3d, p3d);
+			p2d = tp.intersectFloor(p3d);
+			Point3D found3d = new Point3D(p2d.getX(), p2d.getY(), 0);
+			Cube c = new Cube(found3d, Color.GREEN);
+			bool = mm.compareCube(c, 10.0);
+			if(bool==false) mm.addCube(c);			
+		}
+		
+		/*		
+		 * pictureCoordToVectorDown(int x, int y)
+		 * returnere point3D
+		 * point3D skal så sendes til modeling.TranslatePoint.setDroneInfo(Angle3D angle, Point3D position)
+		 * intersectFloor(Point3D direction) return Point2D:intersection
+		 * ska såsendes til MainModel's addCube funktion,
+		 */
 
 	}
 

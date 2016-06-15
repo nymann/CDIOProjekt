@@ -21,17 +21,18 @@ public class NavigationControl {
 	private MainModel mm;
 	private NavFlyPattern flyPat;
 	private NavFindPosition findPos;
+	private ImageDataListener idl;
 	private VideoReader vr;
 	private IARDrone drone;
 	private BufferedImage buffI;
 
-	NavigationControl(VideoReader vr){
+	NavigationControl(ImageDataListener idl){
 		this.vr = vr;
 		vm = drone.getVideoManager();
 		cm = drone.getCommandManager();
 		vr = new VideoReader(vm, cm);
 		findPos = new NavFindPosition(mm, vr, drone);
-		flyPat = new NavFlyPattern(mm, vr, drone);
+		flyPat = new NavFlyPattern(mm, idl, drone);
 		
 		runNav();
 		presentResults();
@@ -39,8 +40,8 @@ public class NavigationControl {
 
 	private void runNav(){
 		
-		double xPos = mm.getDronePosition().getX();
-		double yPos = mm.getDronePosition().getY();
+//		double xPos = mm.getDronePosition().getX();
+//		double yPos = mm.getDronePosition().getY();
 
 
 		try {
