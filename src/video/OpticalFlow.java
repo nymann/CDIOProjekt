@@ -74,8 +74,8 @@ public class OpticalFlow {
 		calcAverageVectorLength();
 		computeAverageVector();
 		// System.out.println("Average length = "+avgLength);
-		// System.out.println("Average vector length = "+avgVector.getLength());
-		// System.out.println("Average x = "+avgVector.x+", y = "+avgVector.y);
+		 System.out.println("Average vector length = "+avgVector.getLength());
+		 System.out.println("Average x = "+avgVector.x+", y = "+avgVector.y);
 		// System.out.println("Antal vektorer = "+flows.size());
 		determineMovement();
 		return avgVector;
