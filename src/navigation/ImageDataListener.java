@@ -24,7 +24,11 @@ public class ImageDataListener implements ImageListener {
 
 	@Override
 	public void imageUpdated(BufferedImage bi) {
-		this.data = new ImageData(bi, model.getDroneAttitude());
+		this.data = new ImageData(
+				bi, 
+				model.getDroneAttitude(),
+				System.currentTimeMillis()
+		);
 	}
 	
 	public ImageData getImageData(){

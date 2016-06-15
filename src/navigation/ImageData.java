@@ -16,10 +16,16 @@ public class ImageData {
 	
 	public BufferedImage image;
 	public Angle3D attitude;
+	public long time;
 
-	ImageData(BufferedImage image, Angle3D droneAttitude) {
+	ImageData(
+			BufferedImage image, 
+			Angle3D droneAttitude,
+			long time
+		) {
 		this.image = image;
 		this.attitude = droneAttitude;
+		this.time = time;
 	}
 	
 }
