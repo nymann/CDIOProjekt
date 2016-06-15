@@ -2,7 +2,6 @@ package navigation;
 
 import java.awt.Color;
 import java.awt.Point;
-import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,13 +11,13 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 import de.yadrone.base.IARDrone;
+import javafx.geometry.Point2D;
 import javafx.geometry.Point3D;
 import main.Main;
 import modeling.Angle3D;
 import modeling.AverageFlowVector;
 import modeling.Cube;
 import modeling.CubeStore;
-import modeling.CustomPoint3D;
 import modeling.MainModel;
 import modeling.NavSpot;
 import modeling.QRPoint;
@@ -62,7 +61,8 @@ public class NavFlyPattern {
 	private OpticalFlow opFlow;
 	private Point3D p3d;
 	private PictureAnalyser paRed, paGreen;
-	private List<Point> lsR, lsG;
+	private List<org.opencv.core.Point> lsR, lsG;
+	//private List<Point> lsG;
 	private CameraUtil ca;
 	private TranslatePoint tp;
 
@@ -219,11 +219,11 @@ public class NavFlyPattern {
 		Point2D p2d;
 		Point3D p3d;
 		CubeStore cs;
-		CustomPoint3D cp3d;
 		boolean bool;
 		
-		for(Point p : lsR){
-			int y = (int) p.getY();
+		for(org.opencv.core.Point p : lsR){
+			int x = (int) p.x;
+			int y = (int) p.y;
 			p3d = ca.pictureCoordToVectorDown(x, y);
 			tp.setDroneInfo(a3d, p3d);
 			p2d = tp.intersectFloor(p3d);
@@ -233,9 +233,9 @@ public class NavFlyPattern {
 			if(bool==false) mm.addCube(c);			
 		}
 
-		for(Point p : lsG){
-			int x = (int) p.getX();
-			int y = (int) p.getY();
+		for(org.opencv.core.Point p : lsG){
+			int x = (int) p.x;
+			int y = (int) p.y;
 			p3d = ca.pictureCoordToVectorDown(x, y);
 			tp.setDroneInfo(a3d, p3d);
 			p2d = tp.intersectFloor(p3d);
