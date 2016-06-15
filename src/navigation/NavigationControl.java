@@ -39,9 +39,10 @@ public class NavigationControl {
 
 	private void runNav(){
 		
-//		double xPos = mm.getDronePosition().getX();
-//		double yPos = mm.getDronePosition().getY();
-		
+		double xPos = mm.getDronePosition().getX();
+		double yPos = mm.getDronePosition().getY();
+
+
 		try {
 			for (int i=0; i<14; i++) {
 				flyPat.flyToSpot(xPos, yPos, i);

@@ -3,6 +3,7 @@ package test;
 import de.yadrone.base.ARDrone;
 import de.yadrone.base.IARDrone;
 import de.yadrone.base.command.CommandManager;
+import de.yadrone.base.command.VideoCodec;
 import de.yadrone.base.configuration.ConfigurationManager;
 import de.yadrone.base.navdata.NavDataManager;
 import de.yadrone.base.video.VideoManager;
@@ -139,6 +140,10 @@ public class NiceTest {
         Attitude att = new Attitude(model);
         navDataManager.addAttitudeListener(att);
         //commandManager.setOutdoor(false, true);
+
+        drone.getCommandManager().setVideoCodec(VideoCodec.H264_720P);
+        // Sets the camera to 720p instead of stretching a 640x360 image.
+
         commandManager.setOutdoor(true, true);
 
         Runnable infoUpdate = () -> {
@@ -179,6 +184,19 @@ public class NiceTest {
             }
         }
 
+        //long startTime = System.currentTimeMillis();
+
+        /*while ((startTime + 40) > System.currentTimeMillis())  {
+            commandManager.up(5);
+            try {
+                Thread.sleep(50);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+        }
+        commandManager.hover();*/
+
         output.addTextLine("Started moving");
         while (vel.velocity.getZ() > 2.0) {
             try {
@@ -186,6 +204,7 @@ public class NiceTest {
             } catch (InterruptedException ex) {
             }
         }
+
         output.addTextLine("Reached hover height");
 
         while (vel.velocity.magnitude() > hoverSpeed) {
