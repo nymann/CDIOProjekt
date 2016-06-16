@@ -31,8 +31,8 @@ public class NavigationControl {
 		vm = drone.getVideoManager();
 		cm = drone.getCommandManager();
 		cm.setControlAck(true);
-		findPos = new NavFindPosition(mm, idl, drone);
-		flyPat = new NavFlyPattern(mm, idl, drone);
+		findPos = new NavFindPosition(idl, drone);
+		flyPat = new NavFlyPattern(idl, drone);
 		
 		runNav();
 		presentResults();
@@ -47,9 +47,9 @@ public class NavigationControl {
 
 		try {
 			for (int i=0; i<14; i++) {
-				flyPat.flyToSpot(xPos, yPos, i);
+				/*flyPat.flyToSpot(xPos, yPos, i);
 				if(flyPat.atSpot(i)) flyPat.flyLane(i, i+1);
-				else flyPat.flyToSpot(xPos, xPos, i);
+				else flyPat.flyToSpot(xPos, xPos, i);*/
 			}
 		} catch (Exception e) {
 			// TODO: handle exception

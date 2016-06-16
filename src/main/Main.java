@@ -13,7 +13,6 @@ import de.yadrone.base.navdata.NavDataManager;
 import de.yadrone.base.video.VideoManager;
 import gui.AnalysedVideoPanel;
 import gui.MainWindow;
-import modeling.MainModel;
 import navigation.ImageDataListener;
 import navigation.NavFindPosition;
 import video.PictureView;
