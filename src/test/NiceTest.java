@@ -254,8 +254,8 @@ public class NiceTest {
 					qRCodesFound++;
 				} else {
 					output.addTextLine(qrInfo.error);
-				}
-            currentYaw = model.getDroneAttitude().getYaw() + Math.PI;*/
+				}*/
+            currentYaw = model.getDroneAttitude().getYaw() + Math.PI;
 
         }
         output.addTextLine("QR-codes found: " + qRCodesFound);
