@@ -24,6 +24,7 @@ public class NavigationControl {
 	private ImageDataListener idl;
 	private IARDrone drone;
 	private BufferedImage buffI;
+	private Point3D pos3d;
 
 	NavigationControl(ImageDataListener idl){
 		vm = drone.getVideoManager();
@@ -38,9 +39,10 @@ public class NavigationControl {
 
 	private void runNav(){
 		
-//		double xPos = mm.getDronePosition().getX();
-//		double yPos = mm.getDronePosition().getY();
-
+		pos3d = mm.getDronePosition();
+		
+		double xPos = pos3d.getX();
+		double yPos = pos3d.getY();
 
 		try {
 			for (int i=0; i<14; i++) {
