@@ -74,15 +74,6 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/lib/yadrone_032.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
           <root url="jar://$MODULE_DIR$/lib/reflections/guava-11.0.2.jar!/" />
         </CLASSES>
         <JAVADOC />
@@ -130,6 +121,15 @@
       <library>
         <CLASSES>
           <root url="jar://$MODULE_DIR$/lib/java3d/vecmath.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/lib/YADrone_latest_from_git.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />

@@ -37,6 +37,13 @@ public class PictureView {
 		img= mat2Img(imgMat);
 		return img;
 	}
+	public static BufferedImage setCross(BufferedImage img) {
+		Mat imgMat;
+		imgMat = bufferedImageToMat(img);
+		 Imgproc.circle(imgMat, new Point(imgMat.width()/2, imgMat.height()/2), 4, new Scalar(255,49,255,255));   
+		img= mat2Img(imgMat);
+		return img;
+	}
 
 
 	public static BufferedImage mat2Img(Mat in) {

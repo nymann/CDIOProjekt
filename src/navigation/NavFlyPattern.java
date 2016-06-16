@@ -58,7 +58,7 @@ public class NavFlyPattern {
 		this.drone = drone;
 
 		//Ændr vr til idl senere.
-		fp = new NavFindPosition(mm, idl, drone);
+		fp = new NavFindPosition(idl, drone);
 		of = new AverageFlowVector();
 		spots = new ArrayList<>();
 		speed = Main.globalDroneSpeed;
@@ -123,12 +123,13 @@ public class NavFlyPattern {
 		 */
 		
 		// Længde fra dronen til start spot.
-		double distBetweenDroneAndSpot = Math.pow(difX,2) + Math.pow(difY,2);
-		distBetweenDroneAndSpot = Math.sqrt(distBetweenDroneAndSpot);
+		/*double distBetweenDroneAndSpot = Math.pow(difX,2) + Math
+				.pow(difY,2);
+		distBetweenDroneAndSpot = Math.sqrt(distBetweenDroneAndSpot);*/
 		
 		// IKKE KLAR - Skal sættes en fart ind i stedet for ditrance.
-		int distBetweenDroneAndSpot2 = (int) distBetweenDroneAndSpot;
-		drone.getCommandManager().forward(5).doFor(distBetweenDroneAndSpot2);
+		/*int distBetweenDroneAndSpot2 = (int) distBetweenDroneAndSpot;
+		drone.getCommandManager().forward(5).doFor(distBetweenDroneAndSpot2);*/
 
 	}
 	
@@ -142,7 +143,7 @@ public class NavFlyPattern {
 		double difY = currentY-goToY;
 
 		double atan = Math.atan2(difY, difX);
-		double changeAngle = atan-MainModel.getAngleOffset()+mm.getDroneAttitude().getYaw();
+		double changeAngle = atan-MainModel.getAngleOffset()+MainModel.getDroneAttitude().getYaw();
 		
 		// Drej til spot, derefter flyv til spot.
 				// Hvis mm bliver opdateret konstant.

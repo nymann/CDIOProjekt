@@ -23,9 +23,11 @@ public class AnalysedVideoPanel extends VideoPanel {
 
     	
         if (!downCamActive) {
-        	bi2 = PictureView.setSize( bi,640,360);
+        	bi2 = bi;
+        	//PictureView.setSize( bi,640,360);
             //this.image = MainWindow.paRed.getAnalyse(bi2);
-            this.image= bi2;
+            BufferedImage bi3 = PictureView.setCross(bi2);
+        	this.image= bi3;
            
           //  this.setSize(image.getWidth(), image.getHeight());
             this.repaint();

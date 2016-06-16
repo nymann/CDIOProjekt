@@ -1,13 +1,8 @@
 package video;
 
-import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.util.ArrayList;
-
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.WindowConstants;
 
 import org.opencv.core.Core;
 import org.opencv.core.CvType;
@@ -18,7 +13,6 @@ import org.opencv.core.MatOfPoint;
 import org.opencv.core.MatOfPoint2f;
 import org.opencv.core.Point;
 import org.opencv.core.Scalar;
-import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 import org.opencv.video.Video;
 
@@ -33,14 +27,14 @@ import modeling.FlowVector;
 public class OpticalFlow {
 
 	Point centerPoint;
-	final double NOISE_FACTOR_X = 0.6;
-	final double NOISE_FACTOR_Y = 1.4;
+	final double NOISE_FACTOR_X = 0.7;
+	final double NOISE_FACTOR_Y = 1.3;
 	private final int THRESHOLD = 60;
 	private double avgLength;
 	private AverageFlowVector avgVector;
 	private ArrayList<FlowVector> flows;
 	private Mat prev, next;
-
+	
 	public OpticalFlow() {
 		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
 		centerPoint = new Point(640, 360);
@@ -52,6 +46,7 @@ public class OpticalFlow {
 			return null;
 		} else
 			next = bufferedImageToMat(img);
+//		long tid = System.currentTimeMillis();
 		flows = new ArrayList<FlowVector>();
 		avgVector = new AverageFlowVector();
 		Mat grayImagePrev = new Mat();
@@ -61,7 +56,7 @@ public class OpticalFlow {
 		MatOfPoint pointsPrev = new MatOfPoint();
 		Imgproc.cvtColor(prev, grayImagePrev, Imgproc.COLOR_BGR2GRAY);
 		Imgproc.Canny(grayImagePrev, grayImagePrev, THRESHOLD, THRESHOLD * 2);
-		Imgproc.goodFeaturesToTrack(grayImagePrev, pointsPrev, 500, 0.1, 1);
+		Imgproc.goodFeaturesToTrack(grayImagePrev, pointsPrev, 200, 0.1, 1);
 		Imgproc.cvtColor(next, grayImageNext, Imgproc.COLOR_BGR2GRAY);
 		Imgproc.Canny(grayImageNext, grayImageNext, THRESHOLD, THRESHOLD * 2);
 		MatOfPoint2f pointsPrev2f = new MatOfPoint2f(pointsPrev.toArray());
@@ -73,11 +68,13 @@ public class OpticalFlow {
 		removeNoise();
 		calcAverageVectorLength();
 		computeAverageVector();
-		// System.out.println("Average length = "+avgLength);
-		 System.out.println("Average vector length = "+avgVector.getLength());
-		 System.out.println("Average x = "+avgVector.x+", y = "+avgVector.y);
-		// System.out.println("Antal vektorer = "+flows.size());
+		drawFlowLines(next);
+		System.out.println("Average length = "+avgLength);
+		System.out.println("Average vector length = "+avgVector.getLength());
+		System.out.println("Average x = "+avgVector.x+", y = "+avgVector.y);
+		System.out.println("Antal vektorer = "+flows.size());
 		determineMovement();
+//		System.out.println("Tid = "+(System.currentTimeMillis() - tid));
 		return avgVector;
 	}
 
