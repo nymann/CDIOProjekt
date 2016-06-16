@@ -59,15 +59,13 @@ public class NavFlyPattern {
 	private ScheduledExecutorService excCubes;
 	private ScheduledExecutorService excOF;
 	private OpticalFlow opFlow;
-	private Point3D p3d;
+	private Point3D p3d, dronePos3D;
 	private PictureAnalyser paRed, paGreen;
 	private List<org.opencv.core.Point> lsR, lsG;
-	//private List<Point> lsG;
 	private CameraUtil ca;
 	private TranslatePoint tp;
 
 	public NavFlyPattern(MainModel mm, ImageDataListener idl, IARDrone drone){
-//		this.vr = vr;
 		this.idl = idl;
 		this.mm = mm;
 		this.drone = drone;
@@ -81,6 +79,7 @@ public class NavFlyPattern {
 	}
 
 	public void flyLane(int startSpot, int endSpot){
+		dronePos3D = mm.getDronePosition();
 		NavSpot ss = spots.get(startSpot);
 		NavSpot es = spots.get(endSpot);
 		pastTimeStamp = 0;
@@ -221,7 +220,7 @@ public class NavFlyPattern {
 		CubeStore cs;
 		boolean bool;
 		
-		for(org.opencv.core.Point p : lsR){
+		for(Point p : lsR){
 			int x = (int) p.x;
 			int y = (int) p.y;
 			p3d = ca.pictureCoordToVectorDown(x, y);
@@ -233,7 +232,7 @@ public class NavFlyPattern {
 			if(bool==false) mm.addCube(c);			
 		}
 
-		for(org.opencv.core.Point p : lsG){
+		for(Point p : lsG){
 			int x = (int) p.x;
 			int y = (int) p.y;
 			p3d = ca.pictureCoordToVectorDown(x, y);
