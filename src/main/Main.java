@@ -16,6 +16,7 @@ import gui.MainWindow;
 import modeling.MainModel;
 import navigation.ImageDataListener;
 import navigation.NavFindPosition;
+import video.PictureView;
 import video.VideoReader;
 
 //import control.DroneControl;
@@ -47,6 +48,8 @@ public class Main {
 			System.err.println(exc.getMessage());
 			exc.printStackTrace();
 		}
+		//open opencv lib files
+		PictureView.init();
 
 		// getting managers
 		ConfigurationManager cm = drone.getConfigurationManager();

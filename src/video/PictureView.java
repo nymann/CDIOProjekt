@@ -24,10 +24,8 @@ import java.util.List;
  * @author JoachimØstergaard
  */
 public class PictureView {
-	static int counterG = 0 ;
-	static int counterR = 0 ;
+
 	static Mat pic ;
-    private List<Scalar> color;
 
 	public static void init() {
 		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);

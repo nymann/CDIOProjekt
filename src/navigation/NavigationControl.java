@@ -2,6 +2,7 @@ package navigation;
 
 import java.awt.image.BufferedImage;
 
+import javafx.geometry.Point3D;
 import de.yadrone.base.IARDrone;
 import de.yadrone.base.command.CommandManager;
 import de.yadrone.base.video.ImageListener;

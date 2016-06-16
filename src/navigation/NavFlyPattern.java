@@ -61,7 +61,7 @@ public class NavFlyPattern {
 	private OpticalFlow opFlow;
 	private Point3D p3d, dronePos3D;
 	private PictureAnalyser paRed, paGreen;
-	private List<org.opencv.core.Point> lsR, lsG;
+	private List<Point> lsR, lsG;
 	private CameraUtil ca;
 	private TranslatePoint tp;
 
