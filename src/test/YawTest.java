@@ -36,13 +36,12 @@ public class YawTest {
 		NavDataManager nm = drone.getNavDataManager();
 
 		System.out.println("Drone connected: " + cm.isConnected());
-		MainModel model = new MainModel();
-		Attitude att = new Attitude(model);
+		Attitude att = new Attitude();
 		nm.addAttitudeListener(att);
 		
 		while (true) {
-			if (model.getDroneAttitude() != null){
-				System.out.println("Yaw = " + model.getDroneAttitude().getYaw());
+			if (MainModel.getDroneAttitude() != null){
+				System.out.println("Yaw = " + MainModel.getDroneAttitude().getYaw());
 			}
 			try {
 				Thread.currentThread().sleep(500);

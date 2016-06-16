@@ -18,6 +18,8 @@ import gui.special_qr_panels.QRValuesPanel;
 import gui.special_qr_panels.QRVideoPanel;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
 import modeling.MainModel;
 
@@ -47,8 +49,7 @@ public class TestQRPositioning {
 		VideoManager vm = drone.getVideoManager();
 
 		System.out.println("Drone connected: " + cm.isConnected());
-		MainModel model = new MainModel();
-		QRPossitioning qrpos = new QRPossitioning(model);
+		QRPossitioning qrpos = new QRPossitioning();
 
 		QRValuesPanel rotation = new QRValuesPanel(qrpos);
 		rotation.setListeners(nm);
@@ -73,12 +74,9 @@ public class TestQRPositioning {
 		
 		text.addTextLine("Test output:");
 
-		synchronized (model) {
-			try {
-				model.wait();
-			} catch (Exception e) {
-
-			}
+		try {
+			Thread.currentThread().wait();
+		} catch (InterruptedException ex) {
 		}
 
 	}

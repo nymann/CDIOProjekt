@@ -58,11 +58,10 @@ public class Main {
 
 		VideoManager vm = drone.getVideoManager();
 		video.VideoReader videoReader = new VideoReader(vm,com);
-		modeling.MainModel mainModel = new MainModel();
-		navigation.ImageDataListener imageDataListener = new ImageDataListener(mainModel);
+		navigation.ImageDataListener imageDataListener = new ImageDataListener();
 		
 		// Test af spin 360
-		NavFindPosition navPos = new NavFindPosition(model, imageDataListener, drone);
+		NavFindPosition navPos = new NavFindPosition(imageDataListener, drone);
 		
 		//drone.getCommandManager().takeOff();
 		navPos.turn360degrees();

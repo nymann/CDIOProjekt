@@ -23,12 +23,10 @@ public class QRPossitioning implements ImageListener, AttitudeListener {
 		
 	float yaw;
 	ArrayList<QRInfo> qrListe;
-	MainModel model;
 	TextPanel output;
 	
-	public QRPossitioning(MainModel model) {
+	public QRPossitioning() {
 		this.qrListe = new ArrayList<>();
-		this.model = model;
 	}
 	
 	public void setOutput(TextPanel panel){
@@ -137,7 +135,7 @@ public class QRPossitioning implements ImageListener, AttitudeListener {
 				
 				List<QRPoint> points = new ArrayList<>();
 				for (int i = 0; i < 3; i++){
-					points.add(model.getQRPoint(sortedList.get(i)));
+					points.add(MainModel.getQRPoint(sortedList.get(i)));
 				}
 				
 				PointNavigation nav = new PointNavigation();
@@ -156,14 +154,14 @@ public class QRPossitioning implements ImageListener, AttitudeListener {
 				output("Found position at " + position);
 
 				// Her er dronens position i koordinater.
-				model.setDronePosition(position);
+				MainModel.setDronePosition(position);
 				
 				// Vinkel fra 'frem' og QR-koden og vinkel drone og QR-koden.
 				double dronex = position.getX();
 				double droney = position.getY();
 				
-				double qrx = model.getQRPoint(qri).getX();
-				double qry = model.getQRPoint(qri).getY();
+				double qrx = MainModel.getQRPoint(qri).getX();
+				double qry = MainModel.getQRPoint(qri).getY();
 				
 				double diffx = qrx-dronex;
 				double diffy = qry-droney;
@@ -173,7 +171,7 @@ public class QRPossitioning implements ImageListener, AttitudeListener {
 				
 				//Forskel på virkligheden.
 				double diffAngle = qri.angle+angelToQR-0.5*Math.PI;
-				model.setAngleOffset(diffAngle);
+				MainModel.setAngleOffset(diffAngle);
 			} 
 		}			
 	}
