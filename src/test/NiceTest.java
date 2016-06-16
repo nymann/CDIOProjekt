@@ -101,14 +101,14 @@ public class NiceTest {
             output.addTextLine("Drone connected: " + configurationManager.isConnected());
         }
 
+
         navDataManager = drone.getNavDataManager();
         videoManager = drone.getVideoManager();
         commandManager = drone.getCommandManager();
-
         navDataManager.addVelocityListener(vel);
         navDataManager.addUltrasoundListener(ult);
         navDataManager.addAltitudeListener(alt);
-
+        commandManager.setMaxAltitude(2000);
         commandManager.setNavDataDemo(true);
 
         try {
@@ -184,21 +184,17 @@ public class NiceTest {
             }
         }
 
-        //long startTime = System.currentTimeMillis();
+        long startTime = System.currentTimeMillis();
 
-        /*while ((startTime + 40) > System.currentTimeMillis())  {
-            commandManager.up(5);
-            try {
-                Thread.sleep(50);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+        while ((startTime + 4000) > System.currentTimeMillis())  {
+            commandManager.up(50).doFor(50);
 
         }
-        commandManager.hover();*/
+        commandManager.hover();
 
         output.addTextLine("Started moving");
         while (vel.velocity.getZ() > 2.0) {
+            
             try {
                 Thread.sleep(500);
             } catch (InterruptedException ex) {
@@ -208,6 +204,7 @@ public class NiceTest {
         output.addTextLine("Reached hover height");
 
         while (vel.velocity.magnitude() > hoverSpeed) {
+            
             //Point3D v = vel.velocity;
             //commandManager.move((int)-v.getX()/100, (int)-v.getY()/100, 0, 0);
             //commandManager.move(0, 0, 0, 0);
@@ -227,20 +224,24 @@ public class NiceTest {
         output.addTextLine("Waiting for difference");
         double currentYaw;
         do {
+            
             currentYaw = model.getDroneAttitude().getYaw() + Math.PI;
             commandManager.spinLeft(50).doFor(50);
             //Point3D v = vel.velocity;
             //commandManager.move((int)-v.getX()/100, (int)-v.getY()/100, 0, 0).doFor(50);
-        } while (Math.abs(startYaw - currentYaw) < 0.01);
+        } while (Math.abs(startYaw - currentYaw) > 0.025);
 
         output.addTextLine("Starting yaw difference:" + (currentYaw - startYaw));
 
         int qRCodesFound = 0;
-        while (Math.abs(startYaw - currentYaw) > 0.01) {
+
+        // seems to be too small of a value. (0.01 is too small suggested value
+        // is 0.025 or 0.03)
+        while (Math.abs(startYaw - currentYaw) > 0.025) {
+            
             commandManager.spinLeft(50).doFor(50);
             //Point3D v = vel.velocity;
             //commandManager.move((int)-v.getX()/100, (int)-v.getY()/100, 0, 0).doFor(50);
-
 
             infoPanel.setInfo("Current Yaw", currentYaw);
             infoPanel.setInfo("Yaw difference", Math.abs(startYaw - currentYaw));
@@ -253,8 +254,8 @@ public class NiceTest {
 					qRCodesFound++;
 				} else {
 					output.addTextLine(qrInfo.error);
-				}*/
-            currentYaw = model.getDroneAttitude().getYaw() + Math.PI;
+				}
+            currentYaw = model.getDroneAttitude().getYaw() + Math.PI;*/
 
         }
         output.addTextLine("QR-codes found: " + qRCodesFound);
