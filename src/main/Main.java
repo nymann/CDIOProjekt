@@ -60,10 +60,14 @@ public class Main {
 		navigation.ImageDataListener imageDataListener = new ImageDataListener();
 		
 		// Test af spin 360
+
 		NavFindPosition navPos = new NavFindPosition(imageDataListener, drone);
+
+		//NavFindPosition navPos = new NavFindPosition(model, imageDataListener, drone);
+
 		
 		//drone.getCommandManager().takeOff();
-		navPos.turn360degrees();
+		//navPos.turn360degrees();
 		
 		/*// get battery level
 		Battery battery = new Battery();
@@ -91,7 +95,6 @@ public class Main {
             System.out.println(arde.getMessage());
 				//Main.shutDown();
         });
-		MainWindow.paRed.getAnalyse(AnalysedVideoPanel.bi2);
 		System.out.println("Drone connected: " + cm.isConnected());
 
 		// start drone control

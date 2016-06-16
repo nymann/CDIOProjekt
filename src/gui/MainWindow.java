@@ -2,6 +2,7 @@
 package gui;
 
 import de.yadrone.base.IARDrone;
+import de.yadrone.base.command.VideoCodec;
 import de.yadrone.base.video.VideoManager;
 import main.Main;
 
@@ -15,7 +16,15 @@ import java.util.List;
 
 import javax.swing.JButton;
 
-import org.opencv.core.Point;
+
+import video.PictureAnalyser;
+
+import java.util.List;
+
+import javax.swing.JButton;
+
+
+
 
 import video.PictureAnalyser;
 
@@ -26,7 +35,7 @@ import video.PictureAnalyser;
 public class MainWindow extends javax.swing.JFrame implements ActionListener {
 
 	private IARDrone drone;
-	private JButton calibrateRed,calibrateGreen;
+	private JButton calibrateRed,calibrateGreen,runTest;
 	
 	private VideoPanel cam;
 	private AnalysedVideoPanel analysed;
@@ -43,6 +52,7 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
 		this.values = new ListenerValuePanel();
 		this.calibrateRed = new JButton("CalibrateRed");
 		this.calibrateGreen = new JButton("CalibrateGreen");
+		this.runTest = new JButton("runTest");
 	}
 	
 	private void init() {
@@ -52,7 +62,7 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
 	//	this.getContentPane().add(cam);
 		this.getContentPane().add(values);
 		this.getContentPane().add(calibrateGreen);
-		
+		this.getContentPane().add(runTest);
 /*		this.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosed(WindowEvent e) {
@@ -70,7 +80,7 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
 	
 	public void run() {
 		this.init();
-		Dimension videoSize = new Dimension(640, 360);
+		Dimension videoSize = new Dimension(640,360 );
 	/*	cam.setBackground(Color.BLACK);
 		cam.setPreferredSize(videoSize);
 		cam.setSize(videoSize);
@@ -80,15 +90,17 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
 		values.setPreferredSize(new Dimension(150,150));
 		calibrateRed.addActionListener(this);
 		calibrateGreen.addActionListener(this);
+		runTest.addActionListener(this);
 		this.pack();
 		this.setVisible(true);
 		this.repaint();
 
 		//connecting video
 		System.out.println("Connecting video manager");
-		VideoManager vm = drone.getVideoManager();
-		
 		drone.setVerticalCamera();
+		drone.getCommandManager().setVideoCodec(VideoCodec.H264_360P);
+
+		VideoManager vm = drone.getVideoManager();
 	//	vm.addImageListener(cam);
 		vm.addImageListener(analysed);
 		
@@ -105,11 +117,16 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
 		 }if("CalibrateGreen".equals(e.getActionCommand())){		 
 				paGreen.Calibrate(analysed.bi2);
 			 }
+		 if("runTest".equals(e.getActionCommand())){		 
+				// run a test with the drone
+			 List<Point> lp = paRed.getAnalyse(AnalysedVideoPanel.bi2);
+			 for(int i =0;i<lp.size();i++){
+				 System.out.println("Cubes in x:"+lp.get(i).x+" y:"+lp.get(i).y);
+			 }
+			 }
 	}
 	
 }
 
 		
-	
-	
 	
