@@ -2,6 +2,10 @@ package dronePossition;
 
 import javafx.geometry.Point2D;
 
+/**
+* @author sAkkermans
+*/
+
 public class PositionWithOneQRCode {
 	
 	double x, y, x1, x2, y1, y2;
