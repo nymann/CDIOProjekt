@@ -28,14 +28,12 @@ public class NavFindPosition {
 	 */
 
     IARDrone drone;
-    MainModel mainModel;
     VideoReader videoReader;
     ImageDataListener imageDataListener;
 
-    public NavFindPosition(MainModel mainModel, ImageDataListener imageDataListener,
+    public NavFindPosition(ImageDataListener imageDataListener,
                            IARDrone drone) {
         this.imageDataListener = imageDataListener;
-        this.mainModel = mainModel;
         this.drone = drone;
     }
 
@@ -78,7 +76,7 @@ public class NavFindPosition {
 
     // yaw is presumed to go from 0 to 2*Math.PI
     public void turn360degrees() {
-        double yawAtStart = mainModel.getDroneAttitude().getYaw();
+        double yawAtStart = MainModel.getDroneAttitude().getYaw();
         int qRCodesFound = 0;
         //drone.getCommandManager().spinLeft(5).doFor(5000); LEGACY
 
@@ -86,7 +84,7 @@ public class NavFindPosition {
         // We should probably change the way this works. :-D
         drone.getCommandManager().spinLeft(1).doFor(100);
 
-        while ((mainModel.getDroneAttitude().getYaw() - yawAtStart) > 0.1) {
+        while ((MainModel.getDroneAttitude().getYaw() - yawAtStart) > 0.1) {
             drone.getCommandManager().spinLeft(5);
             // Scanning for QR codes.
             QRInfo qrInfo = QRWallMarks.GetQRCode.readQRCode(videoReader.getImage());
@@ -99,7 +97,7 @@ public class NavFindPosition {
             }
             //
 
-            System.out.println("Yaw: " + mainModel.getDroneAttitude().getYaw());
+            System.out.println("Yaw: " + MainModel.getDroneAttitude().getYaw());
         }
 
         drone.hover();

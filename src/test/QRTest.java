@@ -15,10 +15,9 @@ import modeling.QRPoint;
  */
 public class QRTest {
 	public static void main(String[] args){
-		MainModel model = new MainModel();
 		QRInfo info = new QRInfo();
 		info.name = "W00.01";
-		QRPoint point = model.getQRPoint(info);
+		QRPoint point = MainModel.getQRPoint(info);
 		System.out.println(point);
 	}
 }

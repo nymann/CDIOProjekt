@@ -16,18 +16,16 @@ import modeling.MainModel;
 public class ImageDataListener implements ImageListener {
 
 	private ImageData data;
-	private final MainModel model;
 
-	public ImageDataListener(MainModel model) {
-		this.model = model;
+	public ImageDataListener() {
 	}
 
 	@Override
 	public void imageUpdated(BufferedImage bi) {
 		this.data = new ImageData(
 				bi, 
-				model.getDroneAttitude(),
-				model.getDronePosition(),
+				MainModel.getDroneAttitude(),
+				MainModel.getDronePosition(),
 				System.currentTimeMillis()
 		);
 	}
