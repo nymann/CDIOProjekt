@@ -73,7 +73,7 @@ public class NavFlyPattern {
 		this.drone = drone;
 
 		//Ændr vr til idl senere.
-		fp = new NavFindPosition(mm, vr, drone);
+		fp = new NavFindPosition(mm, idl, drone);
 		of = new AverageFlowVector();
 		spots = new ArrayList<>();
 		drone.setSpeed(Main.globalDroneSpeed);
