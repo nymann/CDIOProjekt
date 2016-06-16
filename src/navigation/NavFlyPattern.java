@@ -61,7 +61,7 @@ public class NavFlyPattern {
 	private OpticalFlow opFlow;
 	private Point3D p3d, dronePos3D;
 	private PictureAnalyser paRed, paGreen;
-	private List<Point> lsR, lsG;
+	private List<org.opencv.core.Point> lsR, lsG;
 	private CameraUtil ca;
 	private TranslatePoint tp;
 
@@ -110,47 +110,6 @@ public class NavFlyPattern {
 		}, 0, 5, TimeUnit.SECONDS);
 
 	}
-
-	private Point3D flowFinderByVectors(ImageDataListener idl){
-		bi = idl.getImageData().image;
-		currentTimeStamp = idl.getImageData().time;
-		AverageFlowVector afv;
-		double posByqrX;
-		double posByqrY;
-
-		Point3D posUpdateByOF = null;
-
-		posByqrX = mm.getDronePosition().getX();
-		posByqrY = mm.getDronePosition().getX();
-
-		afv = opFlow.findFlows(bi);
-
-		if(afv != null) {
-			vecX = afv.x;
-			vecY = afv.y;
-
-			/* Finder tidsforskellen, som vi skal bruge sammen med farten til dronen.
-			 * Herved kan vi finde den afstand vi har flyttet.
-			 */
-			
-			long timeDifference = currentTimeStamp-pastTimeStamp; 
-			double movedLength = Main.globalDroneSpeed * timeDifference;
-
-			pastTimeStamp = currentTimeStamp;
-			
-			/* Her kan vi bruge den flyttede længde, sammen med retningsvektoren og det gamle koordinatsæt.
-			 * Herved finder vi den nye position.
-			 */
-			
-			double diffX = posByqrX+movedLength*vecX;
-			double diffY = posByqrY+movedLength*vecY;
-
-			// Z-værdien skal ændres.
-			posUpdateByOF = new Point3D(diffX, diffY, hightZ);
-		}
-		return posUpdateByOF;
-	}
-
 
 	public boolean atSpot(int spotID){
 		/*
@@ -208,10 +167,47 @@ public class NavFlyPattern {
 
 	}
 
+	private Point3D flowFinderByVectors(ImageDataListener idl){
+		bi = idl.getImageData().image;
+		currentTimeStamp = idl.getImageData().time;
+		AverageFlowVector afv;
+		double posByqrX;
+		double posByqrY;
+
+		Point3D posUpdateByOF = null;
+
+		posByqrX = mm.getDronePosition().getX();
+		posByqrY = mm.getDronePosition().getX();
+
+		afv = opFlow.findFlows(bi);
+
+		if(afv != null) {
+			vecX = afv.x;
+			vecY = afv.y;
+
+			/* Finder tidsforskellen, som vi skal bruge sammen med farten til dronen.
+			 * Herved kan vi finde den afstand vi har flyttet.
+			 */
+			
+			long timeDifference = currentTimeStamp-pastTimeStamp; 
+			double movedLength = Main.globalDroneSpeed * timeDifference;
+
+			pastTimeStamp = currentTimeStamp;
+			
+			/* Her kan vi bruge den flyttede længde, sammen med retningsvektoren og det gamle koordinatsæt.
+			 * Herved finder vi den nye position.
+			 */
+			
+			double diffX = posByqrX+movedLength*vecX;
+			double diffY = posByqrY+movedLength*vecY;
+
+			// Z-værdien skal ændres.
+			posUpdateByOF = new Point3D(diffX, diffY, hightZ);
+		}
+		return posUpdateByOF;
+	}
+	
 	private void findCubes(ImageDataListener idl){
-		/*
-		 * video.PictureView.init()
-		 */
 		lsR = paRed.getAnalyse(idl.getImageData().image);
 		lsG = paGreen.getAnalyse(idl.getImageData().image);
 		Angle3D a3d = idl.getImageData().attitude;
@@ -243,14 +239,6 @@ public class NavFlyPattern {
 			bool = mm.compareCube(c, 10.0);
 			if(bool==false) mm.addCube(c);			
 		}
-		
-		/*		
-		 * pictureCoordToVectorDown(int x, int y)
-		 * returnere point3D
-		 * point3D skal så sendes til modeling.TranslatePoint.setDroneInfo(Angle3D angle, Point3D position)
-		 * intersectFloor(Point3D direction) return Point2D:intersection
-		 * ska såsendes til MainModel's addCube funktion,
-		 */
 
 	}
 
