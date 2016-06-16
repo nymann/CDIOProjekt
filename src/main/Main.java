@@ -55,8 +55,6 @@ public class Main {
 		VideoManager vm = drone.getVideoManager();
 		video.VideoReader videoReader = new VideoReader(vm,com);
 		
-		MainModel model = new MainModel();
-
 		// Test af spin 360
 		NavFindPosition navPos = new NavFindPosition(model, videoReader, drone);
 		

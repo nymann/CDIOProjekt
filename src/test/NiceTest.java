@@ -135,9 +135,8 @@ public class NiceTest {
 
     private static void doStuff(IARDrone drone) {
 
-        MainModel model = new MainModel();
         VideoReader videoReader = new VideoReader(videoManager, commandManager);
-        Attitude att = new Attitude(model);
+        Attitude att = new Attitude();
         navDataManager.addAttitudeListener(att);
         //commandManager.setOutdoor(false, true);
 
@@ -220,14 +219,14 @@ public class NiceTest {
         }
         output.addTextLine("Stable hover");
 
-        double startYaw = model.getDroneAttitude().getYaw() + Math.PI;
+        double startYaw = MainModel.getDroneAttitude().getYaw() + Math.PI;
         output.addTextLine("Spinning left");
         commandManager.spinLeft(50);
 
         output.addTextLine("Waiting for difference");
         double currentYaw;
         do {
-            currentYaw = model.getDroneAttitude().getYaw() + Math.PI;
+            currentYaw = MainModel.getDroneAttitude().getYaw() + Math.PI;
             commandManager.spinLeft(50).doFor(50);
             //Point3D v = vel.velocity;
             //commandManager.move((int)-v.getX()/100, (int)-v.getY()/100, 0, 0).doFor(50);
@@ -254,7 +253,7 @@ public class NiceTest {
 				} else {
 					output.addTextLine(qrInfo.error);
 				}*/
-            currentYaw = model.getDroneAttitude().getYaw() + Math.PI;
+            currentYaw = MainModel.getDroneAttitude().getYaw() + Math.PI;
 
         }
         output.addTextLine("QR-codes found: " + qRCodesFound);

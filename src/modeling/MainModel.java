@@ -17,38 +17,42 @@ import javafx.geometry.Point3D;
  */
 public class MainModel {
 	
-	private List<List<QRPoint>> QRPoints = new ArrayList<>();
-	private List<NavSpot> navSpots = new ArrayList<>();
-	private List<Cube> cubes = new ArrayList<>();
+	private static final List<List<QRPoint>> QRPoints = new ArrayList<>();
+	private static final List<NavSpot> navSpots = new ArrayList<>();
+	private static final List<Cube> cubes = new ArrayList<>();
 	
-	private Point3D dronePosition;
-	private Angle3D droneAttitude;
-	public Angle3D getDroneAttitude() {
+	private static Point3D dronePosition;
+	private static Angle3D droneAttitude;
+	
+	private static Point3D droneDirection;
+	private static Point3D roomSize;
+	private static double angleOffset;
+	
+	private MainModel(){
+	}
+
+	public static Angle3D getDroneAttitude() {
 		return droneAttitude;
 	}
 
-	public void setDroneAttitude(Angle3D droneAttitude) {
-		this.droneAttitude = droneAttitude;
+	public static void setDroneAttitude(Angle3D droneAttitude) {
+		MainModel.droneAttitude = droneAttitude;
 	}
 
-	private Point3D droneDirection;
-	private Point3D roomSize;
-	private double angleOffset;
-
-	public double getAngleOffset() {
+	public static double getAngleOffset() {
 		return angleOffset;
 	}
 
-	public void setAngleOffset(double angleOffset) {
-		this.angleOffset = angleOffset;
+	public static void setAngleOffset(double angleOffset) {
+		MainModel.angleOffset = angleOffset;
 	}
 
-	public MainModel() {
+	public static void init() {
 		FillQRPoints();
 		FillNavSpots();
 	}
 	
-	public void addCube(Cube newCube){
+	public static void addCube(Cube newCube){
 		cubes.add(newCube);
 	}
 	
@@ -59,7 +63,7 @@ public class MainModel {
 	 * @param tolerance
 	 * @return ture if the model contains a similar cube
 	 */
-	public boolean compareCube(Cube newCube, double tolerance){
+	public static boolean compareCube(Cube newCube, double tolerance){
 		for (Cube currentCube: cubes){
 			if (newCube.getColor().equals(currentCube.getColor())){
 				if (newCube.getPosition().subtract(currentCube.getPosition()).distance(CustomPoint3D.ZERO) < tolerance){
@@ -70,14 +74,14 @@ public class MainModel {
 		return false;
 	}
 	
-	public QRPoint getQRPoint(QRInfo info){
+	public static QRPoint getQRPoint(QRInfo info){
 		String[] id = info.name.substring(1).split("\\.");
 		int wall = Integer.parseInt(id[0]);
 		int kode = Integer.parseInt(id[1]);
 		return QRPoints.get(wall).get(kode);
 	}
 	
-	private void FillQRPoints(){
+	private static void FillQRPoints(){
 		//WPoint: X-koordinat, y-koordinat, z-koordinat, QR-ID
 		int z = 180;
 		//Wall 0
@@ -114,7 +118,7 @@ public class MainModel {
 		QRPoints.add(wall);
 	}
 	
-	private void FillNavSpots(){
+	private static void FillNavSpots(){
 		//spot: X-koordinat, y-koordinat, z-koordinat, spot-ID: lige->startSpots, ulige->endSpots
 		int z = 0;
 		int x0 = 75;
@@ -137,21 +141,21 @@ public class MainModel {
 		
 	}	
 	
-	public NavSpot getNavSpot(int id){
+	public static NavSpot getNavSpot(int id){
 		NavSpot spot = navSpots.get(id);
 		return spot;
 	}
 
-	public Point3D getDronePosition() {
+	public static Point3D getDronePosition() {
 		return dronePosition;
 	}
 
-	public void setDronePosition(Point3D dronePosition) {
-		this.dronePosition = dronePosition;
+	public static void setDronePosition(Point3D dronePosition) {
+		MainModel.dronePosition = dronePosition;
 	}
 	
-	public void setDronePosition(Point2D p) {
-		this.dronePosition = new Point3D(p.getX(), p.getY(), this.dronePosition.getZ());
+	public static void setDronePosition(Point2D p) {
+		MainModel.dronePosition = new Point3D(p.getX(), p.getY(), dronePosition.getZ());
 	}
 	
 	
