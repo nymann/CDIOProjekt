@@ -38,13 +38,17 @@ public class OpticalFlowTestRasmus {
 	}
 	
 	public static void testOne(CommandManager cmd){
-		cmd.takeOff().doFor(5000);
-		cmd.hover().doFor(1000);
-		cmd.forward(30).doFor(500);
-		cmd.hover().doFor(1000);
-		cmd.forward(30).doFor(1000);
-		cmd.hover().doFor(1000);
-		cmd.landing();
+		doCommand(cmd, 5, 1000);
+		doCommand(cmd, 7, 2000);
+		doCommand(cmd, 1, 3000);
+		doCommand(cmd, 7, 2000);
+		doCommand(cmd, 2, 3000);
+		doCommand(cmd, 7, 2000);
+		doCommand(cmd, 3, 3000);
+		doCommand(cmd, 7, 2000);
+		doCommand(cmd, 4, 3000);
+		doCommand(cmd, 7, 2000);
+		doCommand(cmd, 6, 1000);
 	}
 	
 	public static void testTwo(CommandManager cmd, VideoReader vid){
