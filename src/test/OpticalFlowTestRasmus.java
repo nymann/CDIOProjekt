@@ -22,24 +22,19 @@ public class OpticalFlowTestRasmus {
 			final VideoManager vmd = drone.getVideoManager();
 			video.VideoReader vid = new VideoReader(vmd, cmd);
 			drone.setVerticalCamera();
-//			testOne(cmd);
-			testTwo(cmd, vid);
+			testOne(cmd);
+//			testTwo(cmd, vid);
 		} catch (Exception exc) {
 			System.err.println(exc.getMessage());
 			exc.printStackTrace();
 		} 
-//		finally {
-//			if (drone != null)
-//				drone.stop();
-//
-//			System.exit(0);
-//		}
-
 	}
 	
 	public static void testOne(CommandManager cmd){
+		cmd.setMaxAltitude(2000);
 		doCommand(cmd, 5, 1000);
 		doCommand(cmd, 7, 2000);
+		cmd.up(10).doFor(1000);
 		doCommand(cmd, 1, 3000);
 		doCommand(cmd, 7, 2000);
 		doCommand(cmd, 2, 3000);
