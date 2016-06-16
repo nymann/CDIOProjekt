@@ -22,16 +22,14 @@ public class NavigationControl {
 	private NavFlyPattern flyPat;
 	private NavFindPosition findPos;
 	private ImageDataListener idl;
-	private VideoReader vr;
 	private IARDrone drone;
 	private BufferedImage buffI;
 
 	NavigationControl(ImageDataListener idl){
-		this.vr = vr;
 		vm = drone.getVideoManager();
 		cm = drone.getCommandManager();
-		vr = new VideoReader(vm, cm);
-		findPos = new NavFindPosition(mm, vr, drone);
+		cm.setControlAck(true);
+		findPos = new NavFindPosition(mm, idl, drone);
 		flyPat = new NavFlyPattern(mm, idl, drone);
 		
 		runNav();
