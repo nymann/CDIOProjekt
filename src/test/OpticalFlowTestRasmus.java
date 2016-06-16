@@ -77,32 +77,33 @@ public class OpticalFlowTestRasmus {
 	}
 	
 	public static void doCommand(CommandManager cmd, int direction, int time){
+		double start = System.currentTimeMillis();
 		switch(direction){
-			case 1: for(int i = 0; i < time; i++){
+			case 1: while(System.currentTimeMillis() - start < time){
 				cmd.forward(20);
 			}
 			break;
-			case 2: for(int i = 0; i < time; i++){
+			case 2: while(System.currentTimeMillis() - start < time){
 				cmd.backward(20);
 			}
 			break;
-			case 3: for(int i = 0; i < time; i++){
+			case 3: while(System.currentTimeMillis() - start < time){
 				cmd.goLeft(20);
 			}
 			break;
-			case 4: for(int i = 0; i < time; i++){
+			case 4: while(System.currentTimeMillis() - start < time){
 				cmd.goRight(20);
 			}
 			break;
-			case 5: for(int i = 0; i < time; i++){
+			case 5: while(System.currentTimeMillis() - start < time){
 				cmd.takeOff();
 			}
 			break;
-			case 6: for(int i = 0; i < time; i++){
+			case 6: while(System.currentTimeMillis() - start < time){
 				cmd.landing();
 			}
 			break;
-			case 7: for(int i = 0; i < time; i++){
+			case 7: while(System.currentTimeMillis() - start < time){
 				cmd.hover();
 			}
 			break;
