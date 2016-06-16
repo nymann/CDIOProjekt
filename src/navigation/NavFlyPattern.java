@@ -33,18 +33,6 @@ import video.VideoReader;
  */
 
 public class NavFlyPattern {
-	/*
-	drone.up();
-	drone.down();
-	drone.forward();
-	drone.backward();
-	drone.goLeft();
-	drone.goRight();
-	drone.landing();
-	drone.takeOff();
-	drone.hover();
-	drone.reset();
-	 */
 
 	private NavFindPosition fp;
 	private List<NavSpot> spots;
