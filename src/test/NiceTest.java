@@ -145,6 +145,7 @@ public class NiceTest {
 
         commandManager.setOutdoor(true, true);
 
+
         Runnable infoUpdate = () -> {
             while (true) {
                 if (NiceTest.vel.velocity != null) {
@@ -227,7 +228,7 @@ public class NiceTest {
             commandManager.spinLeft(50).doFor(50);
             //Point3D v = vel.velocity;
             //commandManager.move((int)-v.getX()/100, (int)-v.getY()/100, 0, 0).doFor(50);
-        } while (Math.abs(startYaw - currentYaw) > 0.025);
+        } while (Math.abs(startYaw - currentYaw) < 0.025);
 
         output.addTextLine("Starting yaw difference:" + (currentYaw - startYaw));
 

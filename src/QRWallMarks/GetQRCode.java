@@ -10,6 +10,7 @@ import java.util.Hashtable;
 public class GetQRCode {
 
     public static QRInfo readQRCode(BufferedImage qrcodeImage) {
+
         QRInfo qrInfo = new QRInfo();
         Hashtable<DecodeHintType, Object> hintMap = new Hashtable<>();
         hintMap.put(DecodeHintType.TRY_HARDER, Boolean.TRUE);
@@ -32,7 +33,10 @@ public class GetQRCode {
                     "to the format rules.";
         }
         assert result != null;
-        qrInfo.name = result.getText();
+
+        qrInfo.name = result.getText(); // This line produces an error.
+        System.out.println("XD");
+
         QRCodeCoordinates qrCodeCoordinates = new QRCodeCoordinates(result
                 .getResultPoints());
         qrInfo.x = (int) qrCodeCoordinates.getXCenter();
