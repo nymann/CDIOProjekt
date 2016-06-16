@@ -26,6 +26,9 @@ public class TextPanel extends JScrollPane{
 	
 	public void addTextLine(String text){
 		this.jTextArea.setText(this.jTextArea.getText() + text + "\n");
-		
+	}
+	
+	public void setText(String text){
+		this.jTextArea.setText(text);
 	}
 }

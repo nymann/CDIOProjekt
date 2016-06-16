@@ -7,6 +7,7 @@ package test;
 
 import de.yadrone.base.ARDrone;
 import de.yadrone.base.IARDrone;
+import de.yadrone.base.command.CommandManager;
 import de.yadrone.base.configuration.ConfigurationManager;
 import de.yadrone.base.navdata.NavDataManager;
 import gui.ListenerValuePanel;
@@ -34,6 +35,8 @@ public class NavTest {
 		// getting managers
 		ConfigurationManager cm = drone.getConfigurationManager();
 		NavDataManager nm = drone.getNavDataManager();
+		CommandManager com = drone.getCommandManager();
+		com.setNavDataDemo(false);
 
 		System.out.println("Drone connected: " + cm.isConnected());
 
@@ -44,6 +47,7 @@ public class NavTest {
 		mainWindow.add(panel);
 		mainWindow.setVisible(true);
 		mainWindow.pack();
+		mainWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 	}
 
