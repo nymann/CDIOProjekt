@@ -50,7 +50,6 @@ public class NavFlyPattern {
 	private List<NavSpot> spots;
 	private AverageFlowVector of;
 	private IARDrone drone;
-	private MainModel mm;
 	private VideoReader vr;
 	private ImageDataListener idl;
 	private double vecX, vecY, hightZ;
@@ -64,43 +63,34 @@ public class NavFlyPattern {
 	private List<org.opencv.core.Point> lsR, lsG;
 	private CameraUtil ca;
 	private TranslatePoint tp;
+	private int speed;
 
-	public NavFlyPattern(MainModel mm, ImageDataListener idl, IARDrone drone){
+	public NavFlyPattern(ImageDataListener idl, IARDrone drone){
 		this.idl = idl;
-		this.mm = mm;
 		this.drone = drone;
 
 		//Ændr vr til idl senere.
 		fp = new NavFindPosition(mm, idl, drone);
 		of = new AverageFlowVector();
 		spots = new ArrayList<>();
-		drone.setSpeed(Main.globalDroneSpeed);
+		speed = Main.globalDroneSpeed;
+		drone.setSpeed(speed);
 
 	}
 
 	public void flyLane(int startSpot, int endSpot){
-		dronePos3D = mm.getDronePosition();
+		dronePos3D = MainModel.getDronePosition();
 		NavSpot ss = spots.get(startSpot);
 		NavSpot es = spots.get(endSpot);
 		pastTimeStamp = 0;
-
-		//Runnable command, long initialDelay, long period, TimeUnit unit
-		excOF = Executors.newSingleThreadScheduledExecutor();
-		excOF.scheduleAtFixedRate(new Runnable() {
-			@Override
-			public void run() {
-				p3d = flowFinderByVectors(idl);
-				while(p3d == null){
-					try {
-						Thread.sleep(1000);
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
-					p3d = flowFinderByVectors(idl);
-				};
-			}
-		}, 0, 1, TimeUnit.SECONDS);
 		
+		//Get drone direction
+		double relativeYaw = MainModel.getDroneAttitude().getYaw();
+		double yawOffset = MainModel.getAngleOffset();
+		double droneAbsoluteYaw = yawOffset-relativeYaw;
+		
+		
+		//Runnable command, long initialDelay, long period, TimeUnit unit
 		excCubes = Executors.newSingleThreadScheduledExecutor();
 		excCubes.scheduleAtFixedRate(new Runnable() {
 			@Override
@@ -108,7 +98,11 @@ public class NavFlyPattern {
 				findCubes(idl);
 			}
 		}, 0, 5, TimeUnit.SECONDS);
-
+		
+		drone.getCommandManager().forward(speed).doFor(2000);
+		
+		
+		
 	}
 
 	public boolean atSpot(int spotID){
@@ -116,13 +110,9 @@ public class NavFlyPattern {
 		 * makes sure dronePosition is within acceptable range of spotIDs location
 		 */
 		boolean bool = false;
-		double currentX;
-		double currentY;
-
-		currentX = mm.getDronePosition().getX();
-		currentY = mm.getDronePosition().getX();
-
-		NavSpot spot = mm.getNavSpot(spotID);
+		NavSpot spot = MainModel.getNavSpot(spotID);
+		double currentX = MainModel.getDronePosition().getX();
+		double currentY = MainModel.getDronePosition().getX();
 		int xSpot = spot.getX();
 		int ySpot = spot.getY();
 
@@ -138,32 +128,39 @@ public class NavFlyPattern {
 		return bool;
 	}
 
-	public void flyToSpot(double currentX, double currentY, int spotID){
+	public void flyToSpot(int spotID){
 		/*
 		 * Ud fra current position, skal vinklen være regnet til spotIDs position og distancen.
 		 * Flyve afstanden.
 		 */
+		
+		// Længde fra dronen til start spot.
+		double distBetweenDroneAndSpot = Math.pow(difX,2) + Math.pow(difY,2);
+		distBetweenDroneAndSpot = Math.sqrt(distBetweenDroneAndSpot);
+		
+		// IKKE KLAR - Skal sættes en fart ind i stedet for ditrance.
+		int distBetweenDroneAndSpot2 = (int) distBetweenDroneAndSpot;
+		drone.getCommandManager().forward(5).doFor(distBetweenDroneAndSpot2);
+
+	}
+	
+	private void findAndChangeAttitude(int spotID){
 		NavSpot goToSpot = spots.get(spotID);
+		double currentX = MainModel.getDronePosition().getX();
+		double currentY = MainModel.getDronePosition().getX();
 		int goToX = goToSpot.getX();
 		int goToY = goToSpot.getY();
 		double difX = currentX-goToX; 
 		double difY = currentY-goToY;
 
 		double atan = Math.atan2(difY, difX);
-		double changeAngle = atan-mm.getAngleOffset()+mm.getDroneAttitude().getYaw();
-
-		// Længde fra dronen til start spot.
-		double distBetweenDroneAndSpot = Math.pow(difX,2) + Math.pow(difY,2);
-		distBetweenDroneAndSpot = Math.sqrt(distBetweenDroneAndSpot);
-
+		double changeAngle = atan-MainModel.getAngleOffset()+mm.getDroneAttitude().getYaw();
+		
 		// Drej til spot, derefter flyv til spot.
-		// Hvis mm bliver opdateret konstant.
-		while(mm.getDroneAttitude().getYaw() != changeAngle) {
-			drone.spinLeft();
-		}
-		// IKKE KLAR - Skal sættes en fart ind i stedet for ditrance.
-		int distBetweenDroneAndSpot2 = (int) distBetweenDroneAndSpot;
-		drone.getCommandManager().forward(5).doFor(distBetweenDroneAndSpot2);
+				// Hvis mm bliver opdateret konstant.
+				while(MainModel.getDroneAttitude().getYaw() != changeAngle) {
+					drone.spinLeft();
+				}
 
 	}
 
@@ -176,8 +173,8 @@ public class NavFlyPattern {
 
 		Point3D posUpdateByOF = null;
 
-		posByqrX = mm.getDronePosition().getX();
-		posByqrY = mm.getDronePosition().getX();
+		posByqrX = MainModel.getDronePosition().getX();
+		posByqrY = MainModel.getDronePosition().getX();
 
 		afv = opFlow.findFlows(bi);
 
@@ -224,8 +221,8 @@ public class NavFlyPattern {
 			p2d = tp.intersectFloor(p3d);
 			Point3D found3d = new Point3D(p2d.getX(), p2d.getY(), 0);
 			Cube c = new Cube(found3d, Color.RED);
-			bool = mm.compareCube(c, 10.0);
-			if(bool==false) mm.addCube(c);			
+			bool = MainModel.compareCube(c, 10.0);
+			if(bool==false) MainModel.addCube(c);			
 		}
 
 		for(Point p : lsG){
@@ -236,8 +233,8 @@ public class NavFlyPattern {
 			p2d = tp.intersectFloor(p3d);
 			Point3D found3d = new Point3D(p2d.getX(), p2d.getY(), 0);
 			Cube c = new Cube(found3d, Color.GREEN);
-			bool = mm.compareCube(c, 10.0);
-			if(bool==false) mm.addCube(c);			
+			bool = MainModel.compareCube(c, 10.0);
+			if(bool==false) MainModel.addCube(c);			
 		}
 
 	}
