@@ -21,7 +21,7 @@ public class Cube {
 		this.color = color;
 	}
 
-	public CustomPoint3D getPosition() {
+	public Point3D getPosition() {
 		return position;
 	}
 
