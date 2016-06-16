@@ -30,10 +30,11 @@ public class NavFindPosition {
     IARDrone drone;
     MainModel mainModel;
     VideoReader videoReader;
+    ImageDataListener imageDataListener;
 
-    public NavFindPosition(MainModel mainModel, VideoReader videoReader,
+    public NavFindPosition(MainModel mainModel, ImageDataListener imageDataListener,
                            IARDrone drone) {
-        this.videoReader = videoReader;
+        this.imageDataListener = imageDataListener;
         this.mainModel = mainModel;
         this.drone = drone;
     }

@@ -2,6 +2,7 @@ package navigation;
 
 import java.awt.image.BufferedImage;
 
+import javafx.geometry.Point3D;
 import de.yadrone.base.IARDrone;
 import de.yadrone.base.command.CommandManager;
 import de.yadrone.base.video.ImageListener;
@@ -21,17 +22,17 @@ public class NavigationControl {
 	private MainModel mm;
 	private NavFlyPattern flyPat;
 	private NavFindPosition findPos;
-	private VideoReader vr;
+	private ImageDataListener idl;
 	private IARDrone drone;
 	private BufferedImage buffI;
+	private Point3D pos3d;
 
-	NavigationControl(VideoReader vr){
-		this.vr = vr;
+	NavigationControl(ImageDataListener idl){
 		vm = drone.getVideoManager();
 		cm = drone.getCommandManager();
-		vr = new VideoReader(vm, cm);
-		findPos = new NavFindPosition(mm, vr, drone);
-		flyPat = new NavFlyPattern(mm, vr, drone);
+		cm.setControlAck(true);
+		findPos = new NavFindPosition(mm, idl, drone);
+		flyPat = new NavFlyPattern(mm, idl, drone);
 		
 		runNav();
 		presentResults();
@@ -39,9 +40,10 @@ public class NavigationControl {
 
 	private void runNav(){
 		
-		double xPos = mm.getDronePosition().getX();
-		double yPos = mm.getDronePosition().getY();
-
+		pos3d = mm.getDronePosition();
+		
+		double xPos = pos3d.getX();
+		double yPos = pos3d.getY();
 
 		try {
 			for (int i=0; i<14; i++) {

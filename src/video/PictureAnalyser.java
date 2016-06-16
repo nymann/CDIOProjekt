@@ -13,6 +13,7 @@ import org.opencv.imgproc.Imgproc;
 import org.opencv.imgproc.Moments;
 import org.opencv.objdetect.CascadeClassifier;
 
+import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
@@ -42,8 +43,6 @@ public class PictureAnalyser {
 
 
 	public List<Point> getAnalyse(BufferedImage img) {
-	//public BufferedImage getAnalyse(BufferedImage img) {
-
 		Mat frameMat = new Mat();
 		frameMat = PictureView.bufferedImageToMat(img);
 		List<MatOfPoint> contours = new ArrayList<MatOfPoint>();
@@ -54,25 +53,17 @@ public class PictureAnalyser {
 		contours = getConturs(color.get(0), color.get(1), imgHSV);
 		
 		return getblocks(contours);
-		/*Imgproc.cvtColor(imgHSV, pic, Imgproc.COLOR_HSV2RGB);
-		Imgproc.circle(pic, new Point(pic.width() / 2,
-				pic.height() / 2), 4, new Scalar(255, 49, 255, 255));
-		 img = PictureView.mat2Img(pic);
-		 return img;
-	*/}
+	}
 
 	public  List<Point> getblocks(List<MatOfPoint> contours) {
 		List<Moments> mu = new ArrayList<Moments>(contours.size());
 		List<Point> cubepoint = new ArrayList<Point>();
-		int counter = 0;
 		for (int i = 0; i < contours.size(); i++) {
 			mu.add(i, Imgproc.moments(contours.get(i), false));
 			Moments p = mu.get(i);
 			int x = (int) (p.get_m10() / p.get_m00());
 			int y = (int) (p.get_m01() / p.get_m00());
 			cubepoint.add(new Point((x), (y)));
-
-			Imgproc.circle(pic, new Point(x, y), 4, new Scalar(255, 49, 0, 255));
 		}
 		return cubepoint;
 	}
@@ -126,9 +117,6 @@ public class PictureAnalyser {
 			if (area > 500) {
 				// draw enclosing rectangle (all same color, but you could use
 				// variable i to make them unique)
-				Imgproc.rectangle(pic, new Point(rect.x, rect.y), new Point(
-						rect.x + rect.width, rect.y + rect.height), new Scalar(
-						255, 0, 0, 255), 3);
 			} else {
 				contours.remove(i);
 				i--;
@@ -148,29 +136,7 @@ public class PictureAnalyser {
 		return destImage;
 	}
 
-	public  boolean detect(Mat img) {
-		CascadeClassifier face_cascade = new CascadeClassifier();
-		if (!face_cascade.load("pic/lbpcascade_frontalface.xml")) {
-			return false;
-		}
-		MatOfRect faceDetections = new MatOfRect();
-		face_cascade.detectMultiScale(img, faceDetections);
-		System.out.println(String.format("Detected %s faces",
-				faceDetections.toArray().length));
-		if (faceDetections.toArray().length == 0) {
-			return false;
-		}
-		// for (Rect rect : faceDetections.toArray()) {
-		// Imgproc.rectangle(image, new Point(rect.x, rect.y), new Point(rect.x
-		// + rect.width, rect.y + rect.height), new Scalar(0, 255, 0));
-		// }
-
-		return true;
-	}
-
 	 public void Calibrate(BufferedImage img){
-	//public static BufferedImage Calibrate(BufferedImage img) {
-
 		Mat frameMat = new Mat();
 		frameMat = PictureView.bufferedImageToMat(img);
 		pic = blur(frameMat, 3);
@@ -200,17 +166,6 @@ public class PictureAnalyser {
 		hue = hue / (height * width);
 		saturation = saturation / (height * width);
 		value = value / (height * width);
-
-		Scalar high = new Scalar(hue + 5, saturation + 40, value + 40);
-		Scalar low = new Scalar(hue - 5, saturation - 40, value - 40);
-		List<Point> color = new ArrayList<>();
-		getConturs(low, high, imgHSV);
-		Imgproc.rectangle(pic, new Point(imgHSV.width() / 2 - width / 2,
-				imgHSV.height() / 2 - height / 2), new Point(imgHSV.width() / 2
-				+ width / 2, imgHSV.height() / 2 + height / 2), new Scalar(hue,
-				saturation, value));
-		Imgproc.circle(pic, new Point(imgHSV.width() / 2,
-				imgHSV.height() / 2), 4, new Scalar(255, 49, 255, 255));
 		this.color.get(0).val[0]=hue - 5;
 		this.color.get(0).val[1]=saturation - 40;
 		this.color.get(0).val[2]=value - 40;

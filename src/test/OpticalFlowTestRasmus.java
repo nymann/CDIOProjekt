@@ -22,29 +22,28 @@ public class OpticalFlowTestRasmus {
 			final VideoManager vmd = drone.getVideoManager();
 			video.VideoReader vid = new VideoReader(vmd, cmd);
 			drone.setVerticalCamera();
-//			testOne(cmd);
-			testTwo(cmd, vid);
+			testOne(cmd);
+//			testTwo(cmd, vid);
 		} catch (Exception exc) {
 			System.err.println(exc.getMessage());
 			exc.printStackTrace();
 		} 
-//		finally {
-//			if (drone != null)
-//				drone.stop();
-//
-//			System.exit(0);
-//		}
-
 	}
 	
 	public static void testOne(CommandManager cmd){
-		cmd.takeOff().doFor(5000);
-		cmd.hover().doFor(1000);
-		cmd.forward(30).doFor(500);
-		cmd.hover().doFor(1000);
-		cmd.forward(30).doFor(1000);
-		cmd.hover().doFor(1000);
-		cmd.landing();
+		cmd.setMaxAltitude(2000);
+		doCommand(cmd, 5, 1000);
+		doCommand(cmd, 7, 2000);
+		cmd.up(10).doFor(1000);
+		doCommand(cmd, 1, 3000);
+		doCommand(cmd, 7, 2000);
+		doCommand(cmd, 2, 3000);
+		doCommand(cmd, 7, 2000);
+		doCommand(cmd, 3, 3000);
+		doCommand(cmd, 7, 2000);
+		doCommand(cmd, 4, 3000);
+		doCommand(cmd, 7, 2000);
+		doCommand(cmd, 6, 1000);
 	}
 	
 	public static void testTwo(CommandManager cmd, VideoReader vid){
@@ -73,32 +72,33 @@ public class OpticalFlowTestRasmus {
 	}
 	
 	public static void doCommand(CommandManager cmd, int direction, int time){
+		double start = System.currentTimeMillis();
 		switch(direction){
-			case 1: for(int i = 0; i < time; i++){
+			case 1: while(System.currentTimeMillis() - start < time){
 				cmd.forward(20);
 			}
 			break;
-			case 2: for(int i = 0; i < time; i++){
+			case 2: while(System.currentTimeMillis() - start < time){
 				cmd.backward(20);
 			}
 			break;
-			case 3: for(int i = 0; i < time; i++){
+			case 3: while(System.currentTimeMillis() - start < time){
 				cmd.goLeft(20);
 			}
 			break;
-			case 4: for(int i = 0; i < time; i++){
+			case 4: while(System.currentTimeMillis() - start < time){
 				cmd.goRight(20);
 			}
 			break;
-			case 5: for(int i = 0; i < time; i++){
+			case 5: while(System.currentTimeMillis() - start < time){
 				cmd.takeOff();
 			}
 			break;
-			case 6: for(int i = 0; i < time; i++){
+			case 6: while(System.currentTimeMillis() - start < time){
 				cmd.landing();
 			}
 			break;
-			case 7: for(int i = 0; i < time; i++){
+			case 7: while(System.currentTimeMillis() - start < time){
 				cmd.hover();
 			}
 			break;

@@ -24,10 +24,8 @@ import java.util.List;
  * @author JoachimØstergaard
  */
 public class PictureView {
-	static int counterG = 0 ;
-	static int counterR = 0 ;
+
 	static Mat pic ;
-    private List<Scalar> color;
 
 	public static void init() {
 		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
@@ -99,16 +97,6 @@ public class PictureView {
 		}
 		out.put(0, 0, data);
 		return out;
-	}
-
-	public static Image mat2Image(Mat frame) {
-		// create a temporary buffer
-		MatOfByte buffer = new MatOfByte();
-		// encode the frame in the buffer, according to the PNG format
-		Imgcodecs.imencode(".png", frame, buffer);
-		// build and return an Image created from the image encoded in the
-		// buffer
-		return new Image(new ByteArrayInputStream(buffer.toArray()));
 	}
 
 }

@@ -6,20 +6,26 @@
 package modeling;
 
 import java.awt.Color;
+import javafx.geometry.Point3D;
 
 /**
  *
  * @author Mikkel
  */
 public class Cube {
-	private CustomPoint3D position;
+	private Point3D position;
 	private Color color;
+	
+	public Cube(Point3D position, Color color){
+		this.position = position;
+		this.color = color;
+	}
 
-	public CustomPoint3D getPosition() {
+	public Point3D getPosition() {
 		return position;
 	}
 
-	public void setPosition(CustomPoint3D position) {
+	public void setPosition(Point3D position) {
 		this.position = position;
 	}
 
