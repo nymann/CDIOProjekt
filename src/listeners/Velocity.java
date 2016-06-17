@@ -8,7 +8,7 @@ public class Velocity implements VelocityListener {
 	public Point3D velocity;
 	
 	@Override
-	public void velocityChanged(float vx, float vy, float vz) {
+	public void velocityChanged(float vy, float vx, float vz) {
 		velocity = new Point3D(vx, vy, vz);
 	}
 }

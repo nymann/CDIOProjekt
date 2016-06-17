@@ -8,7 +8,10 @@ import de.yadrone.base.navdata.AltitudeListener;
 public class Altitude implements AltitudeListener {
     public int altitude;
     public de.yadrone.base.navdata.Altitude extendedAltitude;
+	private long lastUpdate;
+	
 
+	@Override
     public void receivedAltitude(int altitude) {
         altitude = this.altitude;
     }
@@ -16,6 +19,11 @@ public class Altitude implements AltitudeListener {
     @Override
     public void receivedExtendedAltitude(de.yadrone.base.navdata.Altitude
                                                  extendedAltitude) {
+		this.lastUpdate = System.currentTimeMillis();
         this.extendedAltitude = extendedAltitude;
     }
+	
+	public long getLastUpdate(){
+		return lastUpdate;
+	}
 }

@@ -7,21 +7,20 @@ package test;
 
 import de.yadrone.base.ARDrone;
 import de.yadrone.base.IARDrone;
+import de.yadrone.base.command.CommandManager;
+import de.yadrone.base.command.VideoCodec;
 import de.yadrone.base.configuration.ConfigurationManager;
 import de.yadrone.base.navdata.NavDataManager;
 import de.yadrone.base.video.VideoManager;
 import dronePossition.QRPossitioning;
-import gui.ListenerValuePanel;
 import gui.TextPanel;
 import gui.VideoPanel;
 import gui.special_qr_panels.QRValuesPanel;
-import gui.special_qr_panels.QRVideoPanel;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JFrame;
-import modeling.MainModel;
+import javax.swing.WindowConstants;
+import video.VideoReader;
 
 /**
  *
@@ -44,22 +43,29 @@ public class TestQRPositioning {
 		}
 
 		// getting managers
-		ConfigurationManager cm = drone.getConfigurationManager();
+		ConfigurationManager config = drone.getConfigurationManager();
 		NavDataManager nm = drone.getNavDataManager();
 		VideoManager vm = drone.getVideoManager();
+		CommandManager command = drone.getCommandManager();
+		//command.setVideoCodec(VideoCodec.H264_720P);
+		command.setVideoCodec(VideoCodec.H264_360P);
 
-		System.out.println("Drone connected: " + cm.isConnected());
+		System.out.println("Drone connected: " + config.isConnected());
 		QRPossitioning qrpos = new QRPossitioning();
 
 		QRValuesPanel rotation = new QRValuesPanel(qrpos);
 		rotation.setListeners(nm);
-		rotation.setPreferredSize(new Dimension(250, 20));
-		rotation.setSize(new Dimension(250, 20));
+		rotation.setPreferredSize(new Dimension(300, 20));
+		rotation.setSize(new Dimension(300, 20));
 
-		QRVideoPanel video = new QRVideoPanel(qrpos);
+		VideoReader videoReader = new VideoReader(vm, command);
+		VideoPanel video = new VideoPanel();
 		video.setSize(new Dimension(1280, 720));
 		video.setPreferredSize(new Dimension(1280, 720));
-		vm.addImageListener(video);
+		vm.addImageListener(videoReader);
+		videoReader.addListener(video);
+		videoReader.addListener(qrpos);
+		videoReader.setCamMode(false);
 		
 		TextPanel text = new TextPanel();
 		qrpos.setOutput(text);
@@ -71,13 +77,8 @@ public class TestQRPositioning {
 		mainWindow.getContentPane().add(text);
 		mainWindow.setVisible(true);
 		mainWindow.pack();
+		mainWindow.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		
 		text.addTextLine("Test output:");
-
-		try {
-			Thread.currentThread().wait();
-		} catch (InterruptedException ex) {
-		}
-
 	}
 }

@@ -8,13 +8,11 @@ public class QRInfo {
     public String error;
     public int x, y;
     public double angle;
-    public Boolean qRCodeFoundInCurrentImage;
 
     public QRInfo() {
         this.name = "";
         this.error = "";
         this.x = 0;
         this.y = 0;
-        this.qRCodeFoundInCurrentImage = false;
     }
 }

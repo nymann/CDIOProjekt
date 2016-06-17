@@ -48,11 +48,11 @@ public class ListenerValuePanel extends JPanel implements AttitudeListener,
 
 	@Override
 	public void receivedRawData(AcceleroRawData acceleroRawData) {
-		System.out.println("acceleroRawData updated.");
+//		System.out.println("acceleroRawData updated.");
 	}
 
 	@Override
 	public void receivedPhysData(AcceleroPhysData acceleroPhysData) {
-		System.out.println("acceleroPhysData updated.");
+//		System.out.println("acceleroPhysData updated.");
 	}
 }

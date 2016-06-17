@@ -25,18 +25,21 @@ public class GetQRCode {
         } catch (NotFoundException e) {
             qrInfo.error = "QR not found. Might have been partially " +
                     "detected but could not be confirmed.";
+			return qrInfo;
         } catch (ChecksumException e) {
             qrInfo.error = "Successfully detected and decoded, but was not " +
                     "returned because its checksum feature failed.";
+			return qrInfo;
         } catch (FormatException e) {
             qrInfo.error = "Detected, but some aspect did not conform " +
                     "to the format rules.";
+			return qrInfo;
         }
-        assert result != null;
 
+		assert result != null;
+		
         qrInfo.name = result.getText(); // This line produces an error.
-        System.out.println("XD");
-
+        
         QRCodeCoordinates qrCodeCoordinates = new QRCodeCoordinates(result
                 .getResultPoints());
         qrInfo.x = (int) qrCodeCoordinates.getXCenter();

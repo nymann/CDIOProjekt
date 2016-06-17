@@ -79,6 +79,10 @@ public class VideoReader implements ImageListener {
 		listeners.remove(listener);
 	}
 
+	/**
+	 * 
+	 * @param mode true means down, false means forward 
+	 */
 	public void setCamMode(boolean mode) {
 		if (mode) {
 			cm.setVideoChannel(VideoChannel.VERT);
