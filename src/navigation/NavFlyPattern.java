@@ -67,6 +67,10 @@ public class NavFlyPattern {
 	}
 
 	public void flyLane(int startSpot, int endSpot){
+		/*
+		 * Flies the drone between two spots,
+		 * and calls the method for finding cubes at intervals. 
+		 */
 		dronePos3D = MainModel.getDronePosition();
 		NavSpot ss = spots.get(startSpot);
 		NavSpot es = spots.get(endSpot);
@@ -116,6 +120,10 @@ public class NavFlyPattern {
 	}
 
 	public void flyToSpot(int spotID){
+		/*
+		 * Takes a spot and flies the drone to it, 
+		 * by finding the angle the drone must turn, and the distance to the spot.
+		 */
 		NavSpot goToSpot = spots.get(spotID);
 		double currentX = MainModel.getDronePosition().getX();
 		double currentY = MainModel.getDronePosition().getX();
@@ -136,6 +144,10 @@ public class NavFlyPattern {
 	}
 	
 	private void findAndChangeAttitude(int spotID){
+		/*
+		 * Finds the difference in angle between where the drone is pointed,
+		 * and a particular spot
+		 */
 		NavSpot goToSpot = spots.get(spotID);
 		double currentX = MainModel.getDronePosition().getX();
 		double currentY = MainModel.getDronePosition().getX();
@@ -154,6 +166,10 @@ public class NavFlyPattern {
 	}
 
 	private Point3D flowFinderByVectors(ImageDataListener idl){
+		/*
+		 * Is meant to calculate the position of the drone, 
+		 * updated by use of optical flow.
+		 */
 		bi = idl.getImageData().image;
 		currentTimeStamp = idl.getImageData().time;
 		AverageFlowVector afv;
@@ -194,6 +210,11 @@ public class NavFlyPattern {
 	}
 	 
 	private void findCubes(ImageDataListener idl){
+		/*
+		 * Called in order to find the number of cubes in an image,
+		 * and translating pixel points of the cubes in the image,
+		 * to actual positions in the model of the room
+		 */
 		lsR = paRed.getAnalyse(idl.getImageData().image);
 		lsG = paGreen.getAnalyse(idl.getImageData().image);
 		Angle3D a3d = idl.getImageData().attitude;
