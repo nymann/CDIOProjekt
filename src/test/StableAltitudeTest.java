@@ -46,7 +46,7 @@ public class StableAltitudeTest {
                 cmd.up(5).doFor(50);
             } else if ((altitudeRaw >= (desiredHeight - tolerance)) && (altitudeRaw <=
                     (desiredHeight + 50))) {
-                cmd.hover();
+                cmd.hover().doFor(50);
             } else {
                 System.out.println("This shouldn't happen!");
                 //cmd.hover();
