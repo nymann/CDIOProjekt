@@ -192,7 +192,7 @@ public class NavFlyPattern {
 		}
 		return posUpdateByOF;
 	}
-	
+	 
 	private void findCubes(ImageDataListener idl){
 		lsR = paRed.getAnalyse(idl.getImageData().image);
 		lsG = paGreen.getAnalyse(idl.getImageData().image);
