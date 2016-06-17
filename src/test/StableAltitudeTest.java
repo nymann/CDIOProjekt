@@ -3,8 +3,7 @@ package test;
 import de.yadrone.base.ARDrone;
 import de.yadrone.base.IARDrone;
 import de.yadrone.base.command.CommandManager;
-import de.yadrone.base.navdata.Altitude;
-import de.yadrone.base.navdata.AltitudeListener;
+import de.yadrone.base.command.UltrasoundFrequency;
 
 /**
  * Created by Nymann on 17-06-2016.
@@ -12,9 +11,10 @@ import de.yadrone.base.navdata.AltitudeListener;
  * If the altitude is lower than 1750, it should fly up, and if it's higher
  * than 1850 it should move downward.
  */
-public class StableAltitudeTest implements AltitudeListener {
+public class StableAltitudeTest {
 
-    int desiredHeight = 1450;
+    int desiredHeight = 1300;
+    int tolerance = 20;
     CommandManager cmd;
     IARDrone drone;
 
@@ -24,17 +24,43 @@ public class StableAltitudeTest implements AltitudeListener {
         System.out.println("Starting Drone.");
         drone.start();
         //drone.reset();
-
+        listeners.Altitude altitude = new listeners.Altitude();
         cmd = drone.getCommandManager();
-        drone.getNavDataManager().addAltitudeListener(this);
+        drone.getNavDataManager().addAltitudeListener(altitude);
+        cmd.setUltrasoundFrequency(UltrasoundFrequency.F22Hz);
         cmd.takeOff();
         System.out.println("Taking off!");
         //cmd.hover().doFor(10000);
         //cmd.landing();
         double currentTime = System.currentTimeMillis();
-        while ((System.currentTimeMillis() - 35000) < currentTime) {
+
+        while ((System.currentTimeMillis() - 60000) < currentTime) {
+            int altitudeRaw = altitude.extendedAltitude == null ? 0 : altitude
+                    .extendedAltitude.getRaw();
+            System.out.println("altitudeRaw:\t\t" + altitudeRaw);
+            if (altitudeRaw > (desiredHeight + tolerance)) {
+                // fly down.
+                cmd.down(5).doFor(50);
+            } else if (altitudeRaw < (desiredHeight - tolerance)) {
+                // fly up.
+                cmd.up(5).doFor(50);
+            } else if ((altitudeRaw >= (desiredHeight - tolerance)) && (altitudeRaw <=
+                    (desiredHeight + 50))) {
+                cmd.hover();
+            } else {
+                System.out.println("This shouldn't happen!");
+                //cmd.hover();
+            }
         }
+
         cmd.landing();
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            System.out.printf("Exception: \t\t");
+            e.printStackTrace();
+        }
+        cmd.stop();
     }
 
     public static void main(String[] args) {
@@ -43,30 +69,6 @@ public class StableAltitudeTest implements AltitudeListener {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-
-    }
-
-    @Override
-    public void receivedAltitude(int altitude) {
-
-        System.out.println("altitude:\t\t" + altitude);
-        if (altitude > desiredHeight) {
-            // fly down.
-            cmd.down(5).doFor(10);
-        }
-        else if (altitude < desiredHeight) {
-            // fly up.
-            cmd.up(5).doFor(10);
-        }
-
-        else {
-            System.out.println("This shouldn't happen!");
-            cmd.hover();
-        }
-    }
-
-    @Override
-    public void receivedExtendedAltitude(Altitude altitude) {
 
     }
 }
