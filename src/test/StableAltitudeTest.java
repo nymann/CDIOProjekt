@@ -42,13 +42,12 @@ public class StableAltitudeTest {
 			
 			if (altitudeRaw > (desiredHeight + tolerance)) {
                 // fly down.
-                cmd.down(5).doFor(50);
+                cmd.down(speedFunction(altitudeRaw)).doFor(50);
             } else if (altitudeRaw < (desiredHeight - tolerance)) {
-                int speed = (int) Math.min(20.0, ((desiredHeight - tolerance) - altitudeRaw) / 20);
-				// fly up.
-                cmd.up(speed).doFor(50);
+                // fly up.
+                cmd.up(speedFunction(altitudeRaw)).doFor(50);
             } else if ((altitudeRaw >= (desiredHeight - tolerance)) && (altitudeRaw <=
-                    (desiredHeight + 50))) {
+                    (desiredHeight + tolerance))) {
                 cmd.hover().doFor(50);
             } else {
                 System.out.println("This shouldn't happen!");
@@ -72,6 +71,14 @@ public class StableAltitudeTest {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
+    }
 
+    private int speedFunction(int altitude) {
+        if (((altitude - 2*tolerance) < desiredHeight) && ((altitude +
+                2*tolerance) > desiredHeight)) {
+            return 15;
+        }
+
+        return 5;
     }
 }
