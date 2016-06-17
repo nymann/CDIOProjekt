@@ -72,11 +72,10 @@ public class NavFlyPattern {
 		NavSpot es = spots.get(endSpot);
 		pastTimeStamp = 0;
 		
-		//Get drone direction
-		double relativeYaw = MainModel.getDroneAttitude().getYaw();
-		double yawOffset = MainModel.getAngleOffset();
-		double droneAbsoluteYaw = yawOffset-relativeYaw;
-		
+		findAndChangeAttitude(startSpot);
+		atSpot(startSpot);
+		flyToSpot(startSpot);
+		drone.getCommandManager().forward(speed).doFor(2000);
 		
 		//Runnable command, long initialDelay, long period, TimeUnit unit
 		excCubes = Executors.newSingleThreadScheduledExecutor();
@@ -87,7 +86,7 @@ public class NavFlyPattern {
 			}
 		}, 0, 5, TimeUnit.SECONDS);
 		
-		drone.getCommandManager().forward(speed).doFor(2000);
+		
 		
 		
 		
@@ -117,20 +116,23 @@ public class NavFlyPattern {
 	}
 
 	public void flyToSpot(int spotID){
-		/*
-		 * Ud fra current position, skal vinklen være regnet til spotIDs position og distancen.
-		 * Flyve afstanden.
-		 */
+		NavSpot goToSpot = spots.get(spotID);
+		double currentX = MainModel.getDronePosition().getX();
+		double currentY = MainModel.getDronePosition().getX();
+		int goToX = goToSpot.getX();
+		int goToY = goToSpot.getY();
+		double difX = currentX-goToX; 
+		double difY = currentY-goToY;
 		
-		// Længde fra dronen til start spot.
-		/*double distBetweenDroneAndSpot = Math.pow(difX,2) + Math
-				.pow(difY,2);
-		distBetweenDroneAndSpot = Math.sqrt(distBetweenDroneAndSpot);*/
-		
-		// IKKE KLAR - Skal sættes en fart ind i stedet for ditrance.
-		/*int distBetweenDroneAndSpot2 = (int) distBetweenDroneAndSpot;
-		drone.getCommandManager().forward(5).doFor(distBetweenDroneAndSpot2);*/
+		findAndChangeAttitude(spotID);
 
+		// Længde fra dronen til start spot.
+		double distBetweenDroneAndSpot = Math.pow(difX,2) + Math.pow(difY,2);
+		distBetweenDroneAndSpot = Math.sqrt(distBetweenDroneAndSpot);
+
+		// IKKE KLAR - Skal sættes en fart ind i stedet for ditrance.
+		int distBetweenDroneAndSpot2 = (int) distBetweenDroneAndSpot;
+		drone.getCommandManager().forward(5).doFor(distBetweenDroneAndSpot2);
 	}
 	
 	private void findAndChangeAttitude(int spotID){
@@ -145,11 +147,9 @@ public class NavFlyPattern {
 		double atan = Math.atan2(difY, difX);
 		double changeAngle = atan-MainModel.getAngleOffset()+MainModel.getDroneAttitude().getYaw();
 		
-		// Drej til spot, derefter flyv til spot.
-				// Hvis mm bliver opdateret konstant.
-				while(MainModel.getDroneAttitude().getYaw() != changeAngle) {
-					drone.spinLeft();
-				}
+		while(MainModel.getDroneAttitude().getYaw() != changeAngle) {
+			drone.spinLeft();
+		}
 
 	}
 
