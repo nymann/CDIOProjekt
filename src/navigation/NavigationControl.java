@@ -47,9 +47,9 @@ public class NavigationControl {
 
 		try {
 			for (int i=0; i<14; i++) {
-				/*flyPat.flyToSpot(xPos, yPos, i);
+				flyPat.flyToSpot(i);
 				if(flyPat.atSpot(i)) flyPat.flyLane(i, i+1);
-				else flyPat.flyToSpot(xPos, xPos, i);*/
+				else flyPat.flyToSpot(i);
 			}
 		} catch (Exception e) {
 			// TODO: handle exception
