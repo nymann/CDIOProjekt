@@ -245,7 +245,7 @@ public class NiceTest {
 
 		int qRCodesFound = 0;
         output.addTextLine("Waiting for difference");
-        double currentYaw;
+        //double currentYaw; ??
         do {
             currentYaw = MainModel.getDroneAttitude().getYaw() + Math.PI;
             commandManager.spinLeft(50).doFor(50);
