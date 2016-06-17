@@ -3,6 +3,7 @@ package test;
 import de.yadrone.base.ARDrone;
 import de.yadrone.base.IARDrone;
 import de.yadrone.base.command.CommandManager;
+import de.yadrone.base.command.UltrasoundFrequency;
 import de.yadrone.base.command.VideoCodec;
 import de.yadrone.base.configuration.ConfigurationManager;
 import de.yadrone.base.navdata.NavDataManager;
@@ -35,6 +36,7 @@ public class NiceTest {
 	static final double movingSpeed = 50.0;
 	static final double takeOffSpeed = 100.0;
 	static final double hoverSpeed = 40.0;
+	static final double hoverHeight = 1000;
 
 	public static void main(String[] args) {
 		IARDrone drone = null;
@@ -160,6 +162,7 @@ public class NiceTest {
 		drone.getCommandManager().setVideoCodec(VideoCodec.H264_720P);
 		// Sets the camera to 720p instead of stretching a 640x360 image.
 
+		commandManager.setUltrasoundFrequency(UltrasoundFrequency.F25Hz);
 		//commandManager.setOutdoor(true, true);
 
 		Runnable infoUpdate = () -> {
@@ -211,10 +214,26 @@ public class NiceTest {
 
 		do {
 			commandManager.up(50).doFor(50);
-		} while (alt.extendedAltitude == null || alt.extendedAltitude.getRef() < 1000);
+		} while (alt.extendedAltitude == null || alt.extendedAltitude.getRef() < hoverHeight);
 		commandManager.hover();
 		output.addTextLine("Reached hover height");
-
+		
+		//---------------------------------
+		// Height test
+		//--------------------------------
+		
+		long startTime = System.currentTimeMillis();
+		while (System.currentTimeMillis() - startTime < 50000){
+			double diffHeight = alt.extendedAltitude.getRef() - hoverHeight;
+			int speed = (int) Math.max(30,Math.abs(diffHeight)/10.0);
+			if (diffHeight < 0){
+				commandManager.up(speed).doFor(50);
+			} else {
+				commandManager.down(speed).doFor(50);
+			}
+		}
+		
+/*
 		while (pos.velocity.magnitude() > hoverSpeed) {
 
 			//Point3D v = pos.velocity;
@@ -244,14 +263,6 @@ public class NiceTest {
 		output.addTextLine("Starting yaw difference:" + (currentYaw - startYaw));
 
 		int qRCodesFound = 0;
-        output.addTextLine("Waiting for difference");
-        double currentYaw;
-        do {
-            currentYaw = MainModel.getDroneAttitude().getYaw() + Math.PI;
-            commandManager.spinLeft(50).doFor(50);
-            //Point3D v = vel.velocity;
-            //commandManager.move((int)-v.getX()/100, (int)-v.getY()/100, 0, 0).doFor(50);
-        } while (Math.abs(startYaw - currentYaw) < 0.025);
 
 		// seems to be too small of a value. (0.01 is too small suggested value
 		// is 0.025 or 0.03)
@@ -273,10 +284,10 @@ public class NiceTest {
 				} else {
 					output.addTextLine(qrInfo.error);
 				}*/
-			currentYaw = MainModel.getDroneAttitude().getYaw() + Math.PI;
+/*			currentYaw = MainModel.getDroneAttitude().getYaw() + Math.PI;
 
 		}
-		output.addTextLine("QR-codes found: " + qRCodesFound);
+		output.addTextLine("QR-codes found: " + qRCodesFound);*/
 
 	}
 }
