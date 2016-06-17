@@ -14,7 +14,7 @@ import de.yadrone.base.navdata.AltitudeListener;
  */
 public class StableAltitudeTest implements AltitudeListener {
 
-    int desiredHeight = 1000;
+    int desiredHeight = 1450;
     CommandManager cmd;
     IARDrone drone;
 
@@ -32,7 +32,7 @@ public class StableAltitudeTest implements AltitudeListener {
         //cmd.hover().doFor(10000);
         //cmd.landing();
         double currentTime = System.currentTimeMillis();
-        while ((System.currentTimeMillis() - 20000) < currentTime) {
+        while ((System.currentTimeMillis() - 35000) < currentTime) {
         }
         cmd.landing();
     }
@@ -52,15 +52,16 @@ public class StableAltitudeTest implements AltitudeListener {
         System.out.println("altitude:\t\t" + altitude);
         if (altitude > desiredHeight) {
             // fly down.
-            cmd.down(10).doFor(50);
+            cmd.down(5).doFor(10);
         }
         else if (altitude < desiredHeight) {
             // fly up.
-            cmd.up(10).doFor(50);
+            cmd.up(5).doFor(10);
         }
 
         else {
             System.out.println("This shouldn't happen!");
+            cmd.hover();
         }
     }
 
