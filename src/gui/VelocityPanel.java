@@ -55,14 +55,16 @@ public class VelocityPanel extends JPanel implements VelocityListener {
 		} else {
             g.setColor(Color.RED);
 		}
-		g.fillOval((int) (markSize*0.5), (int) (h-markSize*1.5), markSize, markSize);
+		g.drawString("H", 5, h-5);
+		//g.fillOval((int) (markSize*0.5), (int) (h-markSize*1.5), markSize, markSize);
 		
 		if (this.stableV){
             g.setColor(Color.GREEN);
 		} else {
             g.setColor(Color.RED);
 		}
-		g.fillOval(markSize*2, (int) (h-markSize*1.5), markSize, markSize);
+		g.drawString("V", 20, h-5);
+		//g.fillOval(markSize*2, (int) (h-markSize*1.5), markSize, markSize);
     }
 
     @Override
