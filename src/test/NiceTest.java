@@ -124,14 +124,10 @@ public class NiceTest {
 		navDataManager.addBatteryListener(bat);
 		navDataManager.addAcceleroListener(acc);
 
-        commandManager.setMaxAltitude(2000);
-        commandManager.emergency();
+//        commandManager.setMaxAltitude(2000);
+//        commandManager.emergency();
 //		commandManager.setNavDataDemo(true);
 
-		/*		try {
-            Thread.sleep(10000);
-		} catch (InterruptedException ex) {
-		}*/
         try {
             doStuff(drone);
         } catch (Exception e) {
@@ -157,7 +153,6 @@ public class NiceTest {
 
     private static void doStuff(IARDrone drone) {
 
-//		VideoReader videoReader = new VideoReader(videoManager, commandManager);
         Attitude att = new Attitude();
         navDataManager.addAttitudeListener(att);
         commandManager.setOutdoor(false, true);
@@ -236,7 +231,7 @@ public class NiceTest {
         commandManager.move(0, 0, 0, 0).doFor(50);
         output.addTextLine("Stable hover");
 
-		/*		//---------------------------------
+/*		//---------------------------------
 		// Direction Test
 		//--------------------------------
 
@@ -248,18 +243,8 @@ public class NiceTest {
 		commandManager.move(0, -20, 0, 0).doFor(1000);
 		output.addTextLine("Moving left");
 		commandManager.move(0, 20, 0, 0).doFor(1000);*/
-		double startYaw = MainModel.getDroneAttitude().getYaw() + Math.PI;
-		output.addTextLine("Spinning left");
-		stabilizeHor(0, rotationSpeed);
 
-        output.addTextLine("Spinning left");
-        stabilizeHor(0, rotationSpeed);
-
-        //--------------------------------------
-        // QR positioning stuff
-        //--------------------------------------
-
-		//--------------------------------------
+ 		//--------------------------------------
 		// QR positioning stuuf
 		//--------------------------------------
 		QRPositioning qrpos = new QRPositioning();
@@ -274,7 +259,8 @@ public class NiceTest {
         double currentRotation = 0;
         double prevYaw = MainModel.getDroneAttitude().getYaw();
 
-        while (currentRotation < 2 * Math.PI) {
+		output.addTextLine("Spinning left");
+		while (currentRotation < 2 * Math.PI) {
             if ((MainModel.getDroneAttitude().getYaw() - prevYaw) < -Math.PI) {
                 currentRotation += MainModel.getDroneAttitude().getYaw() - prevYaw
                         + 2 * Math.PI;
@@ -327,7 +313,6 @@ public class NiceTest {
             int reverseX = -dirX * (int) speedX;
             int reverseY = -dirY * (int) speedY;
             velocityPanel.setCounterVelocity(new Point2D(reverseX, reverseY));
-//			commandManager.move(reverseX, reverseY, speedZ, speedSpin).doFor(100);
             commandManager.move(reverseY, -reverseX, speedZ, speedSpin).doFor(100);
             boolean stable = speedX < 2.0 && speedY < 2.0;
             NiceTest.velocityPanel.setStabilityH(stable);
