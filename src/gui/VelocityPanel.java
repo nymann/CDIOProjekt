@@ -22,27 +22,47 @@ public class VelocityPanel extends JPanel implements VelocityListener {
 
     public Point3D velocity;
     public long updated;
-    private Point2D counterVelocity;
-
+    
+	private Point2D counterVelocity;
+	private boolean stableH,stableV;
+	
     @Override
     protected void paintComponent(Graphics g) {
-        int centerX = this.getWidth() / 2;
-        int centerY = this.getHeight() / 2;
-
+		int h = this.getHeight();
+		int w = this.getWidth();
+		
+        int centerX = w / 2;
+        int centerY = h / 2;
+		
         g.setColor(Color.BLACK);
-        g.fillRect(0, 0, this.getWidth(), this.getHeight());
+        g.fillRect(0, 0, w, h);
+		int shortest = Math.min(w, h);
         if (this.velocity != null) {
             g.setColor(Color.GREEN);
-            int shortest = Math.min(this.getWidth(), this.getHeight());
             double factor = shortest / scale;
             g.drawLine(centerX, centerY, centerX + (int) (factor * velocity.getX()), centerY - (int) (factor * velocity.getY()));
         }
         if (this.counterVelocity != null) {
             g.setColor(Color.RED);
-            int shortest = Math.min(this.getWidth(), this.getHeight());
             double factor = shortest / counterScale;
             g.drawLine(centerX, centerY, centerX + (int) (factor * counterVelocity.getX()), centerY - (int) (factor * counterVelocity.getY()));
         }
+		
+		int markSize = 10;
+
+		if (this.stableH){
+            g.setColor(Color.GREEN);
+		} else {
+            g.setColor(Color.RED);
+		}
+		g.fillOval((int) (markSize*0.5), (int) (h-markSize*1.5), markSize, markSize);
+		
+		if (this.stableV){
+            g.setColor(Color.GREEN);
+		} else {
+            g.setColor(Color.RED);
+		}
+		g.fillOval(markSize*2, (int) (h-markSize*1.5), markSize, markSize);
     }
 
     @Override
@@ -56,4 +76,16 @@ public class VelocityPanel extends JPanel implements VelocityListener {
         this.counterVelocity = counter;
         this.repaint();
     }
+	
+	public void setStabilityH(boolean stable){
+		this.stableH = stable;
+		this.repaint();
+	}
+
+	public void setStabilityV(boolean stable){
+		this.stableV = stable;
+		this.repaint();
+	}
+	
+	
 }

@@ -280,6 +280,7 @@ public class NiceTest {
 		if (System.currentTimeMillis() - alt.getLastUpdate() < 500) {
 			int diffHeight = alt.extendedAltitude.getRaw() - hoverHeight;
 			if (Math.abs(diffHeight) < 20 && Math.abs(alt.extendedAltitude.getZVelocity()) < 50) {
+				NiceTest.velocityPanel.setStabilityV(true);
 				return stabilizeHor(0, speedSpin);
 			}
 
@@ -293,6 +294,7 @@ public class NiceTest {
 		} else {
 			stabilizeHor(0, speedSpin);
 		}
+		NiceTest.velocityPanel.setStabilityV(false);
 		return false;
 	}
 
@@ -304,17 +306,20 @@ public class NiceTest {
 			int dirX = (int) Math.signum(speedX);
 			int dirY = (int) Math.signum(speedY);
 
-			speedX = Math.min(20, Math.abs(speedX));
-			speedY = Math.min(20, Math.abs(speedY));
+			speedX = Math.min(15, Math.abs(speedX));
+			speedY = Math.min(15, Math.abs(speedY));
 
 			int reverseX = -dirX * (int) speedX;
 			int reverseY = -dirY * (int) speedY;
 			velocityPanel.setCounterVelocity(new Point2D(reverseX, reverseY));
 //			commandManager.move(reverseX, reverseY, speedZ, speedSpin).doFor(100);
 			commandManager.move(reverseY, -reverseX, speedZ, speedSpin).doFor(100);
-			return speedX < 1.0 && speedY < 1.0;
+			boolean stable = speedX < 2.0 && speedY < 2.0;
+			NiceTest.velocityPanel.setStabilityH(stable);
+			return stable;
 		} else {
 			commandManager.move(0, 0, speedZ, speedSpin).doFor(50);
+			NiceTest.velocityPanel.setStabilityH(false);
 			return false;
 		}
 	}
