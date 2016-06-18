@@ -22,7 +22,4 @@ public class Accelerometer implements AcceleroListener {
 	public void receivedRawData(AcceleroRawData arg1) {
 		this.accrawd = arg1;		
 	}
-	
-	
-
 }

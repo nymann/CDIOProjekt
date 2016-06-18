@@ -36,6 +36,7 @@ public class NiceTest {
 	static UltraSound ult = new UltraSound();
 	static Altitude alt = new Altitude();
 	static Battery bat = new Battery();
+	static Accelerometer acc = new Accelerometer();
 	static NavDataManager navDataManager;
 	static VideoManager videoManager;
 	static CommandManager commandManager;
@@ -49,15 +50,12 @@ public class NiceTest {
 	public static void main(String[] args) {
 		IARDrone drone = null;
 
-
-
-
 		output = new TextPanel();
 		exceptionOut = new TextPanel();
 		Dimension outputSize = new Dimension(300, 600);
 		output.setPreferredSize(outputSize);
 		exceptionOut.setPreferredSize(outputSize);
-		
+
 		TextPanel droneStatus = new TextPanel();
 		DroneStateListener dsl = new DroneStateListener(droneStatus);
 		droneStatus.setPreferredSize(outputSize);
@@ -73,7 +71,7 @@ public class NiceTest {
 		Dimension velocityDimension = new Dimension(200, 200);
 		velocityPanel.setSize(velocityDimension);
 		velocityPanel.setPreferredSize(velocityDimension);
-		
+
 		video.setSize(new Dimension(640, 360));
 		video.setPreferredSize(new Dimension(640, 360));
 
@@ -136,6 +134,7 @@ public class NiceTest {
 		navDataManager.addAltitudeListener(alt);
 		navDataManager.addStateListener(dsl);
 		navDataManager.addBatteryListener(bat);
+		navDataManager.addAcceleroListener(acc);
 
 		commandManager.setMaxAltitude(2000);
 		commandManager.emergency();
@@ -184,20 +183,35 @@ public class NiceTest {
 			while (true) {
 				NiceTest.infoPanel.setInfo("Batery Level:", NiceTest.bat.level);
 
-				if (NiceTest.velocityPanel.velocity != null) {
+				/*				if (NiceTest.velocityPanel.velocity != null) {
 					Point3D velocity = NiceTest.velocityPanel.velocity;
 					NiceTest.infoPanel.setInfo("Speed X", velocity.getX());
 					NiceTest.infoPanel.setInfo("Speed Y", velocity.getY());
 				} else {
 					NiceTest.infoPanel.setInfo("Speed X", "null");
 					NiceTest.infoPanel.setInfo("Speed Y", "null");
-				}
-
+				}*/
 				if (NiceTest.alt.extendedAltitude != null) {
 					NiceTest.infoPanel.setInfo("Altitude", NiceTest.alt.extendedAltitude.getRaw());
-					NiceTest.infoPanel.setInfo("Z Velocity", NiceTest.alt.extendedAltitude.getZVelocity());
+					//NiceTest.infoPanel.setInfo("Z Velocity", NiceTest.alt.extendedAltitude.getZVelocity());
 				} else {
 					NiceTest.infoPanel.setInfo("Altitude", "null");
+				}
+
+				if (NiceTest.acc.accrawd != null) {
+					NiceTest.infoPanel.setInfo("Acceleration Raw", NiceTest.acc.accrawd);
+				} else {
+					NiceTest.infoPanel.setInfo("Acceleration Raw", "null");
+				}
+
+				if (NiceTest.acc.acchysd != null) {
+					NiceTest.infoPanel.setInfo("Acceleration Phys 0", NiceTest.acc.acchysd.getPhysAccs()[0]);
+					NiceTest.infoPanel.setInfo("Acceleration Phys 1", NiceTest.acc.acchysd.getPhysAccs()[1]);
+					NiceTest.infoPanel.setInfo("Acceleration Phys 2", NiceTest.acc.acchysd.getPhysAccs()[2]);
+					//NiceTest.infoPanel.setInfo("Acceleration Phys", NiceTest.acc.acchysd);
+					
+				} else {
+					NiceTest.infoPanel.setInfo("Acceleration Phys", "null");
 				}
 
 			}
@@ -234,7 +248,7 @@ public class NiceTest {
 		commandManager.move(0, 0, 0, 0).doFor(50);
 		output.addTextLine("Stable hover");
 
-/*		//---------------------------------
+		/*		//---------------------------------
 		// Direction Test
 		//--------------------------------
 
@@ -246,7 +260,6 @@ public class NiceTest {
 		commandManager.move(0, -20, 0, 0).doFor(1000);
 		output.addTextLine("Moving left");
 		commandManager.move(0, 20, 0, 0).doFor(1000);*/
-		
 		double startYaw = MainModel.getDroneAttitude().getYaw() + Math.PI;
 		output.addTextLine("Spinning left");
 		stabilizeHor(0, rotationSpeed);
@@ -263,7 +276,6 @@ public class NiceTest {
 		//--------------------------------------
 		// QR positioning stuuf
 		//--------------------------------------
-		
 		QRPositioning qrpos = new QRPositioning();
 		VideoReader videoReader = new VideoReader(videoManager, commandManager);
 		videoManager.addImageListener(videoReader);
@@ -272,7 +284,7 @@ public class NiceTest {
 		qrpos.setOutput(output);
 		att.addListener(qrpos);
 		videoReader.addListener(video);
-		
+
 		while (Math.abs(startYaw - currentYaw) > 0.05) {
 
 			stabilizeHor(0, rotationSpeed);
@@ -346,4 +358,3 @@ public class NiceTest {
 		commandManager.move(0, -20, 0, 0).doFor(1000);
 		output.addTextLine("Moving left");
 		commandManager.move(0, 20, 0, 0).doFor(1000);*/
-
