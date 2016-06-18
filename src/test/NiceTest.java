@@ -298,8 +298,8 @@ public class NiceTest {
 
 	public static boolean stabilizeHor(int speedZ, int speedSpin) {
 		if (System.currentTimeMillis() - NiceTest.velocityPanel.updated < 500) {
-			double speedX = NiceTest.velocityPanel.velocity.getX() / 40.0;
-			double speedY = -NiceTest.velocityPanel.velocity.getY() / 40.0;
+			double speedX = NiceTest.velocityPanel.velocity.getX() / 20.0;
+			double speedY = NiceTest.velocityPanel.velocity.getY() / 20.0;
 
 			int dirX = (int) Math.signum(speedX);
 			int dirY = (int) Math.signum(speedY);
@@ -311,7 +311,7 @@ public class NiceTest {
 			int reverseY = -dirY * (int) speedY;
 			velocityPanel.setCounterVelocity(new Point2D(reverseX, reverseY));
 //			commandManager.move(reverseX, reverseY, speedZ, speedSpin).doFor(100);
-			commandManager.move(0, 0, speedZ, speedSpin).doFor(100);
+			commandManager.move(reverseY, -reverseX, speedZ, speedSpin).doFor(100);
 			return speedX < 1.0 && speedY < 1.0;
 		} else {
 			commandManager.move(0, 0, speedZ, speedSpin).doFor(50);
@@ -319,3 +319,17 @@ public class NiceTest {
 		}
 	}
 }
+
+/*		//---------------------------------
+		// Direction Test
+		//--------------------------------
+
+		output.addTextLine("Moving forward");
+		commandManager.move(20, 0, 0, 0).doFor(1000);
+		output.addTextLine("Moving backwards");
+		commandManager.move(-20, 0, 0, 0).doFor(1000);
+		output.addTextLine("Moving rigt");
+		commandManager.move(0, -20, 0, 0).doFor(1000);
+		output.addTextLine("Moving left");
+		commandManager.move(0, 20, 0, 0).doFor(1000);*/
+
