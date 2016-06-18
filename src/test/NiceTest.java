@@ -8,10 +8,12 @@ import de.yadrone.base.command.VideoCodec;
 import de.yadrone.base.configuration.ConfigurationManager;
 import de.yadrone.base.navdata.NavDataManager;
 import de.yadrone.base.video.VideoManager;
+import dronePosition.QRPositioning;
 import gui.DroneStateListener;
 import gui.InfoPanel;
 import gui.TextPanel;
 import gui.VelocityPanel;
+import gui.VideoPanel;
 import listeners.*;
 import modeling.MainModel;
 import video.VideoReader;
@@ -30,6 +32,7 @@ public class NiceTest {
 	static TextPanel output, exceptionOut;
 	static InfoPanel infoPanel;
 	static VelocityPanel velocityPanel;
+	static VideoPanel video = new VideoPanel();
 	static UltraSound ult = new UltraSound();
 	static Altitude alt = new Altitude();
 	static Battery bat = new Battery();
@@ -41,6 +44,7 @@ public class NiceTest {
 	static final double takeOffSpeed = 100.0;
 	static final double hoverSpeed = 40.0;
 	static final int hoverHeight = 1300;
+	static final int rotationSpeed = -10;
 
 	public static void main(String[] args) {
 		IARDrone drone = null;
@@ -69,12 +73,16 @@ public class NiceTest {
 		Dimension velocityDimension = new Dimension(200, 200);
 		velocityPanel.setSize(velocityDimension);
 		velocityPanel.setPreferredSize(velocityDimension);
+		
+		video.setSize(new Dimension(640, 360));
+		video.setPreferredSize(new Dimension(640, 360));
 
 		JFrame mainWindow = new JFrame();
 		mainWindow.getContentPane().setLayout(new FlowLayout());
+		mainWindow.getContentPane().add(video);
 		mainWindow.getContentPane().add(output);
 		mainWindow.getContentPane().add(exceptionOut);
-		mainWindow.getContentPane().add(droneStatus);
+		//mainWindow.getContentPane().add(droneStatus);
 		mainWindow.getContentPane().add(velocityPanel);
 		mainWindow.getContentPane().add(infoPanel);
 		mainWindow.setVisible(true);
@@ -241,37 +249,38 @@ public class NiceTest {
 		
 		double startYaw = MainModel.getDroneAttitude().getYaw() + Math.PI;
 		output.addTextLine("Spinning left");
-		stabilizeHor(0, -50);
+		stabilizeHor(0, rotationSpeed);
 
 		output.addTextLine("Waiting for difference");
 		double currentYaw;
 		do {
 			currentYaw = MainModel.getDroneAttitude().getYaw() + Math.PI;
-			stabilizeHor(0, -50);
+			stabilizeHor(0, rotationSpeed);
 		} while (Math.abs(startYaw - currentYaw) < 0.05);
 
 		output.addTextLine("Starting yaw difference:" + (currentYaw - startYaw));
 
-		int qRCodesFound = 0;
-
+		//--------------------------------------
+		// QR positioning stuuf
+		//--------------------------------------
+		
+		QRPositioning qrpos = new QRPositioning();
+		VideoReader videoReader = new VideoReader(videoManager, commandManager);
+		videoManager.addImageListener(videoReader);
+		videoReader.setCamMode(false);
+		videoReader.addListener(qrpos);
+		qrpos.setOutput(output);
+		att.addListener(qrpos);
+		videoReader.addListener(video);
+		
 		while (Math.abs(startYaw - currentYaw) > 0.05) {
 
-			stabilizeHor(0, -50);
-
-			// output.addTextLine("Current Yaw = " + currentYaw);
-			/*QRInfo qrInfo = QRWallMarks.GetQRCode.readQRCode(videoReader.getImage());
-				if (qrInfo.error.equals("") && !qrInfo.name.equals("")) {
-					output.addTextLine("Decodemessage: " + qrInfo.name + ". At: "
-							+ qrInfo.x + ", " + qrInfo.y);
-					qRCodesFound++;
-				} else {
-					output.addTextLine(qrInfo.error);
-				}*/
+			stabilizeHor(0, rotationSpeed);
 			currentYaw = MainModel.getDroneAttitude().getYaw() + Math.PI;
 			infoPanel.setInfo("Current Yaw", currentYaw);
 			infoPanel.setInfo("Yaw difference", Math.abs(startYaw - currentYaw));
 		}
-		output.addTextLine("QR-codes found: " + qRCodesFound);
+		output.addTextLine("QR-codes found: " + qrpos.getQRCount());
 		commandManager.move(0, 0, -20, 0).doFor(50);
 
 	}
@@ -300,14 +309,14 @@ public class NiceTest {
 
 	public static boolean stabilizeHor(int speedZ, int speedSpin) {
 		if (System.currentTimeMillis() - NiceTest.velocityPanel.updated < 500) {
-			double speedX = NiceTest.velocityPanel.velocity.getX() / 20.0;
-			double speedY = NiceTest.velocityPanel.velocity.getY() / 20.0;
+			double speedX = NiceTest.velocityPanel.velocity.getX() / 30.0;
+			double speedY = NiceTest.velocityPanel.velocity.getY() / 30.0;
 
 			int dirX = (int) Math.signum(speedX);
 			int dirY = (int) Math.signum(speedY);
 
-			speedX = Math.min(15, Math.abs(speedX));
-			speedY = Math.min(15, Math.abs(speedY));
+			speedX = Math.min(5, Math.abs(speedX));
+			speedY = Math.min(5, Math.abs(speedY));
 
 			int reverseX = -dirX * (int) speedX;
 			int reverseY = -dirY * (int) speedY;
