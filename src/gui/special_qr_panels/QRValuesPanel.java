@@ -5,7 +5,7 @@
  */
 package gui.special_qr_panels;
 
-import dronePossition.QRPossitioning;
+import dronePosition.QRPositioning;
 import gui.ListenerValuePanel;
 
 /**
@@ -13,10 +13,10 @@ import gui.ListenerValuePanel;
  * @author Mikkel
  */
 public class QRValuesPanel extends ListenerValuePanel{
-	QRPossitioning qpos;
+	QRPositioning qpos;
 
 		// debugging
-	public QRValuesPanel(QRPossitioning qpos){
+	public QRValuesPanel(QRPositioning qpos){
 		super();
 		this.qpos = qpos;
 	}

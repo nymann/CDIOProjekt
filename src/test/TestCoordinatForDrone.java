@@ -2,7 +2,7 @@ package test;
 
 
 
-import dronePossition.PointNavigation;
+import dronePosition.PointNavigation;
 import javafx.geometry.Point2D;
 
 public class TestCoordinatForDrone {

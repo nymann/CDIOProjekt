@@ -12,7 +12,7 @@ import de.yadrone.base.command.VideoCodec;
 import de.yadrone.base.configuration.ConfigurationManager;
 import de.yadrone.base.navdata.NavDataManager;
 import de.yadrone.base.video.VideoManager;
-import dronePossition.QRPossitioning;
+import dronePosition.QRPositioning;
 import gui.TextPanel;
 import gui.VideoPanel;
 import gui.special_qr_panels.QRValuesPanel;
@@ -51,7 +51,7 @@ public class TestQRPositioning {
 		command.setVideoCodec(VideoCodec.H264_360P);
 
 		System.out.println("Drone connected: " + config.isConnected());
-		QRPossitioning qrpos = new QRPossitioning();
+		QRPositioning qrpos = new QRPositioning();
 
 		QRValuesPanel rotation = new QRValuesPanel(qrpos);
 		rotation.setListeners(nm);

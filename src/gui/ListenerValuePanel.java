@@ -1,7 +1,6 @@
 package gui;
 
 import de.yadrone.base.navdata.*;
-import dronePossition.QRPossitioning;
 
 import javax.swing.*;
 

@@ -199,8 +199,8 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="23" language="java" name="dronePossition.PointNavigation" project="CDIO-Projekt" 
-    file="/CDIO-Projekt/src/dronePossition/PointNavigation.java" binary="false" corner="BOTTOM_RIGHT">    
+  <class id="23" language="java" name="dronePosition.PointNavigation" project="CDIO-Projekt"
+    file="/CDIO-Projekt/src/dronePosition/PointNavigation.java" binary="false" corner="BOTTOM_RIGHT">
     <position height="-1" width="-1" x="1278" y="831"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
