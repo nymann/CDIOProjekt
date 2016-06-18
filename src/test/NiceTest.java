@@ -54,6 +54,12 @@ public class NiceTest {
 		DroneStateListener dsl = new DroneStateListener(droneStatus);
 		droneStatus.setPreferredSize(outputSize);
 		droneStatus.setSize(outputSize);
+		
+		infoPanel = new InfoPanel();
+		infoPanel.setColumns(80);
+		Dimension infoDimension = new Dimension(900, 200);
+		infoPanel.setPreferredSize(infoDimension);
+		infoPanel.setSize(infoDimension);
 
         velocityPanel = new VelocityPanel();
         Dimension velocityDimension = new Dimension(200, 200);
