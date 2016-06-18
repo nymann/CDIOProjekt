@@ -197,7 +197,8 @@ public class NiceTest {
 		new Thread(infoUpdate).start();
 
 		output.addTextLine("Taking off");
-		commandManager.takeOff();
+//		commandManager.takeOff();
+		commandManager.takeOff().doFor(5000);
 
 		output.addTextLine("Waiting for altitude update");
 		while (alt.extendedAltitude == null) {
@@ -223,9 +224,21 @@ public class NiceTest {
 			}
 		}
 		commandManager.move(0, 0, 0, 0).doFor(50);
-
 		output.addTextLine("Stable hover");
 
+/*		//---------------------------------
+		// Direction Test
+		//--------------------------------
+
+		output.addTextLine("Moving forward");
+		commandManager.move(20, 0, 0, 0).doFor(1000);
+		output.addTextLine("Moving backwards");
+		commandManager.move(-20, 0, 0, 0).doFor(1000);
+		output.addTextLine("Moving rigt");
+		commandManager.move(0, -20, 0, 0).doFor(1000);
+		output.addTextLine("Moving left");
+		commandManager.move(0, 20, 0, 0).doFor(1000);*/
+		
 		double startYaw = MainModel.getDroneAttitude().getYaw() + Math.PI;
 		output.addTextLine("Spinning left");
 		stabilizeHor(0, -50);
