@@ -70,16 +70,34 @@ public class NiceTest {
 		video.setPreferredSize(new Dimension(640, 360));
 
         JFrame mainWindow = new JFrame();
+		JFrame videoFrame = new JFrame();
+		JFrame velocityFrame = new JFrame();
+		JFrame infoFrame = new JFrame();
+		
         mainWindow.getContentPane().setLayout(new FlowLayout());
-        mainWindow.getContentPane().add(video);
+        videoFrame.getContentPane().setLayout(new FlowLayout());
+		velocityFrame.getContentPane().setLayout(new FlowLayout());
+		infoFrame.getContentPane().setLayout(new FlowLayout());
+		
         mainWindow.getContentPane().add(output);
         mainWindow.getContentPane().add(exceptionOut);
-        //mainWindow.getContentPane().add(droneStatus);
-        mainWindow.getContentPane().add(velocityPanel);
-        mainWindow.getContentPane().add(infoPanel);
-        mainWindow.setVisible(true);
-        mainWindow.pack();
-        mainWindow.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        mainWindow.getContentPane().add(droneStatus);
+		videoFrame.getContentPane().add(video);
+		velocityFrame.getContentPane().add(velocityPanel);
+        infoFrame.getContentPane().add(infoPanel);
+
+		
+		mainWindow.setVisible(true);
+		videoFrame.setVisible(true);
+		velocityFrame.setVisible(true);
+        infoFrame.setVisible(true);
+
+		mainWindow.pack();
+		videoFrame.pack();
+		velocityFrame.pack();
+        infoFrame.pack();
+
+		mainWindow.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         // connecting to drone
         do {
