@@ -131,7 +131,7 @@ public class NiceTest {
 		navDataManager.addAcceleroListener(acc);
 
 //        commandManager.setMaxAltitude(2000);
-//        commandManager.emergency();
+        commandManager.emergency();
 //		commandManager.setNavDataDemo(true);
 
         try {
@@ -198,9 +198,10 @@ public class NiceTest {
 					NiceTest.infoPanel.setInfo("Acceleration Phys 1", NiceTest.acc.acchysd.getPhysAccs()[1]);
 					NiceTest.infoPanel.setInfo("Acceleration Phys 2", NiceTest.acc.acchysd.getPhysAccs()[2]);
 					//NiceTest.infoPanel.setInfo("Acceleration Phys", NiceTest.acc.acchysd);
-					
+					NiceTest.velocityPanel.setAccel(NiceTest.acc.acchysd.getPhysAccs());
 				} else {
-					NiceTest.infoPanel.setInfo("Acceleration Phys", "null");
+					NiceTest.infoPanel.setInfo("Acceleration Phys 0", "null");
+					NiceTest.infoPanel.setInfo("Acceleration Phys 1", "null");
 				}
 
             }
@@ -209,6 +210,14 @@ public class NiceTest {
 
         output.addTextLine("Taking off");
 //		commandManager.takeOff();
+        output.addTextLine("Waiting for acceleration data");
+        while (acc.acchysd == null) {
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException ex) {
+            }
+        }
+		velocityPanel.setAccelBase(acc.acchysd.getPhysAccs());
         commandManager.takeOff().doFor(5000);
 
         output.addTextLine("Waiting for altitude update");

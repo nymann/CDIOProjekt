@@ -19,8 +19,10 @@ public class VelocityPanel extends JPanel implements VelocityListener {
 
     private final double scale = 5000;
     private final double counterScale = 20;
+    private final double accScale = 100;
+	
 
-    public Point3D velocity;
+    public Point3D velocity, accelerationBase,acceleration;
     public long updated;
     
 	private Point2D counterVelocity;
@@ -47,16 +49,18 @@ public class VelocityPanel extends JPanel implements VelocityListener {
             double factor = shortest / counterScale;
             g.drawLine(centerX, centerY, centerX + (int) (factor * counterVelocity.getX()), centerY - (int) (factor * counterVelocity.getY()));
         }
+		if (this.acceleration != null) {
+            g.setColor(Color.YELLOW);
+            double factor = shortest / accScale;
+            g.drawLine(centerX, centerY, centerX + (int) (factor * acceleration.getX()), centerY - (int) (factor * acceleration.getY()));
+        }
 		
-		int markSize = 10;
-
 		if (this.stableH){
             g.setColor(Color.GREEN);
 		} else {
             g.setColor(Color.RED);
 		}
 		g.drawString("H", 5, h-5);
-		//g.fillOval((int) (markSize*0.5), (int) (h-markSize*1.5), markSize, markSize);
 		
 		if (this.stableV){
             g.setColor(Color.GREEN);
@@ -64,7 +68,6 @@ public class VelocityPanel extends JPanel implements VelocityListener {
             g.setColor(Color.RED);
 		}
 		g.drawString("V", 20, h-5);
-		//g.fillOval(markSize*2, (int) (h-markSize*1.5), markSize, markSize);
     }
 
     @Override
@@ -87,6 +90,18 @@ public class VelocityPanel extends JPanel implements VelocityListener {
 	public void setStabilityV(boolean stable){
 		this.stableV = stable;
 		this.repaint();
+	}
+	
+	public void setAccel(float[] v){
+		if (accelerationBase != null){
+			this.acceleration = new Point3D(v[0], v[1],v[2]).subtract(accelerationBase);
+		} else {
+			this.acceleration = new Point3D(v[0], v[1],v[2]);
+		}
+	}
+
+	public void setAccelBase(float[] v){
+		this.accelerationBase = new Point3D(v[0], v[1],v[2]);
 	}
 	
 	
