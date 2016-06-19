@@ -45,6 +45,7 @@ public class NiceTest {
 
 	public static void main(String[] args) {
 		IARDrone drone = null;
+		MainModel.init();
 
 		output = new TextPanel();
 		exceptionOut = new TextPanel();
@@ -303,12 +304,14 @@ public class NiceTest {
 
 		output.addTextLine("Spinning left");
 		while (currentRotation < 2 * Math.PI) {
-			if ((MainModel.getDroneAttitude().getYaw() - prevYaw) < -Math.PI) {
-				currentRotation += MainModel.getDroneAttitude().getYaw() - prevYaw
+			double currentYaw = MainModel.getDroneAttitude().getYaw();
+			if ((currentYaw - prevYaw) < -Math.PI) {
+				currentRotation += currentYaw - prevYaw
 						+ 2 * Math.PI;
 			} else {
-				currentRotation += MainModel.getDroneAttitude().getYaw() - prevYaw;
+				currentRotation += currentYaw - prevYaw;
 			}
+			prevYaw = currentYaw;
 
 			if (currentRotation > intervalAngle * intervalCount) {
 				output.addTextLine("Pause #" + intervalCount);
@@ -318,10 +321,7 @@ public class NiceTest {
 					stabilizeHor(0, 0);
 				}
 			}
-
-			prevYaw = MainModel.getDroneAttitude().getYaw();
 			stabilizeHor(0, rotationSpeed);
-
 		}
 
 		output.addTextLine("QR-codes found: " + qrpos.getQRCount());
