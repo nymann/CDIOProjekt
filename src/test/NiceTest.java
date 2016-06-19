@@ -94,7 +94,11 @@ public class NiceTest {
 		videoFrame.setVisible(true);
 		velocityFrame.setVisible(true);
 		infoFrame.setVisible(true);
-
+		
+		videoFrame.setLocation(920, 0);
+		velocityFrame.setLocation(920, 400);
+		infoFrame.setLocation(0, 650);
+		
 		mainWindow.setTitle("Nicetest Main");
 		videoFrame.setTitle("Nicetest Video");
 		velocityFrame.setTitle("Nicetest Velocity");
