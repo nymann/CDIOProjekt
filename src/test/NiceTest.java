@@ -35,14 +35,16 @@ public class NiceTest {
 	static VideoManager videoManager;
 	static CommandManager commandManager;
 	static ConfigurationManager configurationManager;
+
 	static final double movingSpeed = 50.0;
 	static final double takeOffSpeed = 100.0;
 	static final double hoverSpeed = 40.0;
 	static final int hoverHeight = 1300;
 	static final int rotationSpeed = -10;
+	static final double intervalAngle = Math.PI / 4.0;
 
-    public static void main(String[] args) {
-        IARDrone drone = null;
+	public static void main(String[] args) {
+		IARDrone drone = null;
 
 		output = new TextPanel();
 		exceptionOut = new TextPanel();
@@ -54,94 +56,93 @@ public class NiceTest {
 		DroneStateListener dsl = new DroneStateListener(droneStatus);
 		droneStatus.setPreferredSize(outputSize);
 		droneStatus.setSize(outputSize);
-		
+
 		infoPanel = new InfoPanel();
 		infoPanel.setColumns(80);
 		Dimension infoDimension = new Dimension(900, 200);
 		infoPanel.setPreferredSize(infoDimension);
 		infoPanel.setSize(infoDimension);
 
-        velocityPanel = new VelocityPanel();
-        Dimension velocityDimension = new Dimension(200, 200);
-        velocityPanel.setSize(velocityDimension);
-        velocityPanel.setPreferredSize(velocityDimension);
+		velocityPanel = new VelocityPanel();
+		Dimension velocityDimension = new Dimension(200, 200);
+		velocityPanel.setSize(velocityDimension);
+		velocityPanel.setPreferredSize(velocityDimension);
 
 		video.setSize(new Dimension(640, 360));
 		video.setPreferredSize(new Dimension(640, 360));
 
-        JFrame mainWindow = new JFrame();
+		JFrame mainWindow = new JFrame();
 		JFrame videoFrame = new JFrame();
 		JFrame velocityFrame = new JFrame();
 		JFrame infoFrame = new JFrame();
-		
-        mainWindow.getContentPane().setLayout(new FlowLayout());
-        videoFrame.getContentPane().setLayout(new FlowLayout());
+
+		mainWindow.getContentPane().setLayout(new FlowLayout());
+		videoFrame.getContentPane().setLayout(new FlowLayout());
 		velocityFrame.getContentPane().setLayout(new FlowLayout());
 		infoFrame.getContentPane().setLayout(new FlowLayout());
-		
-        mainWindow.getContentPane().add(output);
-        mainWindow.getContentPane().add(exceptionOut);
-        mainWindow.getContentPane().add(droneStatus);
+
+		mainWindow.getContentPane().add(output);
+		mainWindow.getContentPane().add(exceptionOut);
+		mainWindow.getContentPane().add(droneStatus);
 		videoFrame.getContentPane().add(video);
 		velocityFrame.getContentPane().add(velocityPanel);
-        infoFrame.getContentPane().add(infoPanel);
+		infoFrame.getContentPane().add(infoPanel);
 
-		
 		mainWindow.setVisible(true);
 		videoFrame.setVisible(true);
 		velocityFrame.setVisible(true);
-        infoFrame.setVisible(true);
+		infoFrame.setVisible(true);
 
 		mainWindow.setTitle("Nicetest Main");
 		videoFrame.setTitle("Nicetest Video");
 		velocityFrame.setTitle("Nicetest Velocity");
-        infoFrame.setTitle("Nicetest Info");
+		infoFrame.setTitle("Nicetest Info");
 
 		mainWindow.pack();
 		videoFrame.pack();
 		velocityFrame.pack();
-        infoFrame.pack();
+		infoFrame.pack();
 
 		mainWindow.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
-        // connecting to drone
-        do {
-            try {
-                drone = new ARDrone();
-            } catch (Exception exc) {
-                System.err.println("Error: " + exc.getMessage());
-                exc.printStackTrace();
-            }
-        } while (drone == null);
+		// connecting to drone
+		do {
+			try {
+				drone = new ARDrone();
+			} catch (Exception exc) {
+				System.err.println("Error: " + exc.getMessage());
+				exc.printStackTrace();
+			}
+		} while (drone == null);
 
-        ExceptionListener exceptionListener = new ExceptionListener(exceptionOut, drone);
-        drone.addExceptionListener(exceptionListener);
+		ExceptionListener exceptionListener = new ExceptionListener(exceptionOut, drone);
+		drone.addExceptionListener(exceptionListener);
 
-        output.addTextLine("Starting Drone.");
-        drone.start();
-        drone.reset();
+		output.addTextLine("Starting Drone.");
+		drone.start();
+		drone.reset();
 
-        try {
-            Thread.currentThread().sleep(2000);
-        } catch (InterruptedException ex) {
-            output.addTextLine("sleep interupted");
-        }
+		try {
+			Thread.currentThread().sleep(2000);
+		} catch (InterruptedException ex) {
+			output.addTextLine("sleep interupted");
+		}
 
-        configurationManager = drone.getConfigurationManager();
-        while (!configurationManager.isConnected()) {
-            output.addTextLine("Couldn't connect to drone, retrying connection");
-            configurationManager.close();
-            drone.start();
-            configurationManager = drone.getConfigurationManager();
+		configurationManager = drone.getConfigurationManager();
+		while (!configurationManager.isConnected()) {
+			output.addTextLine("Couldn't connect to drone, retrying connection");
+			configurationManager.close();
+			drone.start();
+			configurationManager = drone.getConfigurationManager();
 
-            try {
-                Thread.currentThread().sleep(2000);
-            } catch (InterruptedException ex) {
-                output.addTextLine("sleep interupted");
-            }
+			try {
+				Thread.currentThread().sleep(2000);
+			} catch (InterruptedException ex) {
+				output.addTextLine("sleep interupted");
+			}
 
-            output.addTextLine("Drone connected: " + configurationManager.isConnected());
-        }
+			output.addTextLine("Drone connected: " + configurationManager.isConnected());
+		}
 
 		navDataManager = drone.getNavDataManager();
 		videoManager = drone.getVideoManager();
@@ -154,46 +155,46 @@ public class NiceTest {
 		navDataManager.addAcceleroListener(acc);
 
 //        commandManager.setMaxAltitude(2000);
-        commandManager.emergency();
+		commandManager.emergency();
 //		commandManager.setNavDataDemo(true);
 
-        try {
-            doStuff(drone);
-        } catch (Exception e) {
-            exceptionOut.addTextLine(e.getMessage());
-            StackTraceElement[] stackTrace = e.getStackTrace();
-            for (int i = 0; i < stackTrace.length; i++) {
-                exceptionOut.addTextLine(stackTrace[i].toString());
-            }
-        }
+		try {
+			doStuff(drone);
+		} catch (Exception e) {
+			exceptionOut.addTextLine(e.getMessage());
+			StackTraceElement[] stackTrace = e.getStackTrace();
+			for (int i = 0; i < stackTrace.length; i++) {
+				exceptionOut.addTextLine(stackTrace[i].toString());
+			}
+		}
 
-        output.addTextLine("Landing drone");
-        drone.landing();
-        while (velocityPanel.velocity == null || velocityPanel.velocity.magnitude() > 0.1) {
-            try {
-                Thread.sleep(500);
-            } catch (InterruptedException ex) {
-            }
-            drone.landing();
-        }
-        output.addTextLine("Stopping drone");
-        drone.stop();
-    }
+		output.addTextLine("Landing drone");
+		drone.landing();
+		while (velocityPanel.velocity == null || velocityPanel.velocity.magnitude() > 0.1) {
+			try {
+				Thread.sleep(500);
+			} catch (InterruptedException ex) {
+			}
+			drone.landing();
+		}
+		output.addTextLine("Stopping drone");
+		drone.stop();
+	}
 
-    private static void doStuff(IARDrone drone) {
+	private static void doStuff(IARDrone drone) {
 
-        Attitude att = new Attitude();
-        navDataManager.addAttitudeListener(att);
-        commandManager.setOutdoor(false, true);
-        commandManager.setNavDataDemo(false);
+		Attitude att = new Attitude();
+		navDataManager.addAttitudeListener(att);
+		commandManager.setOutdoor(false, true);
+		commandManager.setNavDataDemo(false);
 
 //		drone.getCommandManager().setVideoCodec(VideoCodec.H264_720P);
-        // Sets the camera to 720p instead of stretching a 640x360 image.
-        commandManager.setUltrasoundFrequency(UltrasoundFrequency.F25Hz);
+		// Sets the camera to 720p instead of stretching a 640x360 image.
+		commandManager.setUltrasoundFrequency(UltrasoundFrequency.F25Hz);
 
-        Runnable infoUpdate = () -> {
-            while (true) {
-                NiceTest.infoPanel.setInfo("Batery Level:", NiceTest.bat.level);
+		Runnable infoUpdate = () -> {
+			while (true) {
+				NiceTest.infoPanel.setInfo("Batery Level:", NiceTest.bat.level);
 
 				/*				if (NiceTest.velocityPanel.velocity != null) {
 					Point3D velocity = NiceTest.velocityPanel.velocity;
@@ -227,49 +228,49 @@ public class NiceTest {
 					NiceTest.infoPanel.setInfo("Acceleration Phys 1", "null");
 				}
 
-            }
-        };
-        new Thread(infoUpdate).start();
+			}
+		};
+		new Thread(infoUpdate).start();
 
-        output.addTextLine("Taking off");
+		output.addTextLine("Taking off");
 //		commandManager.takeOff();
-        output.addTextLine("Waiting for acceleration data");
-        while (acc.acchysd == null) {
-            try {
-                Thread.sleep(500);
-            } catch (InterruptedException ex) {
-            }
-        }
+		output.addTextLine("Waiting for acceleration data");
+		while (acc.acchysd == null) {
+			try {
+				Thread.sleep(500);
+			} catch (InterruptedException ex) {
+			}
+		}
 		velocityPanel.setAccelBase(acc.acchysd.getPhysAccs());
-        commandManager.takeOff().doFor(5000);
+		commandManager.takeOff().doFor(5000);
 
-        output.addTextLine("Waiting for altitude update");
-        while (alt.extendedAltitude == null) {
-            try {
-                Thread.sleep(500);
-            } catch (InterruptedException ex) {
-            }
-        }
-        output.addTextLine("Altitude update recieved");
+		output.addTextLine("Waiting for altitude update");
+		while (alt.extendedAltitude == null) {
+			try {
+				Thread.sleep(500);
+			} catch (InterruptedException ex) {
+			}
+		}
+		output.addTextLine("Altitude update recieved");
 
-        //---------------------------------
-        // Height test
-        //--------------------------------
-        output.addTextLine("Finding correct height");
-        long stableTime = 0;
-        long stableSince = System.currentTimeMillis();
-        while (stableTime < 1000) {
-            if (stabilize(hoverHeight, 0)) {
-                stableTime = System.currentTimeMillis() - stableSince;
-            } else {
-                stableSince = System.currentTimeMillis();
-                stableTime = 0;
-            }
-        }
-        commandManager.move(0, 0, 0, 0).doFor(50);
-        output.addTextLine("Stable hover");
+		//---------------------------------
+		// Height test
+		//--------------------------------
+		output.addTextLine("Finding correct height");
+		long stableTime = 0;
+		long stableSince = System.currentTimeMillis();
+		while (stableTime < 250) {
+			if (stabilize(hoverHeight, 0)) {
+				stableTime = System.currentTimeMillis() - stableSince;
+			} else {
+				stableSince = System.currentTimeMillis();
+				stableTime = 0;
+			}
+		}
+		commandManager.move(0, 0, 0, 0).doFor(50);
+		output.addTextLine("Stable hover");
 
-/*		//---------------------------------
+		/*		//---------------------------------
 		// Direction Test
 		//--------------------------------
 
@@ -281,8 +282,7 @@ public class NiceTest {
 		commandManager.move(0, -20, 0, 0).doFor(1000);
 		output.addTextLine("Moving left");
 		commandManager.move(0, 20, 0, 0).doFor(1000);*/
-
- 		//--------------------------------------
+		//--------------------------------------
 		// QR positioning stuuf
 		//--------------------------------------
 		QRPositioning qrpos = new QRPositioning();
@@ -294,73 +294,86 @@ public class NiceTest {
 		att.addListener(qrpos);
 		videoReader.addListener(video);
 
-        double currentRotation = 0;
-        double prevYaw = MainModel.getDroneAttitude().getYaw();
+		//---------------------------------------------------------------------
+		// Turn around while looking for QR codes
+		//---------------------------------------------------------------------
+		double currentRotation = 0;
+		double prevYaw = MainModel.getDroneAttitude().getYaw();
+		int intervalCount = 1;
 
 		output.addTextLine("Spinning left");
 		while (currentRotation < 2 * Math.PI) {
-            if ((MainModel.getDroneAttitude().getYaw() - prevYaw) < -Math.PI) {
-                currentRotation += MainModel.getDroneAttitude().getYaw() - prevYaw
-                        + 2 * Math.PI;
-            } else {
-                currentRotation += MainModel.getDroneAttitude().getYaw() - prevYaw;
-            }
+			if ((MainModel.getDroneAttitude().getYaw() - prevYaw) < -Math.PI) {
+				currentRotation += MainModel.getDroneAttitude().getYaw() - prevYaw
+						+ 2 * Math.PI;
+			} else {
+				currentRotation += MainModel.getDroneAttitude().getYaw() - prevYaw;
+			}
 
-            prevYaw = MainModel.getDroneAttitude().getYaw();
-            stabilizeHor(0, rotationSpeed);
+			if (currentRotation > intervalAngle * intervalCount) {
+				output.addTextLine("Pause #" + intervalCount);
+				intervalCount++;
+				long pauseTime = System.currentTimeMillis();
+				while (System.currentTimeMillis() - pauseTime < 2000) {
+					stabilizeHor(0, 0);
+				}
+			}
 
-        }
-        output.addTextLine("QR-codes found: " + qrpos.getQRCount());
-        commandManager.move(0, 0, -20, 0).doFor(50);
+			prevYaw = MainModel.getDroneAttitude().getYaw();
+			stabilizeHor(0, rotationSpeed);
 
-    }
+		}
 
-    public static boolean stabilize(int height, int speedSpin) {
-        if (System.currentTimeMillis() - alt.getLastUpdate() < 500) {
-            int diffHeight = alt.extendedAltitude.getRaw() - hoverHeight;
-            if (Math.abs(diffHeight) < 20 && Math.abs(alt.extendedAltitude.getZVelocity()) < 50) {
-                NiceTest.velocityPanel.setStabilityV(true);
-                return stabilizeHor(0, speedSpin);
-            }
+		output.addTextLine("QR-codes found: " + qrpos.getQRCount());
+		commandManager.move(0, 0, -20, 0).doFor(50);
+	}
 
-            int speed = Math.min(30, Math.abs(diffHeight) / 10);
-            infoPanel.setInfo("Diff height", diffHeight);
-            infoPanel.setInfo("Desired speed", speed);
-            if (diffHeight < 0) {
-                speed = -speed;
-            }
-            stabilizeHor(speed, speedSpin);
-        } else {
-            stabilizeHor(0, speedSpin);
-        }
-        NiceTest.velocityPanel.setStabilityV(false);
-        return false;
-    }
+	public static boolean stabilize(int height, int speedSpin) {
+		if (System.currentTimeMillis() - alt.getLastUpdate() < 500) {
+			int diffHeight = alt.extendedAltitude.getRaw() - hoverHeight;
+			if (Math.abs(diffHeight) < 20 && Math.abs(alt.extendedAltitude.getZVelocity()) < 50) {
+				NiceTest.velocityPanel.setStabilityV(true);
+				return stabilizeHor(0, speedSpin);
+			}
 
-    public static boolean stabilizeHor(int speedZ, int speedSpin) {
-        if (System.currentTimeMillis() - NiceTest.velocityPanel.updated < 500) {
-            double speedX = NiceTest.velocityPanel.velocity.getX() / 30.0;
-            double speedY = NiceTest.velocityPanel.velocity.getY() / 30.0;
+			int speed = Math.min(30, Math.abs(diffHeight) / 10);
+			infoPanel.setInfo("Diff height", diffHeight);
+			infoPanel.setInfo("Desired speed", speed);
+			if (diffHeight < 0) {
+				speed = -speed;
+			}
+			stabilizeHor(speed, speedSpin);
+		} else {
+			stabilizeHor(0, speedSpin);
+		}
+		NiceTest.velocityPanel.setStabilityV(false);
+		return false;
+	}
 
-            int dirX = (int) Math.signum(speedX);
-            int dirY = (int) Math.signum(speedY);
+	public static boolean stabilizeHor(int speedZ, int speedSpin) {
+		if (System.currentTimeMillis() - NiceTest.velocityPanel.updated < 500) {
+			double speedX = NiceTest.velocityPanel.velocity.getX() / 30.0;
+			double speedY = NiceTest.velocityPanel.velocity.getY() / 30.0;
 
-            speedX = Math.min(5, Math.abs(speedX));
-            speedY = Math.min(5, Math.abs(speedY));
+			int dirX = (int) Math.signum(speedX);
+			int dirY = (int) Math.signum(speedY);
 
-            int reverseX = -dirX * (int) speedX;
-            int reverseY = -dirY * (int) speedY;
-            velocityPanel.setCounterVelocity(new Point2D(reverseX, reverseY));
-            commandManager.move(reverseY, -reverseX, speedZ, speedSpin).doFor(100);
-            boolean stable = speedX < 2.0 && speedY < 2.0;
-            NiceTest.velocityPanel.setStabilityH(stable);
-            return stable;
-        } else {
-            commandManager.move(0, 0, speedZ, speedSpin).doFor(50);
-            NiceTest.velocityPanel.setStabilityH(false);
-            return false;
-        }
-    }
+			speedX = Math.min(5, Math.abs(speedX));
+			speedY = Math.min(5, Math.abs(speedY));
+
+			int reverseX = -dirX * (int) speedX;
+			int reverseY = -dirY * (int) speedY;
+			velocityPanel.setCounterVelocity(new Point2D(reverseX, reverseY));
+			commandManager.move(reverseY, -reverseX, speedZ, speedSpin).doFor(100);
+			boolean stable = speedX < 2.0 && speedY < 2.0;
+			NiceTest.velocityPanel.setStabilityH(stable);
+			return stable;
+		} else {
+			commandManager.move(0, 0, speedZ, speedSpin).doFor(50);
+			NiceTest.velocityPanel.setStabilityH(false);
+			return false;
+		}
+	}
 }
 
 /*		//---------------------------------

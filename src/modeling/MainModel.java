@@ -16,19 +16,19 @@ import javafx.geometry.Point3D;
  * @author Mikkel
  */
 public class MainModel {
-	
+
 	private static final List<List<QRPoint>> QRPoints = new ArrayList<>();
 	private static final List<NavSpot> navSpots = new ArrayList<>();
 	private static final List<Cube> cubes = new ArrayList<>();
-	
+
 	private static Point3D dronePosition;
 	private static Angle3D droneAttitude;
-	
+
 	private static Point3D droneDirection;
 	private static Point3D roomSize;
 	private static double angleOffset;
-	
-	private MainModel(){
+
+	private MainModel() {
 	}
 
 	public static Angle3D getDroneAttitude() {
@@ -52,38 +52,44 @@ public class MainModel {
 		FillQRPoints();
 		FillNavSpots();
 	}
-	
-	public static void addCube(Cube newCube){
+
+	public static void addCube(Cube newCube) {
 		cubes.add(newCube);
 	}
-	
+
 	/**
-	 * test whether the model contains a cube similar to the one tested
-	 * eg. same color and similar position
+	 * test whether the model contains a cube similar to the one tested eg. same
+	 * color and similar position
+	 *
 	 * @param newCube
 	 * @param tolerance
 	 * @return true if the model contains a similar cube
 	 */
-	public static boolean compareCube(Cube newCube, double tolerance){
-		for (Cube currentCube: cubes){
-			if (newCube.getColor().equals(currentCube.getColor())){
+	public static boolean compareCube(Cube newCube, double tolerance) {
+		for (Cube currentCube : cubes) {
+			if (newCube.getColor().equals(currentCube.getColor())) {
 				if (newCube.getPosition().subtract(currentCube.getPosition())
-						.distance(Point3D.ZERO) < tolerance){
+						.distance(Point3D.ZERO) < tolerance) {
 					return true;
 				}
 			}
 		}
 		return false;
 	}
-	
-	public static QRPoint getQRPoint(QRInfo info){
+
+	public static QRPoint getQRPoint(QRInfo info) {
 		String[] id = info.name.substring(1).split("\\.");
 		int wall = Integer.parseInt(id[0]);
 		int kode = Integer.parseInt(id[1]);
-		return QRPoints.get(wall).get(kode);
+		
+		try {
+			return QRPoints.get(wall).get(kode);
+		} catch (Exception e) {
+			return null;
+		}
 	}
-	
-	private static void FillQRPoints(){
+
+	private static void FillQRPoints() {
 		//WPoint: X-koordinat, y-koordinat, z-koordinat, QR-ID
 		int z = 180;
 		//Wall 0
@@ -106,9 +112,9 @@ public class MainModel {
 		wall = new ArrayList<>();
 		wall.add(new QRPoint(847, -10, z, 0200));
 		wall.add(new QRPoint(656, -77, z, 0201));
-		wall.add(new QRPoint(514,   0, z, 0202));
-		wall.add(new QRPoint(328,   0, z, 0203));
-		wall.add(new QRPoint(143,   0, z, 0204));
+		wall.add(new QRPoint(514, 0, z, 0202));
+		wall.add(new QRPoint(328, 0, z, 0203));
+		wall.add(new QRPoint(143, 0, z, 0204));
 		QRPoints.add(wall);
 		//Wall 3
 		wall = new ArrayList<>();
@@ -119,31 +125,31 @@ public class MainModel {
 		wall.add(new QRPoint(0, 997, z, 0304));
 		QRPoints.add(wall);
 	}
-	
-	private static void FillNavSpots(){
+
+	private static void FillNavSpots() {
 		//spot: X-koordinat, y-koordinat, z-koordinat, spot-ID: lige->startSpots, ulige->endSpots
 		int z = 0;
 		int x0 = 75;
 		int x1 = 851;
-		
-		navSpots.add(new NavSpot(x0,  76, z,  0));
-		navSpots.add(new NavSpot(x1,  76, z,  1));
-		navSpots.add(new NavSpot(x0, 228, z,  2));
-		navSpots.add(new NavSpot(x1, 228, z,  3));
-		navSpots.add(new NavSpot(x0, 380, z,  4));
-		navSpots.add(new NavSpot(x1, 380, z,  5));
-		navSpots.add(new NavSpot(x0, 532, z,  6));
-		navSpots.add(new NavSpot(x1, 532, z,  7));
-		navSpots.add(new NavSpot(x0, 684, z,  8));
-		navSpots.add(new NavSpot(x1, 684, z,  9));
+
+		navSpots.add(new NavSpot(x0, 76, z, 0));
+		navSpots.add(new NavSpot(x1, 76, z, 1));
+		navSpots.add(new NavSpot(x0, 228, z, 2));
+		navSpots.add(new NavSpot(x1, 228, z, 3));
+		navSpots.add(new NavSpot(x0, 380, z, 4));
+		navSpots.add(new NavSpot(x1, 380, z, 5));
+		navSpots.add(new NavSpot(x0, 532, z, 6));
+		navSpots.add(new NavSpot(x1, 532, z, 7));
+		navSpots.add(new NavSpot(x0, 684, z, 8));
+		navSpots.add(new NavSpot(x1, 684, z, 9));
 		navSpots.add(new NavSpot(x0, 836, z, 10));
 		navSpots.add(new NavSpot(x1, 836, z, 11));
 		navSpots.add(new NavSpot(x0, 988, z, 12));
 		navSpots.add(new NavSpot(x1, 988, z, 13));
-		
-	}	
-	
-	public static NavSpot getNavSpot(int id){
+
+	}
+
+	public static NavSpot getNavSpot(int id) {
 		NavSpot spot = navSpots.get(id);
 		return spot;
 	}
@@ -155,18 +161,9 @@ public class MainModel {
 	public static void setDronePosition(Point3D dronePosition) {
 		MainModel.dronePosition = dronePosition;
 	}
-	
+
 	public static void setDronePosition(Point2D p) {
 		MainModel.dronePosition = new Point3D(p.getX(), p.getY(), dronePosition.getZ());
 	}
-	
-	
+
 }
-
-
-
-
-
-
-
-
