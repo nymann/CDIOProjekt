@@ -19,10 +19,11 @@ public class VelocityPanel extends JPanel implements VelocityListener {
 
     private final double scale = 5000;
     private final double counterScale = 20;
-    private final double accScale = 100;
+    private final double accScalePhys = 100;
+	private final double accScaleRaw = 1000;
 	
 
-    public Point3D velocity, accelerationBase,acceleration;
+    public Point3D velocity, accelerationPhys, accelerationRaw;
     public long updated;
     
 	private Point2D counterVelocity;
@@ -49,11 +50,19 @@ public class VelocityPanel extends JPanel implements VelocityListener {
             double factor = shortest / counterScale;
             g.drawLine(centerX, centerY, centerX + (int) (factor * counterVelocity.getX()), centerY - (int) (factor * counterVelocity.getY()));
         }
-		if (this.acceleration != null) {
+
+		if (this.accelerationPhys != null) {
             g.setColor(Color.YELLOW);
-            double factor = shortest / accScale;
-            g.drawLine(centerX, centerY, centerX + (int) (factor * acceleration.getX()), centerY - (int) (factor * acceleration.getY()));
+            double factor = shortest / accScalePhys;
+            g.drawLine(centerX, centerY, centerX + (int) (factor * accelerationPhys.getX()), centerY - (int) (factor * accelerationPhys.getY()));
         }
+
+		if (this.accelerationRaw != null) {
+            g.setColor(Color.BLUE);
+            double factor = shortest / accScaleRaw;
+            g.drawLine(centerX, centerY, centerX + (int) (factor * accelerationPhys.getX()), centerY - (int) (factor * accelerationPhys.getY()));
+        }
+
 		
 		if (this.stableH){
             g.setColor(Color.GREEN);
@@ -92,16 +101,12 @@ public class VelocityPanel extends JPanel implements VelocityListener {
 		this.repaint();
 	}
 	
-	public void setAccel(float[] v){
-		if (accelerationBase != null){
-			this.acceleration = new Point3D(v[0], v[1],v[2]).subtract(accelerationBase);
-		} else {
-			this.acceleration = new Point3D(v[0], v[1],v[2]);
-		}
+	public void setAccelPhys(float[] v){
+		this.accelerationPhys = new Point3D(v[1], v[0],v[2]);
 	}
 
-	public void setAccelBase(float[] v){
-		this.accelerationBase = new Point3D(v[0], v[1],v[2]);
+	public void setAccelRaw(int[] v){
+		this.accelerationRaw = new Point3D(v[1], v[0],v[2]);
 	}
 	
 	

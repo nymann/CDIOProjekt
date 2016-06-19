@@ -81,7 +81,7 @@ public class MainModel {
 		String[] id = info.name.substring(1).split("\\.");
 		int wall = Integer.parseInt(id[0]);
 		int kode = Integer.parseInt(id[1]);
-		
+
 		try {
 			return QRPoints.get(wall).get(kode);
 		} catch (Exception e) {
@@ -163,7 +163,11 @@ public class MainModel {
 	}
 
 	public static void setDronePosition(Point2D p) {
-		MainModel.dronePosition = new Point3D(p.getX(), p.getY(), dronePosition.getZ());
+		if (dronePosition != null) {
+			MainModel.dronePosition = new Point3D(p.getX(), p.getY(), dronePosition.getZ());
+		} else {
+			MainModel.dronePosition = new Point3D(p.getX(), p.getY(), 0);
+		}
 	}
 
 }

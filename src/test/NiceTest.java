@@ -4,6 +4,7 @@ import de.yadrone.base.ARDrone;
 import de.yadrone.base.IARDrone;
 import de.yadrone.base.command.CommandManager;
 import de.yadrone.base.command.UltrasoundFrequency;
+import de.yadrone.base.command.VideoCodec;
 import de.yadrone.base.configuration.ConfigurationManager;
 import de.yadrone.base.navdata.NavDataManager;
 import de.yadrone.base.video.VideoManager;
@@ -155,9 +156,7 @@ public class NiceTest {
 		navDataManager.addBatteryListener(bat);
 		navDataManager.addAcceleroListener(acc);
 
-//        commandManager.setMaxAltitude(2000);
 		commandManager.emergency();
-//		commandManager.setNavDataDemo(true);
 
 		try {
 			doStuff(drone);
@@ -189,8 +188,9 @@ public class NiceTest {
 		commandManager.setOutdoor(false, true);
 		commandManager.setNavDataDemo(false);
 
-//		drone.getCommandManager().setVideoCodec(VideoCodec.H264_720P);
 		// Sets the camera to 720p instead of stretching a 640x360 image.
+		drone.getCommandManager().setVideoCodec(VideoCodec.H264_360P);
+
 		commandManager.setUltrasoundFrequency(UltrasoundFrequency.F25Hz);
 
 		Runnable infoUpdate = () -> {
@@ -212,29 +212,35 @@ public class NiceTest {
 					NiceTest.infoPanel.setInfo("Altitude", "null");
 				}
 
-				if (NiceTest.acc.accrawd != null) {
-					NiceTest.infoPanel.setInfo("Acceleration Raw", NiceTest.acc.accrawd);
-				} else {
-					NiceTest.infoPanel.setInfo("Acceleration Raw", "null");
-				}
-
 				if (NiceTest.acc.acchysd != null) {
-					NiceTest.infoPanel.setInfo("Acceleration Phys 0", NiceTest.acc.acchysd.getPhysAccs()[0]);
-					NiceTest.infoPanel.setInfo("Acceleration Phys 1", NiceTest.acc.acchysd.getPhysAccs()[1]);
-					NiceTest.infoPanel.setInfo("Acceleration Phys 2", NiceTest.acc.acchysd.getPhysAccs()[2]);
-					//NiceTest.infoPanel.setInfo("Acceleration Phys", NiceTest.acc.acchysd);
-					NiceTest.velocityPanel.setAccel(NiceTest.acc.acchysd.getPhysAccs());
+					try {
+					NiceTest.infoPanel.setInfo("Acceleration Phys 0", NiceTest.acc.getCalibratedPhys()[0]);
+					NiceTest.infoPanel.setInfo("Acceleration Phys 1", NiceTest.acc.getCalibratedPhys()[1]);
+					NiceTest.infoPanel.setInfo("Acceleration Phys 2", NiceTest.acc.getCalibratedPhys()[2]);
+					
+					NiceTest.infoPanel.setInfo("Acceleration Raw 0", NiceTest.acc.getCalibratedRaw()[0]);
+					NiceTest.infoPanel.setInfo("Acceleration Raw 1", NiceTest.acc.getCalibratedRaw()[1]);
+					NiceTest.infoPanel.setInfo("Acceleration Raw 2", NiceTest.acc.getCalibratedRaw()[2]);
+					
+					NiceTest.velocityPanel.setAccelPhys(NiceTest.acc.getCalibratedPhys());
+					NiceTest.velocityPanel.setAccelRaw(NiceTest.acc.getCalibratedRaw());
+					} catch (Exception e){
+						
+					}
 				} else {
 					NiceTest.infoPanel.setInfo("Acceleration Phys 0", "null");
 					NiceTest.infoPanel.setInfo("Acceleration Phys 1", "null");
+					NiceTest.infoPanel.setInfo("Acceleration Phys 2", "null");
+					
+					NiceTest.infoPanel.setInfo("Acceleration Raw 0", "null");
+					NiceTest.infoPanel.setInfo("Acceleration Raw 1", "null");
+					NiceTest.infoPanel.setInfo("Acceleration Raw 2", "null");
 				}
 
 			}
 		};
 		new Thread(infoUpdate).start();
 
-		output.addTextLine("Taking off");
-//		commandManager.takeOff();
 		output.addTextLine("Waiting for acceleration data");
 		while (acc.acchysd == null) {
 			try {
@@ -242,7 +248,20 @@ public class NiceTest {
 			} catch (InterruptedException ex) {
 			}
 		}
-		velocityPanel.setAccelBase(acc.acchysd.getPhysAccs());
+
+		output.addTextLine("Calibrating accelerometer");
+		acc.calibration(true);
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException ex) {
+		}
+		output.addTextLine("Done Calibrating accelerometer");
+		acc.calibration(false);
+
+		//--------------------------------------------------------------------
+		// Drone taking off
+		//--------------------------------------------------------------------
+		output.addTextLine("Taking off");
 		commandManager.takeOff().doFor(5000);
 
 		output.addTextLine("Waiting for altitude update");
@@ -318,10 +337,10 @@ public class NiceTest {
 				intervalCount++;
 				long pauseTime = System.currentTimeMillis();
 				while (System.currentTimeMillis() - pauseTime < 2000) {
-					stabilizeHor(0, 0);
+					stabilize(hoverHeight, 0, true);
 				}
 			}
-			stabilizeHor(0, rotationSpeed);
+			stabilize(hoverHeight, rotationSpeed, true);
 		}
 
 		output.addTextLine("QR-codes found: " + qrpos.getQRCount());
@@ -329,14 +348,22 @@ public class NiceTest {
 	}
 
 	public static boolean stabilize(int height, int speedSpin) {
+		return stabilize(height, speedSpin, false);
+	}
+
+	public static boolean stabilize(int height, int speedSpin, boolean maintain) {
 		if (System.currentTimeMillis() - alt.getLastUpdate() < 500) {
 			int diffHeight = alt.extendedAltitude.getRaw() - hoverHeight;
+			if (maintain && Math.abs(diffHeight) > 400) {
+				diffHeight = 0;
+			}
+
 			if (Math.abs(diffHeight) < 20 && Math.abs(alt.extendedAltitude.getZVelocity()) < 50) {
 				NiceTest.velocityPanel.setStabilityV(true);
 				return stabilizeHor(0, speedSpin);
 			}
 
-			int speed = Math.min(30, Math.abs(diffHeight) / 10);
+			int speed = Math.min(20, Math.abs(diffHeight) / 10);
 			infoPanel.setInfo("Diff height", diffHeight);
 			infoPanel.setInfo("Desired speed", speed);
 			if (diffHeight < 0) {
@@ -354,12 +381,15 @@ public class NiceTest {
 		if (System.currentTimeMillis() - NiceTest.velocityPanel.updated < 500) {
 			double speedX = NiceTest.velocityPanel.velocity.getX() / 30.0;
 			double speedY = NiceTest.velocityPanel.velocity.getY() / 30.0;
+			speedX += NiceTest.velocityPanel.accelerationRaw.getX() / 10.0;
+			speedY += NiceTest.velocityPanel.accelerationRaw.getY() / 10.0;
+			
 
 			int dirX = (int) Math.signum(speedX);
 			int dirY = (int) Math.signum(speedY);
 
-			speedX = Math.min(5, Math.abs(speedX));
-			speedY = Math.min(5, Math.abs(speedY));
+			speedX = Math.min(10, Math.abs(speedX));
+			speedY = Math.min(10, Math.abs(speedY));
 
 			int reverseX = -dirX * (int) speedX;
 			int reverseY = -dirY * (int) speedY;
