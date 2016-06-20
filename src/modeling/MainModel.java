@@ -128,6 +128,7 @@ public class MainModel {
 
 	private static void FillNavSpots() {
 		//spot: X-koordinat, y-koordinat, z-koordinat, spot-ID: lige->startSpots, ulige->endSpots
+/*
 		int z = 0;
 		int x0 = 75;
 		int x1 = 851;
@@ -146,6 +147,11 @@ public class MainModel {
 		navSpots.add(new NavSpot(x1, 836, z, 11));
 		navSpots.add(new NavSpot(x0, 988, z, 12));
 		navSpots.add(new NavSpot(x1, 988, z, 13));
+*/
+		navSpots.add(new NavSpot(250, 250, 180, 0));
+		navSpots.add(new NavSpot(676, 250, 180, 1));
+		navSpots.add(new NavSpot(676, 830, 180, 2));
+		navSpots.add(new NavSpot(250, 830, 180, 3));
 
 	}
 
