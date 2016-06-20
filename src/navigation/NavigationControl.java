@@ -10,7 +10,9 @@ import modeling.MainModel;
 
 import java.awt.Point;
 import java.awt.image.BufferedImage;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
@@ -40,7 +42,13 @@ public class NavigationControl {
         flyPat = new NavFlyPattern(idl, drone);
         
         runNav();
-        presentResults();
+       
+        try {
+			presentResults();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
 
     private void runNav() {
@@ -60,7 +68,7 @@ public class NavigationControl {
         }
     }
 
-    public void presentResults() {
+    public void presentResults() throws IOException {
         /*
          * Tager listerne med red og green cubes, som fundet i NavFlyPattern,
          * og sender dem til resultPanel.
@@ -71,7 +79,9 @@ public class NavigationControl {
 	    
     	rp = new ResultPanel(greenCubes, redCubes);
     	
-    	FileOutputStream fosGreen = new FileOutputStream("greenCubes.txt");
+    	FileOutputStream fosGreen;
+			fosGreen = new FileOutputStream("greenCubes.txt");
+		
         ObjectOutputStream oosGreen = new ObjectOutputStream(fosGreen);   
         oosGreen.writeObject(greenCubes);
         oosGreen.close(); 
@@ -80,5 +90,6 @@ public class NavigationControl {
         ObjectOutputStream oosRed = new ObjectOutputStream(fosRed);   
         oosRed.writeObject(redCubes);
         oosRed.close(); 
+	
     }
 }

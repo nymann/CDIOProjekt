@@ -51,7 +51,7 @@ public class NavFlyPattern {
 	private OpticalFlow opFlow;
 	private Point3D p3d, dronePos3D;
 	private List<Point> lsR, lsG;
-	public ArrayList<Point> greenCubes, redCubes;
+	public static ArrayList<Point> greenCubes, redCubes;
 	private ResultPanel rp;
 
 	private TranslatePoint tp;
@@ -240,9 +240,9 @@ public class NavFlyPattern {
 		Point p1d;
 		CubeStore cs;
 		TranslatePoint tp = new TranslatePoint();
-		tp.setDroneInfo(a3d,new Point3D(0, 0, 100));
+	//	tp.setDroneInfo(a3d,new Point3D(0, 0, 100));
 		
-	//	tp.setDroneInfo(a3d,idl.getImageData().position);
+		tp.setDroneInfo(a3d,idl.getImageData().position);
 		boolean bool;
 		
 		for(Point p : lsR){
@@ -260,7 +260,7 @@ public class NavFlyPattern {
 			if(bool==false){ 
 				MainModel.addCube(c); 
 				System.out.println("new cube added");
-				redCubes.add(new Point(p2d.getX(), p2d.getY()));
+				redCubes.add(new Point((int)c.getPosition().getX(), (int)c.getPosition().getY()));
 			}			
 		}
 
@@ -273,9 +273,10 @@ public class NavFlyPattern {
 			Point3D found3d = new Point3D(p2d.getX(), p2d.getY(), 0);
 			Cube c = new Cube(found3d, Color.GREEN);
 			bool = MainModel.compareCube(c, 10.0);
+			
 			if(bool==false) {
 				MainModel.addCube(c);
-				greenCubes.add(new Point(p2d.getX(), p2d.getY()));
+				greenCubes.add(new Point((int)c.getPosition().getX(), (int)c.getPosition().getY()));
 			}
 		}
 
