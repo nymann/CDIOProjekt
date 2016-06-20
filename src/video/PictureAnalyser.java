@@ -69,7 +69,7 @@ public class PictureAnalyser {
 		Mat imgThresholded2 = new Mat();
 		Core.inRange(img, low, high, imgThresholded);
 		if (low.val[0] < 0) {
-			low.val[0] = 180 - low.val[0];
+			low.val[0] = 180 + low.val[0];
 			high.val[0] = 179;
 
 			Core.inRange(img, low, high, imgThresholded2);
@@ -147,7 +147,7 @@ public class PictureAnalyser {
 				double[] testColor = imgHSV.get((imgHSV.height() / 2)
 						- (width / 2) + i, (imgHSV.width() / 2) - (height / 2)
 						+ j);
-				if (testColor[0] > 174)
+				if (testColor[0] > 140)
 					testColor[0] = testColor[0] - 180;
 				hue = hue + (int) testColor[0];
 				saturation = saturation + (int) testColor[1];
