@@ -17,6 +17,11 @@ public class PositionWithOneQRCode {
 		this.y1 = y1;
 		this.y2 = y2;
 	}
+	
+	public void setQRHightFromDrone(double p) {
+		this.p = p;
+	}
+	
 	public Point2D getCoordinat1() {
 		Point2D coordinat1 = new Point2D(x1, y1);
 		return coordinat1;
@@ -26,19 +31,26 @@ public class PositionWithOneQRCode {
 		return coordinat2;
 	}
 	
+	public double getQRHightFromDrone() {
+		return p;
+	}
+	
 	public double findLenght() {
+		// Finder længde forskellen mellem den faktiske højde af QR og dronens syn på QR-koden.
 		k1 = d/p;
 		return k1; 
 	}
 	
 	public double findAngel() {
+		// Finder den vinkel som skal bruges til at bregne afstanden fra dronen til QR-koden.
 		beta = k1/(d-p);
+		// TODO - Skal rettes til radianer!
 		alpha = 180 - 90 - beta;
 		return alpha;
 	}
 	
 	public double LengthBetweenQRAndDrone() {
-		
+		// Berener afstanden mellem dronen og QR-koden.
 		k2 = p*Math.sin(beta)/Math.sin(alpha);
 		fullLength = k1 + k2;
 		
@@ -46,14 +58,22 @@ public class PositionWithOneQRCode {
 	}
 	
 	public double LengthOneQR() {
+		// Længde med én QR-kode.
 		findLenght();
 		findAngel();
 		return LengthBetweenQRAndDrone();
 	}
 	
 	public Point2D findPositionTwoQR() {
+		/*Ved at kende længden fra dronen og til Q-koderne, kan man bruge cirkel beregning til
+		 * at finde dronens position. 
+		 */
 		
-		double f1, f2, yres1, yres2, xres1, xres2, dist1, dist2;
+		double f1, f2, yres1, yres2, xres1, xres2;
+		
+		r1 = LengthOneQR();
+		r2 = LengthOneQR();
+		
 		k1 = -0.5*(2*y1-2*y2)/(x1-x2);
 		k2 = -0.5*(r1*r1-r2*r2-x1*x1+x2*x2-y1*y1+y2*y2)/(x1-x2);
 		
