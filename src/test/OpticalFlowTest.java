@@ -21,6 +21,10 @@ import video.VideoReader;
 
 public class OpticalFlowTest {
 
+	static BufferedImage prev = null;
+	static BufferedImage next = null;
+	static OpticalFlow flow;
+	
 	public static void main(String[] args) {
 		IARDrone drone = null;
 		// connecting to drone
@@ -32,6 +36,7 @@ public class OpticalFlowTest {
 			final VideoManager vmd = drone.getVideoManager();
 			video.VideoReader vid = new VideoReader(vmd, cmd);
 			vid.setCamMode(false);
+			flow = new OpticalFlow();
 //			drone.setVerticalCamera();
 //			testOne(cmd);
 			testTwo(cmd, vid);
@@ -76,6 +81,9 @@ public class OpticalFlowTest {
 				System.out.println("Taking picture...");
 				BufferedImage img = vid.getImage();
 				while (img == null) img = vid.getImage();
+				prev = next;
+				next = img;
+				flow.findFlows(img);
 				label.setIcon(new ImageIcon(img));
 				System.out.println("Picture taken");
 			}

@@ -159,6 +159,20 @@ public class MainModel {
 		NavSpot spot = navSpots.get(id);
 		return spot;
 	}
+	
+	public static NavSpot findClosestNavSpot(Point3D dronePosition){
+		double drone = dronePosition.getX() + dronePosition.getY() + dronePosition.getZ();
+		double closestDistance = Math.abs(navSpots.get(0).getSum() - drone);
+		NavSpot closestPoint = navSpots.get(0);
+		for(int i = 1; i < navSpots.size(); i++){
+			double distance = Math.abs(navSpots.get(i).getSum() - drone); 
+			if(distance < closestDistance){
+				closestDistance = distance;
+				closestPoint = navSpots.get(i);
+			}
+		}
+		return closestPoint;
+	}
 
 	public static Point3D getDronePosition() {
 		return dronePosition;
