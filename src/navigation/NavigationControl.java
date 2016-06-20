@@ -32,7 +32,7 @@ public class NavigationControl {
     private ArrayList<Point> redCubes, greenCubes;
     private ResultPanel rp;
 
-    NavigationControl(ImageDataListener idl) {
+    public NavigationControl(ImageDataListener idl) {
         vm = drone.getVideoManager();
         cm = drone.getCommandManager();
         cm.setControlAck(true);
@@ -60,7 +60,7 @@ public class NavigationControl {
         }
     }
 
-    private void presentResults() {
+    public void presentResults() {
         /*
          * Tager listerne med red og green cubes, som fundet i NavFlyPattern,
          * og sender dem til resultPanel.

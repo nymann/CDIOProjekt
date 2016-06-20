@@ -254,7 +254,7 @@ public class NavFlyPattern {
 			if(bool==false){ 
 				MainModel.addCube(c); 
 				System.out.println("new cube added");
-				redCubes.add(p2d.getX(), p2d.getY());
+				redCubes.add(new Point(p2d.getX(), p2d.getY()));
 			}			
 		}
 
@@ -269,7 +269,7 @@ public class NavFlyPattern {
 			bool = MainModel.compareCube(c, 10.0);
 			if(bool==false) {
 				MainModel.addCube(c);
-				greenCubes.add(p2d.getX(), p2d.getY());
+				greenCubes.add(new Point(p2d.getX(), p2d.getY()));
 			}
 		}
 
