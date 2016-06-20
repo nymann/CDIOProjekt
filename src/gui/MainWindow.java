@@ -1,10 +1,17 @@
 
+
+
+
 package gui;
 
 import de.yadrone.base.IARDrone;
 import de.yadrone.base.command.VideoCodec;
 import de.yadrone.base.video.VideoManager;
+import listeners.Attitude;
 import main.Main;
+import modeling.MainModel;
+import navigation.ImageDataListener;
+import navigation.NavFlyPattern;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -16,12 +23,17 @@ import java.util.List;
 
 import javax.swing.JButton;
 
-
 import video.PictureAnalyser;
+import video.VideoReader;
 
 import java.util.List;
 
 import javax.swing.JButton;
+
+
+
+
+
 
 
 
@@ -42,6 +54,8 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
 	private ListenerValuePanel values;
 	public static PictureAnalyser paGreen = new PictureAnalyser();
 	public static PictureAnalyser paRed = new PictureAnalyser();
+	public ImageDataListener idl = new ImageDataListener();
+	 public Attitude att = new Attitude();
 	/**
 	 * Creates new form MainWindow
 	 */
@@ -53,6 +67,8 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
 		this.calibrateRed = new JButton("CalibrateRed");
 		this.calibrateGreen = new JButton("CalibrateGreen");
 		this.runTest = new JButton("runTest");
+		idl = new ImageDataListener();
+		att = new Attitude();
 	}
 	
 	private void init() {
@@ -99,12 +115,15 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
 		System.out.println("Connecting video manager");
 		drone.setVerticalCamera();
 		drone.getCommandManager().setVideoCodec(VideoCodec.H264_360P);
+		drone.getNavDataManager().addAttitudeListener(att);
 
 		VideoManager vm = drone.getVideoManager();
+		VideoReader vr = new VideoReader(vm, drone.getCommandManager());
 	//	vm.addImageListener(cam);
-		vm.addImageListener(analysed);
+		vr.addListener(analysed);
+		vr.addListener(idl);
+		//values.setListeners(drone.getNavDataManager());
 		
-		values.setListeners(drone.getNavDataManager());
 	}
 
 	@Override
@@ -117,9 +136,14 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
 		 }if("CalibrateGreen".equals(e.getActionCommand())){		 
 				paGreen.Calibrate(analysed.bi2);
 			 }
-		 if("runTest".equals(e.getActionCommand())){		 
+		 if("runTest".equals(e.getActionCommand())){		
+			 NavFlyPattern nfp = new NavFlyPattern(idl, drone);
+			 //List<Point> LP = paGreen.getAnalyse(idl.getImageData().image);
+			 System.out.println("mainmodel is = PITSCH"+MainModel.getDroneAttitude().getPitch());
+			 //nfp.findCubes(idl);
+			 nfp.flyLane(1, 5);
 				// run a test with the drone
-			 List<Point> lp = paRed.getAnalyse(AnalysedVideoPanel.bi2);
+			 List<Point> lp = paRed.getAnalyse(idl.getImageData().image);
 			 for(int i =0;i<lp.size();i++){
 				 System.out.println("Cubes in x:"+lp.get(i).x+" y:"+lp.get(i).y);
 			 }
@@ -129,4 +153,5 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
 }
 
 		
+	
 	
