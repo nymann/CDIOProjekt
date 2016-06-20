@@ -11,6 +11,21 @@ public class PositionWithOneQRCode {
 	double x, y, x1, x2, y1, y2;
 	double d = 21.2, p, k1, k2, alpha, beta, fullLength, r1, r2;
 	
+	public void setCoordinats(int x1, int y1, int x2, int y2) {
+		this.x1 = x1;
+		this.x2 = x2;
+		this.y1 = y1;
+		this.y2 = y2;
+	}
+	public Point2D getCoordinat1() {
+		Point2D coordinat1 = new Point2D(x1, y1);
+		return coordinat1;
+	}
+	public Point2D getCoordinat2() {
+		Point2D coordinat2 = new Point2D(x2, y2);
+		return coordinat2;
+	}
+	
 	public double findLenght() {
 		k1 = d/p;
 		return k1; 
