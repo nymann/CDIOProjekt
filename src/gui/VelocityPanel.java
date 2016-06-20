@@ -17,10 +17,10 @@ import java.awt.*;
  */
 public class VelocityPanel extends JPanel implements VelocityListener {
 
-    private final double scale = 5000;
+    private final double scale = 1000;
     private final double counterScale = 20;
-    private final double accScalePhys = 100;
-	private final double accScaleRaw = 1000;
+ //   private final double accScalePhys = 100;
+	private final double accScaleRaw = 500;
 	
 
     public Point3D velocity, accelerationPhys, accelerationRaw;
@@ -51,14 +51,14 @@ public class VelocityPanel extends JPanel implements VelocityListener {
             g.drawLine(centerX, centerY, centerX + (int) (factor * counterVelocity.getX()), centerY - (int) (factor * counterVelocity.getY()));
         }
 
-		if (this.accelerationPhys != null) {
+/*		if (this.accelerationPhys != null) {
             g.setColor(Color.YELLOW);
             double factor = shortest / accScalePhys;
             g.drawLine(centerX, centerY, centerX + (int) (factor * accelerationPhys.getX()), centerY - (int) (factor * accelerationPhys.getY()));
-        }
+        }*/
 
 		if (this.accelerationRaw != null) {
-            g.setColor(Color.BLUE);
+            g.setColor(Color.YELLOW);
             double factor = shortest / accScaleRaw;
             g.drawLine(centerX, centerY, centerX + (int) (factor * accelerationPhys.getX()), centerY - (int) (factor * accelerationPhys.getY()));
         }
@@ -102,11 +102,11 @@ public class VelocityPanel extends JPanel implements VelocityListener {
 	}
 	
 	public void setAccelPhys(float[] v){
-		this.accelerationPhys = new Point3D(v[1], v[0],v[2]);
+		this.accelerationPhys = new Point3D(-v[1], -v[0],v[2]);
 	}
 
 	public void setAccelRaw(int[] v){
-		this.accelerationRaw = new Point3D(v[1], v[0],v[2]);
+		this.accelerationRaw = new Point3D(-v[1], -v[0],v[2]);
 	}
 	
 	
