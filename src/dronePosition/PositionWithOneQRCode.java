@@ -71,8 +71,8 @@ public class PositionWithOneQRCode {
 		
 		double f1, f2, yres1, yres2, xres1, xres2;
 		
-		r1 = LengthBetweenQRAndDrone();
-		r2 = LengthBetweenQRAndDrone();
+		r1 = LengthOneQR();
+		r2 = LengthOneQR();
 		
 		k1 = -0.5*(2*y1-2*y2)/(x1-x2);
 		k2 = -0.5*(r1*r1-r2*r2-x1*x1+x2*x2-y1*y1+y2*y2)/(x1-x2);
