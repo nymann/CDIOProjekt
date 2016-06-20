@@ -6,6 +6,7 @@
 package listeners;
 
 import de.yadrone.base.navdata.BatteryListener;
+import gui.FullGUI;
 
 /**
  *
@@ -14,11 +15,16 @@ import de.yadrone.base.navdata.BatteryListener;
 public class Battery implements BatteryListener{
 	public int level;
 	public int voltage;
+	private FullGUI gui;
 	
+	public Battery(FullGUI gui){
+		this.gui = gui;
+	}
 
 	@Override
 	public void batteryLevelChanged(int level) {
 		this.level = level;
+		gui.setBateryLevel(level);
 	}
 
 	@Override

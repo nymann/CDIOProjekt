@@ -9,42 +9,53 @@ import de.yadrone.base.IARDrone;
 import de.yadrone.base.exception.ARDroneException;
 import de.yadrone.base.exception.IExceptionListener;
 import de.yadrone.base.utils.ARDroneUtils;
+import gui.FullGUI;
 import gui.TextPanel;
 import java.io.IOException;
 import java.net.SocketTimeoutException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
  * @author Mikkel
  */
-public class ExceptionListener implements IExceptionListener{
-	
-	TextPanel output;
+public class ExceptionListener implements IExceptionListener {
+
+	FullGUI gui;
 	IARDrone drone;
-	
-	public ExceptionListener(TextPanel output, IARDrone drone){
-		this.output = output;
+
+	public ExceptionListener(FullGUI gui, IARDrone drone) {
+		this.gui = gui;
 		this.drone = drone;
 	}
 
 	@Override
 	public void exeptionOccurred(ARDroneException arde) {
-		if (output == null){
-			System.err.println(arde.getMessage());
-		} else {
-			output.addTextLine(arde.getMessage());
-		}
-		if (arde.getCause() instanceof SocketTimeoutException){
-			output.addTextLine("Timeout detected!!");
+		gui.errorLn(arde.getMessage());
+
+		if (arde.getCause() instanceof SocketTimeoutException) {
+			gui.errorLn("Timeout detected!!");
 			try {
-				drone.getConfigurationManager().connect(ARDroneUtils.CONTROL_PORT);
+				if (!drone.getConfigurationManager().isConnected()) {
+					drone.getConfigurationManager().connect(ARDroneUtils.CONTROL_PORT);
+				}
+
+				if (!drone.getNavDataManager().isConnected()) {
+					drone.getNavDataManager().connect(ARDroneUtils.NAV_PORT);
+				}
+
+				if (!drone.getCommandManager().isConnected()) {
+					drone.getCommandManager().connect(ARDroneUtils.PORT);
+				}
+
+				if (!drone.getVideoManager().isConnected()) {
+					drone.getVideoManager().connect(ARDroneUtils.VIDEO_PORT);
+				}
+
 			} catch (IOException ex) {
-				output.addTextLine("Couldn't recconect");
-				output.addTextLine(ex.getMessage());
+				gui.errorLn("Couldn't recconect");
+				gui.errorLn(ex.getMessage());
 			}
 		}
 	}
-	
+
 }

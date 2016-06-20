@@ -55,7 +55,7 @@ public class QRDownCamTestAirfields {
         exceptionOut.setPreferredSize(outputSize);
 
         TextPanel droneStatus = new TextPanel();
-        DroneStateListener dsl = new DroneStateListener(droneStatus);
+//        DroneStateListener dsl = new DroneStateListener(droneStatus);
         droneStatus.setPreferredSize(outputSize);
         droneStatus.setSize(outputSize);
 
@@ -121,8 +121,8 @@ public class QRDownCamTestAirfields {
             }
         } while (drone == null);
 
-        ExceptionListener exceptionListener = new ExceptionListener(exceptionOut, drone);
-        drone.addExceptionListener(exceptionListener);
+//        ExceptionListener exceptionListener = new ExceptionListener(exceptionOut, drone);
+//        drone.addExceptionListener(exceptionListener);
 
         output.addTextLine("Starting Drone.");
         drone.start();
@@ -156,7 +156,7 @@ public class QRDownCamTestAirfields {
         navDataManager.addVelocityListener(velocityPanel);
         navDataManager.addUltrasoundListener(ult);
         navDataManager.addAltitudeListener(alt);
-        navDataManager.addStateListener(dsl);
+//        navDataManager.addStateListener(dsl);
         navDataManager.addBatteryListener(bat);
         navDataManager.addAcceleroListener(acc);
 

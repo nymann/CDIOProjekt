@@ -9,7 +9,7 @@ import javafx.geometry.Point3D;
 public class Velocity implements VelocityListener {
 
 	public Point3D velocity;
-	public long updated;
+	private long updated;
 	
 	private	List<VelocityListener> listeners;
 
@@ -37,5 +37,9 @@ public class Velocity implements VelocityListener {
 	
 	public void removeListener(VelocityListener listener){
 		listeners.remove(listener);
+	}
+	
+	public long lastUpdate(){
+		return lastUpdate();
 	}
 }
