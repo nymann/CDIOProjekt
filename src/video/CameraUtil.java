@@ -18,7 +18,7 @@ public class CameraUtil {
 	final static int frontWidth = 1280;
 	final static double frontDepth = Math.sqrt(frontWidth*frontWidth + frontHeight*frontHeight) / 2 / Math.tan(Math.toRadians(frontCamAngle/2));
 	
-	final static float downCamAngle = 64;
+	final static float downCamAngle = 56;
 	final static int downHeight = 360;
 	final static int downWidth = 640;
 	final static double downDepth = Math.sqrt(downWidth*downWidth + downHeight*downHeight)/ 2 / Math.tan(Math.toRadians(downCamAngle/2));

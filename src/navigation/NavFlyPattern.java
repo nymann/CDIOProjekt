@@ -233,16 +233,22 @@ public class NavFlyPattern {
 		Point3D p3d;
 		CubeStore cs;
 		TranslatePoint tp = new TranslatePoint();
+		tp.setDroneInfo(a3d,new Point3D(0, 0, 100));
+		
+	//	tp.setDroneInfo(a3d,idl.getImageData().position);
 		boolean bool;
 		
 		for(Point p : lsR){
+			System.out.println("tjekker cube vs know cubes :"+p.x+" "+p.y);
+			
 			int x = (int) p.x;
 			int y = (int) p.y;
 			p3d = CameraUtil.pictureCoordToVectorDown(x, y);
-			tp.setDroneInfo(a3d, p3d);
+	
 			p2d = tp.intersectFloor(p3d);
 			Point3D found3d = new Point3D(p2d.getX(), p2d.getY(), 0);
 			Cube c = new Cube(found3d, Color.RED);
+			System.out.println("cube coordinate : "+p2d.getX()+" "+p2d.getY());
 			bool = MainModel.compareCube(c, 10.0);
 			if(bool==false){ MainModel.addCube(c); System.out.println("new cube added");}			
 		}
