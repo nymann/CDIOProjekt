@@ -36,7 +36,6 @@ public class NavigationControl {
     }
 
     private void runNav() {
-
         pos3d = MainModel.getDronePosition();
 
         double xPos = pos3d.getX();
