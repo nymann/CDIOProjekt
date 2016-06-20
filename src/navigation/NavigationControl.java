@@ -3,10 +3,16 @@ package navigation;
 import de.yadrone.base.IARDrone;
 import de.yadrone.base.command.CommandManager;
 import de.yadrone.base.video.VideoManager;
+import gui.ResultPanel;
 import javafx.geometry.Point3D;
+import javassist.expr.NewArray;
 import modeling.MainModel;
 
+import java.awt.Point;
 import java.awt.image.BufferedImage;
+import java.io.FileOutputStream;
+import java.io.ObjectOutputStream;
+import java.util.ArrayList;
 
 /**
  * @author Kim
@@ -23,6 +29,8 @@ public class NavigationControl {
     private IARDrone drone;
     private BufferedImage buffI;
     private Point3D pos3d;
+    private ArrayList<Point> redCubes, greenCubes;
+    private ResultPanel rp;
 
     NavigationControl(ImageDataListener idl) {
         vm = drone.getVideoManager();
@@ -30,7 +38,7 @@ public class NavigationControl {
         cm.setControlAck(true);
         findPos = new NavFindPosition(idl, drone);
         flyPat = new NavFlyPattern(idl, drone);
-
+        
         runNav();
         presentResults();
     }
@@ -54,8 +62,23 @@ public class NavigationControl {
 
     private void presentResults() {
         /*
-         * Ska gemme resultaterne vdr cubes i en fil
+         * Tager listerne med red og green cubes, som fundet i NavFlyPattern,
+         * og sender dem til resultPanel.
+         * Opretter så to filer med resultaterne
 		 */
-
+    	greenCubes = new ArrayList<>();
+	    redCubes = new ArrayList<>();
+	    
+    	rp = new ResultPanel(greenCubes, redCubes);
+    	
+    	FileOutputStream fosGreen = new FileOutputStream("greenCubes.txt");
+        ObjectOutputStream oosGreen = new ObjectOutputStream(fosGreen);   
+        oosGreen.writeObject(greenCubes);
+        oosGreen.close(); 
+        
+    	FileOutputStream fosRed = new FileOutputStream("RedCubes.txt");
+        ObjectOutputStream oosRed = new ObjectOutputStream(fosRed);   
+        oosRed.writeObject(redCubes);
+        oosRed.close(); 
     }
 }
