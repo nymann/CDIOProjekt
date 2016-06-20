@@ -37,28 +37,28 @@ public class ResultPanel extends JPanel {
         //
 
         for (Point cube : greenCubes) {
-            // shadow.. fancy fancy..
             g.setColor(Color.BLACK);
-            g.drawString("(" + (int) cube.getX() + ", " + (int) cube.getY() + ")", (int) cube.getX() + drawYOffset - 1, (int) cube.getY() + 1);
             g.fillRect((int) cube.getX(), (int) cube.getY(), cubeWidth + 1, cubeHeight + 1);
-
-
             g.setColor(Color.green);
             g.fillRect((int) cube.getX(), (int) cube.getY(), cubeWidth, cubeHeight);
-            //g.setColor(Color.black);
+
+            g.setColor(Color.BLACK);
             g.setFont(new Font("TimesRoman", Font.PLAIN, 10));
+            g.drawString("(" + (int) cube.getX() + ", " + (int) cube.getY() + ")", (int) cube.getX() + drawYOffset - 1, (int) cube.getY() + 1);
+            g.setColor(new Color(148, 235, 148));
             g.drawString("(" + (int) cube.getX() + ", " + (int) cube.getY() + ")", (int) cube.getX() + drawYOffset, (int) cube.getY());
         }
 
         for (Point cube : redCubes) {
-            // shadow.. fancy fancy..
             g.setColor(Color.BLACK);
-            g.drawString("(" + (int) cube.getX() + ", " + (int) cube.getY() + ")", (int) cube.getX() + drawYOffset - 1, (int) cube.getY() + 1);
             g.fillRect((int) cube.getX(), (int) cube.getY(), cubeWidth + 1, cubeHeight + 1);
-
             g.setColor(Color.red);
             g.fillRect((int) cube.getX(), (int) cube.getY(), cubeWidth, cubeHeight);
+
+            g.setColor(Color.BLACK);
             g.setFont(new Font("TimesRoman", Font.PLAIN, 10));
+            g.drawString("(" + (int) cube.getX() + ", " + (int) cube.getY() + ")", (int) cube.getX() + drawYOffset - 1, (int) cube.getY() + 1);
+            g.setColor(new Color(235, 191, 147));
             g.drawString("(" + (int) cube.getX() + ", " + (int) cube.getY() + ")", (int) cube.getX() + drawYOffset, (int) cube.getY());
         }
     }
