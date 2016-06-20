@@ -22,17 +22,19 @@ public class ResultPanel extends JPanel {
 
     @Override
     protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+
         g.setColor(Color.DARK_GRAY);
         g.fillRect(0, 0, this.getWidth(), this.getHeight()); // Draw the entire frame dark gray.
 
         for (Point cube: greenCubes) {
             g.setColor(Color.green);
-            g.drawRect((int) cube.getX(), (int) cube.getY(), cubeWidth, cubeHeight);
+            g.fillRect((int) cube.getX(), (int) cube.getY(), cubeWidth, cubeHeight);
         }
 
         for (Point cube: redCubes) {
             g.setColor(Color.red);
-            g.drawRect((int) cube.getX(), (int) cube.getY(), cubeWidth, cubeHeight);
+            g.fillRect((int) cube.getX(), (int) cube.getY(), cubeWidth, cubeHeight);
         }
     }
 }
