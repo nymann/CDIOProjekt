@@ -36,5 +36,12 @@ public class VideoPanel extends JPanel implements ImageListener {
             g.setColor(Color.BLACK);
             g.fillRect(0, 0, this.getWidth(), this.getHeight());
         }
+		int cx = this.getWidth()/2;
+		int cy = this.getHeight()/2;
+		
+		int size = 10;
+		g.setColor(Color.GREEN);
+		g.drawLine(cx, cy-size, cx, cy+size);
+		g.drawLine(cx-size, cy, cx+size, cy);
     }
 }
