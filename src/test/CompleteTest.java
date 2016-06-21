@@ -5,6 +5,7 @@
  */
 package test;
 
+import de.yadrone.base.command.FlyingMode;
 import dronePosition.QRPositioning;
 import gui.FullGUI;
 import modeling.MainModel;
@@ -22,7 +23,10 @@ public class CompleteTest {
 	private static ListenerPack listenerPack;
 	private static FullGUI gui;
 	private static DroneControl droneControl;
-
+	private static VideoReader videoReader;
+	private static QRPositioning qrpos;
+	
+	
 	public static void main(String[] args) {
 		MainModel.init();
 		gui = new FullGUI("Complete Test");
@@ -48,11 +52,28 @@ public class CompleteTest {
 	}
 	
 	private static void doStuff(){
+		videoReader = new VideoReader(droneControl);
+		videoReader.addListener(gui);
+
+		qrpos = new QRPositioning();
+		qrpos.setOutput(gui);
+
+		droneControl.getCommandManager().setFlyingMode(FlyingMode.HOVER_ON_TOP_OF_ROUNDEL);
+		//--------------------------------------------------------------------
+		// Drone take off
+		//--------------------------------------------------------------------
 		droneControl.takeOff();
+
+		videoReader.setCamMode(false);
+		findPosition();
+		droneControl.getCommandManager().setFlyingMode(FlyingMode.FREE_FLIGHT);
+
 		boolean done = false;
 		while(!done){
-			findPosition();
+			videoReader.setCamMode(true);
 			done = doFlightPattern();
+			videoReader.setCamMode(false);
+			findPosition();
 		}
 	}
 	
@@ -60,25 +81,21 @@ public class CompleteTest {
 		//--------------------------------------
 		// QR positioning stuuf
 		//--------------------------------------
-		QRPositioning qrpos = new QRPositioning();
-		VideoReader videoReader = new VideoReader(droneControl);
-		droneControl.getVideoManager().addImageListener(videoReader);
-		videoReader.setCamMode(false);
+		qrpos.reset();
+		
 		videoReader.addListener(qrpos);
-		qrpos.setOutput(gui);
 		listenerPack.addAttitudeListener(qrpos);
-		videoReader.addListener(gui);
 		
 		droneControl.turnDroneInterval();
-
 		gui.printLn("QR-codes found: " + qrpos.getQRCount());
+
 		videoReader.removeListener(qrpos);
 		listenerPack.removeAttitudeListener(qrpos);
 	}
 
 	private static boolean doFlightPattern(){
+		// return false if we've lost our position
 		// return true when we're done
-		// return flase if we've lost our position
 		return true;
 	}
 }

@@ -69,11 +69,11 @@ public class QRPositioning implements ImageListener, AttitudeListener {
 				qrListe.add(qri);
 			}
 			
-			if(qrListe.size() == 1) {
+			/*if(qrListe.size() == 1) {
 				output("1 QR code found.");
 				PositionWithOneQRCode positionWithOneQRCode = new PositionWithOneQRCode();
 				output("" + positionWithOneQRCode.findLenght());
-			}
+			}*/
 
 			if (qrListe.size() == 3) {
 				double angle1 = qrListe.get(0).angle - qrListe.get(1).angle;
