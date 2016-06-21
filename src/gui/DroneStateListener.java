@@ -17,17 +17,16 @@ public class DroneStateListener implements StateListener{
 
 	DroneState droneState;
 	ControlState controlState;
-	TextPanel output;
+	FullGUI gui;
 	
-	public DroneStateListener(TextPanel output){
-		this.output = output;
+	public DroneStateListener(FullGUI gui){
+		this.gui = gui;
 	}
 	
 	@Override
 	public void stateChanged(DroneState state) {
 		this.droneState = state;
-		if (output != null)
-			output.setText(state.toString());
+		gui.setDroneStatus(state.toString());
 	}
 
 	@Override

@@ -139,7 +139,7 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
 		 if("runTest".equals(e.getActionCommand())){		
 			 NavFlyPattern nfp = new NavFlyPattern(idl, drone);
 			 //List<Point> LP = paGreen.getAnalyse(idl.getImageData().image);
-			 System.out.println("mainmodel is = PITSCH"+MainModel.getDroneAttitude().getPitch());
+			 System.out.println("mainmodel is = PITSCH"+MainModel.getDroneAttitude());
 			 //nfp.findCubes(idl);
 			 nfp.flyLane(1, 5);
 				// run a test with the drone

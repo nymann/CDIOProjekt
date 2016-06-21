@@ -9,6 +9,7 @@ import de.yadrone.base.command.CommandManager;
 import de.yadrone.base.command.VideoChannel;
 import de.yadrone.base.video.ImageListener;
 import de.yadrone.base.video.VideoManager;
+import droneUtil.DroneControl;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +34,13 @@ public class VideoReader implements ImageListener {
 		this.cm = cm;
 		vm.addImageListener(this);
 		listeners = new ArrayList<>();
+	}
+
+	public VideoReader(DroneControl droneControl) {
+		this(
+			droneControl.getVideoManager(),
+			droneControl.getCommandManager()
+		);
 	}
 
 	@Override

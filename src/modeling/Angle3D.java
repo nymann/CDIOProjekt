@@ -51,4 +51,8 @@ public class Angle3D {
 		this.yaw = yaw;
 	}
 	
+	public String toString(){
+		return "Yaw: " + this.roll + " Pitch: " + this.pitch + " Roll: " + this.roll;
+	}
+	
 }

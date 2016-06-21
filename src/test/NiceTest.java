@@ -27,11 +27,14 @@ public class NiceTest {
 	static TextPanel output, exceptionOut;
 	static InfoPanel infoPanel;
 	static VelocityPanel velocityPanel;
+	static PositionPanel positionPanel;
 	static VideoPanel video = new VideoPanel();
 	static UltraSound ult = new UltraSound();
-	static Altitude alt = new Altitude();
-	static Battery bat = new Battery();
-	static Accelerometer acc = new Accelerometer();
+//	static Altitude alt = new Altitude();
+//	static Battery bat = new Battery();
+	static Velocity vel = new Velocity();
+	static Attitude att = new Attitude();
+//	static Accelerometer acc = new Accelerometer();
 	static NavDataManager navDataManager;
 	static VideoManager videoManager;
 	static CommandManager commandManager;
@@ -45,8 +48,6 @@ public class NiceTest {
 	static final double intervalAngle = Math.PI / 4.0;
 
 	public static void main(String[] args) {
-		IARDrone drone = null;
-		MainModel.init();
 
 		output = new TextPanel();
 		exceptionOut = new TextPanel();
@@ -55,7 +56,7 @@ public class NiceTest {
 		exceptionOut.setPreferredSize(outputSize);
 
 		TextPanel droneStatus = new TextPanel();
-		DroneStateListener dsl = new DroneStateListener(droneStatus);
+//		DroneStateListener dsl = new DroneStateListener(droneStatus);
 		droneStatus.setPreferredSize(outputSize);
 		droneStatus.setSize(outputSize);
 
@@ -66,22 +67,26 @@ public class NiceTest {
 		infoPanel.setSize(infoDimension);
 
 		velocityPanel = new VelocityPanel();
-		Dimension velocityDimension = new Dimension(200, 200);
+		Dimension velocityDimension = new Dimension(220, 200);
 		velocityPanel.setSize(velocityDimension);
 		velocityPanel.setPreferredSize(velocityDimension);
 
 		video.setSize(new Dimension(640, 360));
 		video.setPreferredSize(new Dimension(640, 360));
 
+		positionPanel = new PositionPanel();
+
 		JFrame mainWindow = new JFrame();
 		JFrame videoFrame = new JFrame();
 		JFrame velocityFrame = new JFrame();
 		JFrame infoFrame = new JFrame();
+		JFrame positionFrame = new JFrame();
 
 		mainWindow.getContentPane().setLayout(new FlowLayout());
 		videoFrame.getContentPane().setLayout(new FlowLayout());
 		velocityFrame.getContentPane().setLayout(new FlowLayout());
 		infoFrame.getContentPane().setLayout(new FlowLayout());
+		positionFrame.getContentPane().setLayout(new FlowLayout());
 
 		mainWindow.getContentPane().add(output);
 		mainWindow.getContentPane().add(exceptionOut);
@@ -89,27 +94,35 @@ public class NiceTest {
 		videoFrame.getContentPane().add(video);
 		velocityFrame.getContentPane().add(velocityPanel);
 		infoFrame.getContentPane().add(infoPanel);
+		positionFrame.getContentPane().add(positionPanel);
 
 		mainWindow.setVisible(true);
 		videoFrame.setVisible(true);
 		velocityFrame.setVisible(true);
 		infoFrame.setVisible(true);
-		
+		positionFrame.setVisible(true);
+
 		videoFrame.setLocation(920, 0);
 		velocityFrame.setLocation(920, 400);
-		infoFrame.setLocation(0, 650);
-		
+		infoFrame.setLocation(0, 640);
+		positionFrame.setLocation(1150, 400);
+
 		mainWindow.setTitle("Nicetest Main");
 		videoFrame.setTitle("Nicetest Video");
 		velocityFrame.setTitle("Nicetest Velocity");
 		infoFrame.setTitle("Nicetest Info");
+		positionFrame.setTitle("Nicetest Position");
 
 		mainWindow.pack();
 		videoFrame.pack();
 		velocityFrame.pack();
 		infoFrame.pack();
+		positionFrame.pack();
 
 		mainWindow.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+
+		MainModel.init();
+		IARDrone drone = null;
 
 		// connecting to drone
 		do {
@@ -121,8 +134,8 @@ public class NiceTest {
 			}
 		} while (drone == null);
 
-		ExceptionListener exceptionListener = new ExceptionListener(exceptionOut, drone);
-		drone.addExceptionListener(exceptionListener);
+//		ExceptionListener exceptionListener = new ExceptionListener(exceptionOut, drone);
+//		drone.addExceptionListener(exceptionListener);
 
 		output.addTextLine("Starting Drone.");
 		drone.start();
@@ -153,12 +166,17 @@ public class NiceTest {
 		navDataManager = drone.getNavDataManager();
 		videoManager = drone.getVideoManager();
 		commandManager = drone.getCommandManager();
-		navDataManager.addVelocityListener(velocityPanel);
+		
+		navDataManager.addVelocityListener(vel);
 		navDataManager.addUltrasoundListener(ult);
-		navDataManager.addAltitudeListener(alt);
-		navDataManager.addStateListener(dsl);
-		navDataManager.addBatteryListener(bat);
-		navDataManager.addAcceleroListener(acc);
+//		navDataManager.addAltitudeListener(alt);
+//		navDataManager.addStateListener(dsl);
+//		navDataManager.addBatteryListener(bat);
+//		navDataManager.addAcceleroListener(acc);
+
+		vel.addListener(velocityPanel);
+		vel.addListener(positionPanel);
+		att.addListener(positionPanel);
 
 		commandManager.emergency();
 
@@ -187,7 +205,6 @@ public class NiceTest {
 
 	private static void doStuff(IARDrone drone) {
 
-		Attitude att = new Attitude();
 		navDataManager.addAttitudeListener(att);
 		commandManager.setOutdoor(false, true);
 		commandManager.setNavDataDemo(false);
@@ -197,71 +214,74 @@ public class NiceTest {
 
 		commandManager.setUltrasoundFrequency(UltrasoundFrequency.F25Hz);
 
-		Runnable infoUpdate = () -> {
+/*		Runnable infoUpdate = () -> {
 			while (true) {
-				NiceTest.infoPanel.setInfo("Batery Level:", NiceTest.bat.level);
+//				NiceTest.infoPanel.setInfo("Batery Level:", NiceTest.bat.level);
 
-				/*				if (NiceTest.velocityPanel.velocity != null) {
+				/*	
+				if (NiceTest.velocityPanel.velocity != null) {
 					Point3D velocity = NiceTest.velocityPanel.velocity;
 					NiceTest.infoPanel.setInfo("Speed X", velocity.getX());
 					NiceTest.infoPanel.setInfo("Speed Y", velocity.getY());
 				} else {
 					NiceTest.infoPanel.setInfo("Speed X", "null");
 					NiceTest.infoPanel.setInfo("Speed Y", "null");
-				}*/
-				if (NiceTest.alt.extendedAltitude != null) {
-					NiceTest.infoPanel.setInfo("Altitude", NiceTest.alt.extendedAltitude.getRaw());
-					//NiceTest.infoPanel.setInfo("Z Velocity", NiceTest.alt.extendedAltitude.getZVelocity());
-				} else {
-					NiceTest.infoPanel.setInfo("Altitude", "null");
 				}
+				 */
+//				if (NiceTest.alt.extendedAltitude != null) {
+//					NiceTest.infoPanel.setInfo("Altitude", NiceTest.alt.extendedAltitude.getRaw());
+					//NiceTest.infoPanel.setInfo("Z Velocity", NiceTest.alt.extendedAltitude.getZVelocity());
+//				} else {
+//					NiceTest.infoPanel.setInfo("Altitude", "null");
+//				}
 
-				if (NiceTest.acc.acchysd != null) {
-					try {
-					NiceTest.infoPanel.setInfo("Acceleration Phys 0", NiceTest.acc.getCalibratedPhys()[0]);
-					NiceTest.infoPanel.setInfo("Acceleration Phys 1", NiceTest.acc.getCalibratedPhys()[1]);
-					NiceTest.infoPanel.setInfo("Acceleration Phys 2", NiceTest.acc.getCalibratedPhys()[2]);
-					
-					NiceTest.infoPanel.setInfo("Acceleration Raw 0", NiceTest.acc.getCalibratedRaw()[0]);
-					NiceTest.infoPanel.setInfo("Acceleration Raw 1", NiceTest.acc.getCalibratedRaw()[1]);
-					NiceTest.infoPanel.setInfo("Acceleration Raw 2", NiceTest.acc.getCalibratedRaw()[2]);
-					
-					NiceTest.velocityPanel.setAccelPhys(NiceTest.acc.getCalibratedPhys());
-					NiceTest.velocityPanel.setAccelRaw(NiceTest.acc.getCalibratedRaw());
-					} catch (Exception e){
-						
-					}
-				} else {
-					NiceTest.infoPanel.setInfo("Acceleration Phys 0", "null");
+//				if (NiceTest.acc.acchysd != null) {
+//					try {
+						/*NiceTest.infoPanel.setInfo("Acceleration Phys 0", NiceTest.acc.getCalibratedPhys()[0]);
+						NiceTest.infoPanel.setInfo("Acceleration Phys 1", NiceTest.acc.getCalibratedPhys()[1]);
+						NiceTest.infoPanel.setInfo("Acceleration Phys 2", NiceTest.acc.getCalibratedPhys()[2]);
+
+						NiceTest.infoPanel.setInfo("Acceleration Raw 0", NiceTest.acc.getCalibratedRaw()[0]);
+						NiceTest.infoPanel.setInfo("Acceleration Raw 1", NiceTest.acc.getCalibratedRaw()[1]);
+						NiceTest.infoPanel.setInfo("Acceleration Raw 2", NiceTest.acc.getCalibratedRaw()[2]);*/
+
+//						NiceTest.velocityPanel.setAccelRaw(NiceTest.acc.getCalibratedRaw());
+//					} catch (Exception e) {
+
+//					}
+//				} else {
+					/*NiceTest.infoPanel.setInfo("Acceleration Phys 0", "null");
 					NiceTest.infoPanel.setInfo("Acceleration Phys 1", "null");
 					NiceTest.infoPanel.setInfo("Acceleration Phys 2", "null");
-					
+
 					NiceTest.infoPanel.setInfo("Acceleration Raw 0", "null");
 					NiceTest.infoPanel.setInfo("Acceleration Raw 1", "null");
-					NiceTest.infoPanel.setInfo("Acceleration Raw 2", "null");
-				}
+					NiceTest.infoPanel.setInfo("Acceleration Raw 2", "null");*/
+//				}
 
-			}
+/*			}
 		};
-		new Thread(infoUpdate).start();
+		new Thread(infoUpdate).start();*/
+		
+		commandManager.flatTrim();
 
 		output.addTextLine("Waiting for acceleration data");
-		while (acc.acchysd == null) {
+/*		while (acc.acchysd == null) {
 			try {
 				Thread.sleep(500);
 			} catch (InterruptedException ex) {
 			}
-		}
+		}*/
 
 		output.addTextLine("Calibrating accelerometer");
-		acc.calibration(true);
+//		acc.calibration(true);
 		try {
 			Thread.sleep(1000);
 		} catch (InterruptedException ex) {
 		}
 		output.addTextLine("Done Calibrating accelerometer");
-		acc.calibration(false);
-
+//		acc.calibration(false);
+		
 		//--------------------------------------------------------------------
 		// Drone taking off
 		//--------------------------------------------------------------------
@@ -269,13 +289,13 @@ public class NiceTest {
 		commandManager.takeOff().doFor(5000);
 
 		output.addTextLine("Waiting for altitude update");
-		while (alt.extendedAltitude == null) {
+/*		while (alt.extendedAltitude == null) {
 			try {
 				Thread.sleep(500);
 			} catch (InterruptedException ex) {
 			}
 		}
-		output.addTextLine("Altitude update recieved");
+		output.addTextLine("Altitude update recieved");*/
 
 		//---------------------------------
 		// Height test
@@ -314,7 +334,7 @@ public class NiceTest {
 		videoManager.addImageListener(videoReader);
 		videoReader.setCamMode(false);
 		videoReader.addListener(qrpos);
-		qrpos.setOutput(output);
+//		qrpos.setOutput(output);
 		att.addListener(qrpos);
 		videoReader.addListener(video);
 
@@ -356,14 +376,17 @@ public class NiceTest {
 	}
 
 	public static boolean stabilize(int height, int speedSpin, boolean maintain) {
-		if (System.currentTimeMillis() - alt.getLastUpdate() < 500) {
+/*		if (System.currentTimeMillis() - alt.getLastUpdate() < 500) {
 			int diffHeight = alt.extendedAltitude.getRaw() - hoverHeight;
 			if (maintain && Math.abs(diffHeight) > 400) {
 				diffHeight = 0;
 			}
-
-			if (Math.abs(diffHeight) < 20 && Math.abs(alt.extendedAltitude.getZVelocity()) < 50) {
-				NiceTest.velocityPanel.setStabilityV(true);
+			
+			float velocityH = alt.extendedAltitude.getZVelocity();
+			velocityPanel.setVelocityV(velocityH);
+			if (Math.abs(diffHeight) < 20 && Math.abs(velocityH) < 50) {
+				velocityPanel.setStabilityV(true);
+				velocityPanel.setCounterV(0);
 				return stabilizeHor(0, speedSpin);
 			}
 
@@ -373,32 +396,32 @@ public class NiceTest {
 			if (diffHeight < 0) {
 				speed = -speed;
 			}
+			velocityPanel.setCounterV(speed);
 			stabilizeHor(speed, speedSpin);
 		} else {
 			stabilizeHor(0, speedSpin);
 		}
-		NiceTest.velocityPanel.setStabilityV(false);
+		NiceTest.velocityPanel.setStabilityV(false);*/
 		return false;
 	}
 
 	public static boolean stabilizeHor(int speedZ, int speedSpin) {
-		if (System.currentTimeMillis() - NiceTest.velocityPanel.updated < 500) {
-			double speedX = NiceTest.velocityPanel.velocity.getX() / 30.0;
-			double speedY = NiceTest.velocityPanel.velocity.getY() / 30.0;
-			speedX += NiceTest.velocityPanel.accelerationRaw.getX() / 10.0;
-			speedY += NiceTest.velocityPanel.accelerationRaw.getY() / 10.0;
-			
+		/*if (System.currentTimeMillis() - NiceTest.velocityPanel.updated < 500) {
+			double speedX = NiceTest.velocityPanel.velocity.getX() / 40.0;
+			double speedY = NiceTest.velocityPanel.velocity.getY() / 40.0;
+			speedX -= NiceTest.velocityPanel.accelerationRaw.getX() / 50.0;
+			speedY += NiceTest.velocityPanel.accelerationRaw.getY() / 50.0;
 
 			int dirX = (int) Math.signum(speedX);
 			int dirY = (int) Math.signum(speedY);
 
-			speedX = Math.min(10, Math.abs(speedX));
-			speedY = Math.min(10, Math.abs(speedY));
+			speedX = Math.min(5, Math.abs(speedX));
+			speedY = Math.min(5, Math.abs(speedY));
 
 			int reverseX = -dirX * (int) speedX;
 			int reverseY = -dirY * (int) speedY;
 			velocityPanel.setCounterVelocity(new Point2D(reverseX, reverseY));
-			commandManager.move(reverseY, -reverseX, speedZ, speedSpin).doFor(100);
+			commandManager.move(reverseY, -reverseX, speedZ, speedSpin).doFor(50);
 			boolean stable = speedX < 2.0 && speedY < 2.0;
 			NiceTest.velocityPanel.setStabilityH(stable);
 			return stable;
@@ -406,7 +429,8 @@ public class NiceTest {
 			commandManager.move(0, 0, speedZ, speedSpin).doFor(50);
 			NiceTest.velocityPanel.setStabilityH(false);
 			return false;
-		}
+		}*/
+		return false;
 	}
 }
 

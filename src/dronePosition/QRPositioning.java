@@ -4,7 +4,7 @@ import QRWallMarks.GetQRCode;
 import QRWallMarks.QRInfo;
 import de.yadrone.base.navdata.AttitudeListener;
 import de.yadrone.base.video.ImageListener;
-import gui.TextPanel;
+import gui.FullGUI;
 import javafx.geometry.Point3D;
 import modeling.MainModel;
 import modeling.QRPoint;
@@ -20,16 +20,16 @@ import javafx.geometry.Point2D;
  */
 public class QRPositioning implements ImageListener, AttitudeListener {
 
-	float yaw;
-	ArrayList<QRInfo> qrListe;
-	TextPanel output;
+	private float yaw;
+	private ArrayList<QRInfo> qrListe;
+	private FullGUI gui;
 
 	public QRPositioning() {
 		this.qrListe = new ArrayList<>();
 	}
 
-	public void setOutput(TextPanel panel) {
-		this.output = panel;
+	public void setOutput(FullGUI gui) {
+		this.gui = gui;
 	}
 
 	public int getQRCount() {
@@ -68,11 +68,12 @@ public class QRPositioning implements ImageListener, AttitudeListener {
 				qri.angle = angle;
 				qrListe.add(qri);
 			}
-			if(qrListe.size() == 1) {
-				System.out.println("1 QR code found.");
+			
+			/*if(qrListe.size() == 1) {
+				output("1 QR code found.");
 				PositionWithOneQRCode positionWithOneQRCode = new PositionWithOneQRCode();
-				System.out.println(positionWithOneQRCode.findLenght());
-			}
+				output("" + positionWithOneQRCode.findLenght());
+			}*/
 
 			if (qrListe.size() == 3) {
 				double angle1 = qrListe.get(0).angle - qrListe.get(1).angle;
@@ -159,7 +160,7 @@ public class QRPositioning implements ImageListener, AttitudeListener {
 				);
 
 				Point2D position = nav.findPosition();
-				output.addTextLine("Found position at " + position);
+				output("Found position at " + position);
 
 				// Her er dronens position i koordinater.
 				MainModel.setDronePosition(position);
@@ -203,8 +204,8 @@ public class QRPositioning implements ImageListener, AttitudeListener {
 	}
 
 	private void output(String text) {
-		if (output != null) {
-			output.addTextLine(text);
+		if (gui != null) {
+			gui.printLn(text);
 		} else {
 			System.out.println(text);
 		}

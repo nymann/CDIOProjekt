@@ -1,6 +1,7 @@
 package navigation;
 
 import gui.MainWindow;
+import gui.ResultPanel;
 
 import java.awt.Color;
 import java.awt.Point;
@@ -50,6 +51,8 @@ public class NavFlyPattern {
 	private OpticalFlow opFlow;
 	private Point3D p3d, dronePos3D;
 	private List<Point> lsR, lsG;
+	public static ArrayList<Point> greenCubes, redCubes;
+	private ResultPanel rp;
 
 	private TranslatePoint tp;
 	private int speed;
@@ -57,9 +60,13 @@ public class NavFlyPattern {
 	public NavFlyPattern(ImageDataListener idl, IARDrone drone){
 		this.idl = idl;
 		this.drone = drone;
-		//Ændr vr til idl senere.
+		
 		fp = new NavFindPosition(idl, drone);
 		of = new AverageFlowVector();
+		
+		greenCubes = new ArrayList<>();
+	    redCubes = new ArrayList<>();
+	    
 		MainModel.setDronePosition(new Point3D(10, 10,100));
 		MainModel.init();
 		//MainModel.getDroneAttitude().setYaw(10);
@@ -218,33 +225,43 @@ public class NavFlyPattern {
 	 
 
 	public void findCubes(ImageDataListener idl){
-		BufferedImage img = idl.getImageData().image;
-		lsR = MainWindow.paRed.getAnalyse(img);
-		lsG = MainWindow.paGreen.getAnalyse(img);
-
 		/*
 		 * Called in order to find the number of cubes in an image,
 		 * and translating pixel points of the cubes in the image,
 		 * to actual positions in the model of the room
 		 */
-
+		BufferedImage img = idl.getImageData().image;
+		lsR = MainWindow.paRed.getAnalyse(img);
+		lsG = MainWindow.paGreen.getAnalyse(img);
+	    
 		Angle3D a3d = idl.getImageData().attitude;
 		Point2D p2d;
 		Point3D p3d;
+		Point p1d;
 		CubeStore cs;
 		TranslatePoint tp = new TranslatePoint();
+	//	tp.setDroneInfo(a3d,new Point3D(0, 0, 100));
+		
+		tp.setDroneInfo(a3d,idl.getImageData().position);
 		boolean bool;
 		
 		for(Point p : lsR){
+			System.out.println("tjekker cube vs know cubes :"+p.x+" "+p.y);
+			
 			int x = (int) p.x;
 			int y = (int) p.y;
 			p3d = CameraUtil.pictureCoordToVectorDown(x, y);
-			tp.setDroneInfo(a3d, p3d);
+	
 			p2d = tp.intersectFloor(p3d);
 			Point3D found3d = new Point3D(p2d.getX(), p2d.getY(), 0);
 			Cube c = new Cube(found3d, Color.RED);
+			System.out.println("cube coordinate : "+p2d.getX()+" "+p2d.getY());
 			bool = MainModel.compareCube(c, 10.0);
-			if(bool==false){ MainModel.addCube(c); System.out.println("new cube added");}			
+			if(bool==false){ 
+				MainModel.addCube(c); 
+				System.out.println("new cube added");
+				redCubes.add(new Point((int)c.getPosition().getX(), (int)c.getPosition().getY()));
+			}			
 		}
 
 		for(Point p : lsG){
@@ -256,11 +273,22 @@ public class NavFlyPattern {
 			Point3D found3d = new Point3D(p2d.getX(), p2d.getY(), 0);
 			Cube c = new Cube(found3d, Color.GREEN);
 			bool = MainModel.compareCube(c, 10.0);
-			if(bool==false) MainModel.addCube(c);			
+			
+			if(bool==false) {
+				MainModel.addCube(c);
+				greenCubes.add(new Point((int)c.getPosition().getX(), (int)c.getPosition().getY()));
+			}
 		}
 
+		
 	}
 
-
+	public ArrayList<Point> getRedCubes(){
+		return redCubes;
+	}
+	
+	public ArrayList<Point> getGreenCubes(){
+		return greenCubes;
+	}
 
 }
