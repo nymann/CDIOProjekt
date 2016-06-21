@@ -26,10 +26,11 @@ import java.util.List;
 public class PictureView {
 
 	static Mat pic ;
-
+	// henter lib filer
 	public static void init() {
 		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
 	}
+	// ændre størrrelsen på billede
 	public static BufferedImage setSize(BufferedImage img,double x, double y) {
 		Mat imgMat;
 		imgMat = bufferedImageToMat(img);
@@ -37,6 +38,7 @@ public class PictureView {
 		img= mat2Img(imgMat);
 		return img;
 	}
+	// sætter en cirkel
 	public static BufferedImage setCross(BufferedImage img) {
 		Mat imgMat;
 		imgMat = bufferedImageToMat(img);
@@ -44,7 +46,7 @@ public class PictureView {
 		img= mat2Img(imgMat);
 		return img;
 	}
-
+	//konventere mat til buffered image
 
 	public static BufferedImage mat2Img(Mat in) {
 		BufferedImage out;
@@ -65,8 +67,8 @@ public class PictureView {
 		out.getRaster().setDataElements(0, 0, width, height, data);
 		return out;
 	}
-	//set it to mat
 
+	// konventere buffered image til mat
 	public static Mat bufferedImageToMat(BufferedImage in) {
 		Mat out;
 		byte[] data;

@@ -5,6 +5,9 @@
  */
 package test;
 
+import navigation.ImageDataListener;
+import navigation.NavFlyPattern;
+import de.yadrone.base.IARDrone;
 import de.yadrone.base.command.FlyingMode;
 import dronePosition.QRPositioning;
 import gui.FullGUI;
@@ -12,6 +15,8 @@ import modeling.MainModel;
 import droneUtil.DroneControl;
 import listeners.ListenerPack;
 import static test.NiceTest.exceptionOut;
+import video.PictureAnalyser;
+import video.PictureView;
 import video.VideoReader;
 
 /**
@@ -25,16 +30,21 @@ public class CompleteTest {
 	private static DroneControl droneControl;
 	private static VideoReader videoReader;
 	private static QRPositioning qrpos;
-	
+	public static PictureAnalyser redAnalyse = new PictureAnalyser();
+	public static PictureAnalyser greenAnalyse = new PictureAnalyser();
+	static IARDrone drone ;
+	public static boolean start =  false;
+	public static ImageDataListener idl = new ImageDataListener();
 	
 	public static void main(String[] args) {
 		MainModel.init();
+		PictureView.init();
 		gui = new FullGUI("Complete Test");
+		start =  false;
 		listenerPack = new ListenerPack(gui);
 		droneControl = new DroneControl(gui,listenerPack);
 		listenerPack.addListeners(droneControl.getNavDataManager());
 		droneControl.start();
-		
 		try {
 			doStuff();
 		} catch (Exception e) {
@@ -54,6 +64,9 @@ public class CompleteTest {
 	private static void doStuff(){
 		videoReader = new VideoReader(droneControl);
 		videoReader.addListener(gui);
+		NavFlyPattern nfp = new NavFlyPattern(idl, drone);
+		while(!start){};
+		
 
 		qrpos = new QRPositioning();
 		qrpos.setOutput(gui);
@@ -71,6 +84,7 @@ public class CompleteTest {
 		boolean done = false;
 		while(!done){
 			videoReader.setCamMode(true);
+			nfp.flyLane(1, 5);
 			done = doFlightPattern();
 			videoReader.setCamMode(false);
 			findPosition();

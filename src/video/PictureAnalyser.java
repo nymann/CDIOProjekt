@@ -19,15 +19,20 @@ import java.util.List;
  * @author Joachim Knudsen
  */
 public class PictureAnalyser {
+
+	//tænk som man kunne hive billede ud så man kunne se hvad der er blevet analyseret
 	static Mat pic;
+	//sætte farverne til analysen
 	public List<Scalar> color;
 
+	//sætter oprettelse af Picture analyse
 	public PictureAnalyser() {
 		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
 		this.color = new ArrayList<>();
 		this.color.add(new Scalar(0,0,0));
 		this.color.add(new Scalar(179,255,255));
 	}
+	// funktion der ikke bruges men kan sætte farven på analysen
 
 	public void setColor(List<Point> coloranalyse) {
 		this.color.add(new Scalar(coloranalyse.get(0).x, coloranalyse.get(1).x,
@@ -36,6 +41,7 @@ public class PictureAnalyser {
 				coloranalyse.get(2).y));
 	}
 
+	// returnere klodser i et billede
 
 	public List<Point> getAnalyse(BufferedImage img) {
 		Mat frameMat = new Mat();
@@ -50,7 +56,8 @@ public class PictureAnalyser {
 		return getblocks(contours);
 	}
 
-	public  List<Point> getblocks(List<MatOfPoint> contours) {
+	// returnere klodser ud fra contours og bestemmer deres midpunkt
+	private  List<Point> getblocks(List<MatOfPoint> contours) {
 		List<Moments> mu = new ArrayList<Moments>(contours.size());
 		List<Point> cubepoint = new ArrayList<Point>();
 		for (int i = 0; i < contours.size(); i++) {
@@ -62,6 +69,7 @@ public class PictureAnalyser {
 		}
 		return cubepoint;
 	}
+	// finder contours i billedet ud fra en maske 
 
 	public List<MatOfPoint> getConturs(Scalar low, Scalar high, Mat img) {
 
@@ -94,24 +102,14 @@ public class PictureAnalyser {
 		MatOfPoint2f approxCurve = new MatOfPoint2f();
 
 		for (int i = 0; i < contours.size(); i++) {
-
-			// Convert contours(i) from MatOfPoint to MatOfPoint2f
 			MatOfPoint2f contour2f = new MatOfPoint2f(contours.get(i).toArray());
-			// Processing on mMOP2f1 which is in type MatOfPoint2f
-
 			double approxDistance = Imgproc.arcLength(contour2f, true) * 0.02;
 			Imgproc.approxPolyDP(contour2f, approxCurve, approxDistance, true);
-
-			// Convert back to MatOfPoint
 			MatOfPoint points = new MatOfPoint(approxCurve.toArray());
-
-			// Get bounding rect of contour
 			Rect rect = Imgproc.boundingRect(points);
 			int area = (rect.width) * (rect.height);
-			//System.out.println("area = " + area);
+			//tester og arealet er for småt
 			if (area > 500) {
-				// draw enclosing rectangle (all same color, but you could use
-				// variable i to make them unique)
 			} else {
 				contours.remove(i);
 				i--;
@@ -120,7 +118,7 @@ public class PictureAnalyser {
 
 		return contours;
 	}
-
+	// sætter et blur filter på et billede
 	public Mat blur(Mat input, int numberOfTimes) {
 		Mat sourceImage = new Mat();
 		Mat destImage = input.clone();
@@ -130,7 +128,7 @@ public class PictureAnalyser {
 		}
 		return destImage;
 	}
-
+	// sætter farven på analyseren
 	 public void Calibrate(BufferedImage img){
 		Mat frameMat = new Mat();
 		frameMat = PictureView.bufferedImageToMat(img);
@@ -167,8 +165,7 @@ public class PictureAnalyser {
 		this.color.get(1).val[0]=hue + 5;
 		this.color.get(1).val[1]=saturation + 40;
 		this.color.get(1).val[2]=value + 40;
-		System.out.println("test the system:" + hue + " " + saturation + " "
-				+ value);
+
 		
 	}
 

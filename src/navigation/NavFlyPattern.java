@@ -25,6 +25,7 @@ import modeling.MainModel;
 import modeling.NavSpot;
 import modeling.QRPoint;
 import modeling.TranslatePoint;
+import test.CompleteTest;
 import video.CameraUtil;
 import video.OpticalFlow;
 import video.PictureAnalyser;
@@ -231,8 +232,8 @@ public class NavFlyPattern {
 		 * to actual positions in the model of the room
 		 */
 		BufferedImage img = idl.getImageData().image;
-		lsR = MainWindow.paRed.getAnalyse(img);
-		lsG = MainWindow.paGreen.getAnalyse(img);
+		lsR = CompleteTest.redAnalyse.getAnalyse(img);
+		lsG = CompleteTest.greenAnalyse.getAnalyse(img);
 	    
 		Angle3D a3d = idl.getImageData().attitude;
 		Point2D p2d;

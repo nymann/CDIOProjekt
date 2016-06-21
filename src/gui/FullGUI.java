@@ -8,18 +8,30 @@ package gui;
 import de.yadrone.base.navdata.AttitudeListener;
 import de.yadrone.base.navdata.VelocityListener;
 import de.yadrone.base.video.ImageListener;
+
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Point;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
+import java.util.List;
+
 import javafx.geometry.Point2D;
+
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
+
+import test.CompleteTest;
+import modeling.MainModel;
+import navigation.NavFlyPattern;
 
 /**
  *
  * @author Mikkel
  */
-public class FullGUI implements VelocityListener, AttitudeListener, ImageListener {
+public class FullGUI implements VelocityListener, AttitudeListener, ImageListener, ActionListener {
 
 	private final TextPanel output = new TextPanel();
 	private final TextPanel exceptionOut = new TextPanel();
@@ -28,7 +40,10 @@ public class FullGUI implements VelocityListener, AttitudeListener, ImageListene
 	private final VelocityPanel velocityPanel = new VelocityPanel();
 	private final VideoPanel video = new VideoPanel();
 	private final PositionPanel positionPanel = new PositionPanel();
-
+	private final JButton calred = new JButton("CalibrateRed");
+	private final JButton calgreen = new  JButton("CalibrateGreen");
+	private final JButton start = new JButton("runTest");
+	
 	public FullGUI(String name) {
 
 		Dimension outputSize = new Dimension(300, 600);
@@ -55,33 +70,40 @@ public class FullGUI implements VelocityListener, AttitudeListener, ImageListene
 		JFrame velocityFrame = new JFrame();
 		JFrame infoFrame = new JFrame();
 		JFrame positionFrame = new JFrame();
-
+		JFrame buttenFrame = new JFrame();
+		
 		mainWindow.getContentPane().setLayout(new FlowLayout());
 		videoFrame.getContentPane().setLayout(new FlowLayout());
 		velocityFrame.getContentPane().setLayout(new FlowLayout());
 		infoFrame.getContentPane().setLayout(new FlowLayout());
 		positionFrame.getContentPane().setLayout(new FlowLayout());
+		buttenFrame.getContentPane().setLayout(new FlowLayout());
 
 		mainWindow.getContentPane().add(output);
 		mainWindow.getContentPane().add(exceptionOut);
 		mainWindow.getContentPane().add(droneStatus);
-
+	
 		videoFrame.getContentPane().add(video);
 		velocityFrame.getContentPane().add(velocityPanel);
 		infoFrame.getContentPane().add(infoPanel);
 		positionFrame.getContentPane().add(positionPanel);
+		
+		buttenFrame.getContentPane().add(calgreen);
+		buttenFrame.getContentPane().add(calred);
+		buttenFrame.getContentPane().add(start);
+
 
 		mainWindow.setVisible(true);
 		videoFrame.setVisible(true);
 		velocityFrame.setVisible(true);
 		infoFrame.setVisible(true);
 		positionFrame.setVisible(true);
-
+		buttenFrame.setVisible(true);
 		videoFrame.setLocation(920, 0);
 		velocityFrame.setLocation(920, 400);
 		infoFrame.setLocation(0, 640);
 		positionFrame.setLocation(1150, 400);
-
+		
 		mainWindow.setTitle(name + " Main");
 		videoFrame.setTitle(name + " Video");
 		velocityFrame.setTitle(name + " Velocity");
@@ -93,6 +115,10 @@ public class FullGUI implements VelocityListener, AttitudeListener, ImageListene
 		velocityFrame.pack();
 		infoFrame.pack();
 		positionFrame.pack();
+		buttenFrame.pack();
+        calred.addActionListener(this);
+        calgreen.addActionListener(this);
+        start.addActionListener(this);
 
 		mainWindow.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 	}
@@ -169,5 +195,25 @@ public class FullGUI implements VelocityListener, AttitudeListener, ImageListene
 	@Override
 	public void imageUpdated(BufferedImage image) {
 		video.imageUpdated(image);
-	}
+	}   
+	
+	public void actionPerformed(ActionEvent e) {
+        // TODO Auto-generated method stub
+        if ("CalibrateRed".equals(e.getActionCommand())) {
+           CompleteTest.redAnalyse.Calibrate(video.image);
+        }
+        if ("CalibrateGreen".equals(e.getActionCommand())) {
+        	 CompleteTest.greenAnalyse.Calibrate(video.image);
+        }
+        if ("runTest".equals(e.getActionCommand())) {
+        	CompleteTest.start = true;
+            //List<Point> LP = paGreen.getAnalyse(idl.getImageData().image);
+
+            //nfp.findCubes(idl);
+            
+            // run a test with the drone
+   
+            
+        }
+    }
 }
