@@ -30,11 +30,11 @@ public class NiceTest {
 	static PositionPanel positionPanel;
 	static VideoPanel video = new VideoPanel();
 	static UltraSound ult = new UltraSound();
-	static Altitude alt = new Altitude();
-	static Battery bat = new Battery();
+//	static Altitude alt = new Altitude();
+//	static Battery bat = new Battery();
 	static Velocity vel = new Velocity();
 	static Attitude att = new Attitude();
-	static Accelerometer acc = new Accelerometer();
+//	static Accelerometer acc = new Accelerometer();
 	static NavDataManager navDataManager;
 	static VideoManager videoManager;
 	static CommandManager commandManager;
@@ -169,10 +169,10 @@ public class NiceTest {
 		
 		navDataManager.addVelocityListener(vel);
 		navDataManager.addUltrasoundListener(ult);
-		navDataManager.addAltitudeListener(alt);
+//		navDataManager.addAltitudeListener(alt);
 //		navDataManager.addStateListener(dsl);
-		navDataManager.addBatteryListener(bat);
-		navDataManager.addAcceleroListener(acc);
+//		navDataManager.addBatteryListener(bat);
+//		navDataManager.addAcceleroListener(acc);
 
 		vel.addListener(velocityPanel);
 		vel.addListener(positionPanel);
@@ -214,9 +214,9 @@ public class NiceTest {
 
 		commandManager.setUltrasoundFrequency(UltrasoundFrequency.F25Hz);
 
-		Runnable infoUpdate = () -> {
+/*		Runnable infoUpdate = () -> {
 			while (true) {
-				NiceTest.infoPanel.setInfo("Batery Level:", NiceTest.bat.level);
+//				NiceTest.infoPanel.setInfo("Batery Level:", NiceTest.bat.level);
 
 				/*	
 				if (NiceTest.velocityPanel.velocity != null) {
@@ -228,15 +228,15 @@ public class NiceTest {
 					NiceTest.infoPanel.setInfo("Speed Y", "null");
 				}
 				 */
-				if (NiceTest.alt.extendedAltitude != null) {
-					NiceTest.infoPanel.setInfo("Altitude", NiceTest.alt.extendedAltitude.getRaw());
+//				if (NiceTest.alt.extendedAltitude != null) {
+//					NiceTest.infoPanel.setInfo("Altitude", NiceTest.alt.extendedAltitude.getRaw());
 					//NiceTest.infoPanel.setInfo("Z Velocity", NiceTest.alt.extendedAltitude.getZVelocity());
-				} else {
-					NiceTest.infoPanel.setInfo("Altitude", "null");
-				}
+//				} else {
+//					NiceTest.infoPanel.setInfo("Altitude", "null");
+//				}
 
-				if (NiceTest.acc.acchysd != null) {
-					try {
+//				if (NiceTest.acc.acchysd != null) {
+//					try {
 						/*NiceTest.infoPanel.setInfo("Acceleration Phys 0", NiceTest.acc.getCalibratedPhys()[0]);
 						NiceTest.infoPanel.setInfo("Acceleration Phys 1", NiceTest.acc.getCalibratedPhys()[1]);
 						NiceTest.infoPanel.setInfo("Acceleration Phys 2", NiceTest.acc.getCalibratedPhys()[2]);
@@ -245,11 +245,11 @@ public class NiceTest {
 						NiceTest.infoPanel.setInfo("Acceleration Raw 1", NiceTest.acc.getCalibratedRaw()[1]);
 						NiceTest.infoPanel.setInfo("Acceleration Raw 2", NiceTest.acc.getCalibratedRaw()[2]);*/
 
-						NiceTest.velocityPanel.setAccelRaw(NiceTest.acc.getCalibratedRaw());
-					} catch (Exception e) {
+//						NiceTest.velocityPanel.setAccelRaw(NiceTest.acc.getCalibratedRaw());
+//					} catch (Exception e) {
 
-					}
-				} else {
+//					}
+//				} else {
 					/*NiceTest.infoPanel.setInfo("Acceleration Phys 0", "null");
 					NiceTest.infoPanel.setInfo("Acceleration Phys 1", "null");
 					NiceTest.infoPanel.setInfo("Acceleration Phys 2", "null");
@@ -257,30 +257,30 @@ public class NiceTest {
 					NiceTest.infoPanel.setInfo("Acceleration Raw 0", "null");
 					NiceTest.infoPanel.setInfo("Acceleration Raw 1", "null");
 					NiceTest.infoPanel.setInfo("Acceleration Raw 2", "null");*/
-				}
+//				}
 
-			}
+/*			}
 		};
-		new Thread(infoUpdate).start();
+		new Thread(infoUpdate).start();*/
 		
 		commandManager.flatTrim();
 
 		output.addTextLine("Waiting for acceleration data");
-		while (acc.acchysd == null) {
+/*		while (acc.acchysd == null) {
 			try {
 				Thread.sleep(500);
 			} catch (InterruptedException ex) {
 			}
-		}
+		}*/
 
 		output.addTextLine("Calibrating accelerometer");
-		acc.calibration(true);
+//		acc.calibration(true);
 		try {
 			Thread.sleep(1000);
 		} catch (InterruptedException ex) {
 		}
 		output.addTextLine("Done Calibrating accelerometer");
-		acc.calibration(false);
+//		acc.calibration(false);
 		
 		//--------------------------------------------------------------------
 		// Drone taking off
@@ -289,13 +289,13 @@ public class NiceTest {
 		commandManager.takeOff().doFor(5000);
 
 		output.addTextLine("Waiting for altitude update");
-		while (alt.extendedAltitude == null) {
+/*		while (alt.extendedAltitude == null) {
 			try {
 				Thread.sleep(500);
 			} catch (InterruptedException ex) {
 			}
 		}
-		output.addTextLine("Altitude update recieved");
+		output.addTextLine("Altitude update recieved");*/
 
 		//---------------------------------
 		// Height test
@@ -334,7 +334,7 @@ public class NiceTest {
 		videoManager.addImageListener(videoReader);
 		videoReader.setCamMode(false);
 		videoReader.addListener(qrpos);
-		qrpos.setOutput(output);
+//		qrpos.setOutput(output);
 		att.addListener(qrpos);
 		videoReader.addListener(video);
 
@@ -376,7 +376,7 @@ public class NiceTest {
 	}
 
 	public static boolean stabilize(int height, int speedSpin, boolean maintain) {
-		if (System.currentTimeMillis() - alt.getLastUpdate() < 500) {
+/*		if (System.currentTimeMillis() - alt.getLastUpdate() < 500) {
 			int diffHeight = alt.extendedAltitude.getRaw() - hoverHeight;
 			if (maintain && Math.abs(diffHeight) > 400) {
 				diffHeight = 0;
@@ -401,12 +401,12 @@ public class NiceTest {
 		} else {
 			stabilizeHor(0, speedSpin);
 		}
-		NiceTest.velocityPanel.setStabilityV(false);
+		NiceTest.velocityPanel.setStabilityV(false);*/
 		return false;
 	}
 
 	public static boolean stabilizeHor(int speedZ, int speedSpin) {
-		if (System.currentTimeMillis() - NiceTest.velocityPanel.updated < 500) {
+		/*if (System.currentTimeMillis() - NiceTest.velocityPanel.updated < 500) {
 			double speedX = NiceTest.velocityPanel.velocity.getX() / 40.0;
 			double speedY = NiceTest.velocityPanel.velocity.getY() / 40.0;
 			speedX -= NiceTest.velocityPanel.accelerationRaw.getX() / 50.0;
@@ -429,7 +429,8 @@ public class NiceTest {
 			commandManager.move(0, 0, speedZ, speedSpin).doFor(50);
 			NiceTest.velocityPanel.setStabilityH(false);
 			return false;
-		}
+		}*/
+		return false;
 	}
 }
 

@@ -10,6 +10,7 @@ import de.yadrone.base.IARDrone;
 import de.yadrone.base.command.CommandManager;
 import de.yadrone.base.command.UltrasoundFrequency;
 import de.yadrone.base.command.VideoCodec;
+import de.yadrone.base.command.WifiMode;
 import de.yadrone.base.configuration.ConfigurationManager;
 import de.yadrone.base.navdata.NavDataManager;
 import de.yadrone.base.video.VideoManager;
@@ -35,6 +36,8 @@ public class DroneControl {
 	private final ListenerPack listenerPack;
 
 	public DroneControl(FullGUI gui, ListenerPack listenerPack) {
+		this.listenerPack = listenerPack;
+		this.gui = gui;
 		do {
 			try {
 				drone = new ARDrone();
@@ -42,7 +45,6 @@ public class DroneControl {
 				gui.errorLn(exc.getMessage());
 			}
 		} while (drone == null);
-		this.listenerPack = listenerPack;
 	}
 
 	public void start() {
@@ -53,13 +55,14 @@ public class DroneControl {
 		gui.printLn("Starting Drone.");
 		drone.start();
 		drone.reset();
-
+		
 		try {
 			Thread.currentThread().sleep(2000);
 		} catch (InterruptedException ex) {
 			gui.printLn("sleep interupted");
 		}
 
+		gui.printLn("Drone connected: " + getConfigurationManager().isConnected());
 		while (!getConfigurationManager().isConnected()) {
 			gui.printLn("Couldn't connect to drone, retrying connection");
 			getConfigurationManager().close();
@@ -103,7 +106,7 @@ public class DroneControl {
 		// Drone taking off
 		//--------------------------------------------------------------------
 		gui.printLn("Taking off");
-		getCommandManager().takeOff().doFor(5000);
+		getCommandManager().takeOff();
 
 		gui.printLn("Waiting for altitude update");
 		while (!listenerPack.altitudeUpdated()) {
@@ -171,7 +174,7 @@ public class DroneControl {
 			double speedX = listenerPack.getVelocity().getX() / 40.0;
 			double speedY = listenerPack.getVelocity().getY() / 40.0;
 			speedX -= listenerPack.getAcceleration().getX() / 50.0;
-			speedY += listenerPack.getAcceleration().getY() / 50.0;
+			speedY -= listenerPack.getAcceleration().getY() / 50.0;
 
 			int dirX = (int) Math.signum(speedX);
 			int dirY = (int) Math.signum(speedY);
@@ -253,3 +256,16 @@ public class DroneControl {
 	}
 
 }
+
+/*		//---------------------------------
+		// Direction Test
+		//--------------------------------
+
+		output.addTextLine("Moving forward");
+		commandManager.move(20, 0, 0, 0).doFor(1000);
+		output.addTextLine("Moving backwards");
+		commandManager.move(-20, 0, 0, 0).doFor(1000);
+		output.addTextLine("Moving rigt");
+		commandManager.move(0, -20, 0, 0).doFor(1000);
+		output.addTextLine("Moving left");
+		commandManager.move(0, 20, 0, 0).doFor(1000);*/

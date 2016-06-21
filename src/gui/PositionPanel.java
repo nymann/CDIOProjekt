@@ -5,19 +5,14 @@
  */
 package gui;
 
-import com.sun.javafx.geom.Vec3d;
-import com.sun.javafx.geom.Vec3f;
 import de.yadrone.base.navdata.AttitudeListener;
 import de.yadrone.base.navdata.VelocityListener;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import javafx.geometry.Point2D;
-import javafx.geometry.Point3D;
 import javax.swing.JPanel;
-import javax.swing.plaf.DimensionUIResource;
 import javax.vecmath.Matrix4d;
-import javax.vecmath.Vector2f;
 import javax.vecmath.Vector3f;
 import modeling.Angle3D;
 
@@ -27,10 +22,8 @@ import modeling.Angle3D;
  */
 public class PositionPanel extends JPanel implements AttitudeListener, VelocityListener {
 
-//	static final int ROOM_X = 900;
-//	static final int ROOM_Y = 1000;
-	static final int ROOM_X = 270;
-	static final int ROOM_Y = 300;
+	static final int ROOM_X = 900;
+	static final int ROOM_Y = 1000;
 	static final int PANEL_HEIGHT = 500;
 	static final int PANEL_WIDTH = 450;
 
@@ -78,7 +71,7 @@ public class PositionPanel extends JPanel implements AttitudeListener, VelocityL
 	}
 
 	@Override
-	public void velocityChanged(float vy, float vx, float vz) {
+	public void velocityChanged(float vx, float vy, float vz) {
 		long currentTime = System.currentTimeMillis();
 		if (lastUpdate != 0) {
 			updateTime = currentTime - lastUpdate;
@@ -122,8 +115,10 @@ public class PositionPanel extends JPanel implements AttitudeListener, VelocityL
 			yPoints[i] = cy - y - (int) points[i].y;
 		}
 		g.setColor(Color.GREEN);
-		//g.fillOval(cx + x, cy - y, size, size);
 		g.fillPolygon(xPoints, yPoints, 4);
+		g.drawLine(cx+x, cy-y, cx+x+(int)velocity.getX(), cy-y-(int)velocity.getY());
+		
+		
 		g.setColor(Color.WHITE);
 		g.drawString("X:" + (int)position.getX(), 0, 10);
 		g.drawString("Y:" + (int)position.getY(), 0, 20);

@@ -68,7 +68,7 @@ public class TestQRPositioning {
 		videoReader.setCamMode(false);
 		
 		TextPanel text = new TextPanel();
-		qrpos.setOutput(text);
+//		qrpos.setOutput(text);
 		
 		JFrame mainWindow = new JFrame();
 		mainWindow.getContentPane().setLayout(new FlowLayout());

@@ -28,8 +28,8 @@ public class CompleteTest {
 		gui = new FullGUI("Complete Test");
 		listenerPack = new ListenerPack(gui);
 		droneControl = new DroneControl(gui,listenerPack);
-		droneControl.start();
 		listenerPack.addListeners(droneControl.getNavDataManager());
+		droneControl.start();
 		
 		try {
 			doStuff();
@@ -78,6 +78,7 @@ public class CompleteTest {
 
 	private static boolean doFlightPattern(){
 		// return true when we're done
+		// return flase if we've lost our position
 		return true;
 	}
 }

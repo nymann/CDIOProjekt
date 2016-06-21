@@ -147,8 +147,8 @@ public class FullGUI implements VelocityListener, AttitudeListener, ImageListene
 	
 	@Override
 	public void velocityChanged(float vx, float vy, float vz) {
-		velocityPanel.velocityChanged(vy, vx, vz);
-		positionPanel.velocityChanged(vy, vx, vz);
+		velocityPanel.velocityChanged(vx, vy, vz);
+		positionPanel.velocityChanged(vx, vy, vz);
 	}
 
 	@Override

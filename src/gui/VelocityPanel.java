@@ -25,7 +25,6 @@ public class VelocityPanel extends JPanel implements VelocityListener {
 	
 
     public Point3D velocity, accelerationPhys, accelerationRaw;
-    public long updated;
     
 	private Point2D counterVelocity;
 	private boolean stableH,stableV;
@@ -59,7 +58,7 @@ public class VelocityPanel extends JPanel implements VelocityListener {
 		if (this.accelerationRaw != null) {
             g.setColor(Color.YELLOW);
             double factor = shortest / accScaleRaw;
-            g.drawLine(centerX, centerY, centerX + (int) (factor * accelerationPhys.getX()), centerY - (int) (factor * accelerationPhys.getY()));
+            g.drawLine(centerX, centerY, centerX + (int) (factor * accelerationRaw.getX()), centerY - (int) (factor * accelerationRaw.getY()));
         }
 		
 		if (this.stableH){
@@ -94,12 +93,10 @@ public class VelocityPanel extends JPanel implements VelocityListener {
 		} else {
 			g.fillRect(w1+w2/2, (int) (centerY+counterV*factor), w2/2, (int) (-counterV*factor));
 		}
-		
     }
 
     @Override
-    public void velocityChanged(float vy, float vx, float vz) {
-        this.updated = System.currentTimeMillis();
+    public void velocityChanged(float vx, float vy, float vz) {
         velocity = new Point3D(vx, vy, vz);
         this.repaint();
     }
@@ -120,7 +117,7 @@ public class VelocityPanel extends JPanel implements VelocityListener {
 	}
 	
 	public void setAccelRaw(int[] v){
-		this.accelerationRaw = new Point3D(-v[1], -v[0],v[2]);
+		this.accelerationRaw = new Point3D(v[1], -v[0],v[2]);
 	}
 
 	public void setVelocityV(float velocityV) {

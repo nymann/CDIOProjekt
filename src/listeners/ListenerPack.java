@@ -17,14 +17,15 @@ import javafx.geometry.Point3D;
  * @author Mikkel
  */
 public class ListenerPack {
+
 	private final Altitude alt;
 	private final Battery bat;
 	private final Velocity vel;
 	private final Attitude att = new Attitude();
 	private final Accelerometer acc;
 	private final DroneStateListener dsl;
-	
-	public ListenerPack(FullGUI gui){
+
+	public ListenerPack(FullGUI gui) {
 		this.vel = new Velocity();
 		this.bat = new Battery(gui);
 		this.alt = new Altitude(gui);
@@ -33,8 +34,8 @@ public class ListenerPack {
 		dsl = new DroneStateListener(gui);
 		att.addListener(gui);
 	}
-	
-	public void addListeners(NavDataManager navDataManager){
+
+	public void addListeners(NavDataManager navDataManager) {
 		navDataManager.addVelocityListener(vel);
 		navDataManager.addAltitudeListener(alt);
 		navDataManager.addStateListener(dsl);
@@ -42,50 +43,54 @@ public class ListenerPack {
 		navDataManager.addAcceleroListener(acc);
 		navDataManager.addAttitudeListener(att);
 	}
-	
-	public void addAttitudeListener(AttitudeListener listener){
+
+	public void addAttitudeListener(AttitudeListener listener) {
 		att.addListener(listener);
 	}
-	
+
 	public void removeAttitudeListener(AttitudeListener listener) {
 		att.removeListener(listener);
 	}
-	
-	public long getLastAltUpdate(){
+
+	public long getLastAltUpdate() {
 		return alt.getLastUpdate();
 	}
-	
-	public long getLastVelocityUpdate(){
+
+	public long getLastVelocityUpdate() {
 		return vel.lastUpdate();
 	}
-	
-	public int getAltitude(){
+
+	public int getAltitude() {
 		return alt.extendedAltitude.getRaw();
 	}
-	
-	public float getZVelocity(){
+
+	public float getZVelocity() {
 		return alt.extendedAltitude.getZVelocity();
 	}
-	
-	public Point3D getVelocity(){
+
+	public Point3D getVelocity() {
 		return vel.velocity;
 	}
-	
-	public Point3D getAcceleration(){
-		int[] v = acc.accrawd.getRawAccs();
-		return new Point3D(-v[1], -v[0],v[2]);
+
+	public Point3D getAcceleration() {
+		try {
+			int[] v = acc.getCalibratedRaw();
+			return new Point3D(v[1], -v[0], v[2]);
+		} catch (Exception e) {
+		}
+		return null;
 	}
-	
-	public boolean accelerationUpdated(){
+
+	public boolean accelerationUpdated() {
 		return acc.acchysd != null;
 	}
-	
-	public boolean altitudeUpdated(){
+
+	public boolean altitudeUpdated() {
 		return alt.extendedAltitude != null;
 	}
 
-	public void calibrateAcc(boolean cal){
+	public void calibrateAcc(boolean cal) {
 		acc.calibration(cal);
 	}
-	
+
 }

@@ -7,8 +7,6 @@ package test;
 
 import de.yadrone.base.ARDrone;
 import de.yadrone.base.IARDrone;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *

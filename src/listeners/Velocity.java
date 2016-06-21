@@ -25,7 +25,7 @@ public class Velocity implements VelocityListener {
 			new Thread() {
 				@Override
 				public void run() {
-					listener.velocityChanged(vy, vx, vz);
+					listener.velocityChanged(vx, vy, vz);
 				}
 			}.start();
 		}
@@ -40,6 +40,6 @@ public class Velocity implements VelocityListener {
 	}
 	
 	public long lastUpdate(){
-		return lastUpdate();
+		return updated;
 	}
 }
